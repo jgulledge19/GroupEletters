@@ -1,0 +1,169 @@
+DB:
+email_group_memebers - this is what group a member is subscirbed or unsubscribed to (groups_subscriber)
+    CREATE TABLE `modx_eletter_group_members` (
+      `id` INT(11) NOT NULL AUTO_INCREMENT,
+      `group` INT(11) DEFAULT NULL,
+      `subscriber` INT(11) DEFAULT NULL,
+      `receive_email` SET('Y','N') DEFAULT 'Y',
+      `receive_sms` SET('Y','N') DEFAULT 'N',
+      `date_created` DATETIME DEFAULT NULL,
+      `date_updated` DATETIME DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      KEY `group` (`group`),
+      KEY `subscriber` (`subscriber`)
+    ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+eletter_groups - the eletter groups that members can belong to (groups)
+
+    CREATE TABLE `modx_eletter_groups` (
+      `id` INT(11) NOT NULL AUTO_INCREMENT,
+      `name` VARCHAR(128) DEFAULT NULL,
+      `parent` INT(11) DEFAULT 0,
+      `description` TEXT,
+      `department` VARCHAR(64) DEFAULT NULL,
+      `allow_signup` SET('Y','N') DEFAULT 'N',
+      `date_created` DATETIME DEFAULT NULL,
+      `active` SET('Y','N') DEFAULT 'Y',
+      `date_inactive` DATETIME DEFAULT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+email_members - actual names and emails of people (subscribers)
+    CREATE TABLE `modx_eletter_subscribers` (
+      `id` INT(11) NOT NULL AUTO_INCREMENT,
+      `crm_id` INT(11) DEFAULT '0',
+      `first_name` VARCHAR(32) DEFAULT NULL,
+      `m_name` VARCHAR(32) DEFAULT NULL,
+      `last_name` VARCHAR(32) DEFAULT NULL,
+      `address` VARCHAR(128) DEFAULT NULL,
+      `state` VARCHAR(64) DEFAULT NULL,
+      `zip` VARCHAR(16) DEFAULT NULL,
+      `country` VARCHAR(64) DEFAULT NULL,
+      `email` VARCHAR(128) DEFAULT NULL,
+      `phone` VARCHAR(16) DEFAULT NULL,
+      `cell` VARCHAR(16) DEFAULT NULL,
+      `date_created` DATETIME DEFAULT NULL,
+      `active` int(1) NOT NULL DEFAULT '0',
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+email_rec - record the actual email into the DB (newsletters)
+    CREATE TABLE `modx_eletter_newsletters` (
+      `id` INT(11) NOT NULL AUTO_INCREMENT,
+      `resource` INT(11) DEFAULT 0,
+      `title` VARCHAR(128) DEFAULT NULL,
+      `message` TEXT DEFAULT NULL ,
+      `subject` VARCHAR(128) DEFAULT NULL,
+      `from` VARCHAR(128) DEFAULT NULL,
+      `from_name` VARCHAR(128)  DEFAULT NULL,
+      `reply_to` VARCHAR(128)  DEFAULT NULL,
+            //`email_group_id` INT(11) DEFAULT 0,
+      `groups` varchar(255) DEFAULT NULL COMMENT 'Temp field',
+      `status` set('draft','submitted','approved','complete', 'sending', 'void') DEFAULT 'draft',
+      `allow_comments` set('Y','N') DEFAULT 'N',
+      `user` int(11) DEFAULT NULL,
+      `add_date` DATETIME DEFAULT NULL,
+      `start_date` datetime DEFAULT NULL,
+      `finish_date` datetime DEFAULT NULL,
+      `sent_cnt` INT(11) DEFAULT 0,
+      `tot_cnt` INT(11) DEFAULT 0,
+      `bounce_cnt` INT(11) UNSIGNED DEFAULT '0',
+      `extended` TEXT DEFAULT NULL,
+      
+      /*
+      `send_server` SET('CRM','MODX') DEFAULT 'MODX',
+      `cc_desc` VARCHAR(255) DEFAULT NULL,
+      `resrc` VARCHAR(8) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT 'ctc_table',
+      `tick` VARCHAR(4) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT 'ctc_table',
+      `delay` INT(11) DEFAULT '10',
+      `role` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+      `pre_build_html` TEXT CHARACTER SET utf8 COMMENT 'the MODX processed resource',
+      `internal_only` SET('Y','N') CHARACTER SET utf8 DEFAULT 'N',
+      `query_builder` TEXT CHARACTER SET utf8,
+      `sql` TEXT CHARACTER SET utf8 COLLATE utf8_bin,
+      `dest` VARCHAR(2) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT 'BC (Bethel College), NB (Non Bethel), B (Both)',
+      `allow_copy` SET('Y','N') CHARACTER SET utf8 DEFAULT 'Y',
+      */
+      PRIMARY KEY (`id`),
+      KEY `resource` (`resource`)
+      /*KEY `FK_resource` (`resource`),
+      CONSTRAINT `FK_resource` FOREIGN KEY (`resource`) REFERENCES `email_layout` (`email_layout_id`) */
+    ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+    
+CREATE TABLE `modx_eletter_newsletter_groups` (
+      `id` INT(11) NOT NULL AUTO_INCREMENT,
+      `newsletter` INT(11) DEFAULT NULL,
+      `group` INT(11) DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      KEY `newsletter` (`newsletter`),
+      KEY `subscriber` (`group`)
+    ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `modx_eletter_queue` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `newsletter` int(10) unsigned NOT NULL DEFAULT '0',
+  `subscriber` int(10) unsigned NOT NULL DEFAULT '0',
+  `sent` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `newsletter` (`newsletter`),
+  KEY `subscriber` (`subscriber`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+
+/* Record Stats*/
+email_links - the generated short links to map to the full link
+    CREATE TABLE `modx_eletter_links` (
+      `id` INT(11) NOT NULL AUTO_INCREMENT,
+      `newsletter` INT(11) DEFAULT NULL COMMENT 'Foregin Key',
+      `url` TEXT,
+      `type` SET('link','image') DEFAULT 'link',
+      PRIMARY KEY (`id`)
+    ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+email_subscriber_hits - the actual hits that people make from the email 
+    CREATE TABLE `modx_eletter_subscriber_hits` (
+      `id` INT(11) NOT NULL AUTO_INCREMENT,
+      `newsletter` INT(11) DEFAULT NULL,
+      `subscriber` INT(11) DEFAULT NULL,
+      `url` VARCHAR(255) DEFAULT NULL,
+      `hit_type` VARCHAR(32) DEFAULT NULL,
+      `hit_time` INT(11) DEFAULT NULL,
+      `hit_date` DATETIME DEFAULT NULL,
+      `view_total` INT(11) DEFAULT NULL,
+      `landing` SET('Y','N') DEFAULT 'N',
+      `goal` TINYINT(4) DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      KEY `newsletter` (`newsletter`),
+      KEY `subscriber` (`subscriber`)
+    ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
+
+
+
+/* BC CUSTOM CRM stuff */
+email_code_rec - this is a listing of all of the avaiable codes (placeholders)
+    CREATE TABLE `email_code_rec` (
+      `email_code_rec_id` INT(11) NOT NULL AUTO_INCREMENT,
+      `str_code` VARCHAR(64) DEFAULT NULL,
+      `desc` TEXT,
+      `add_date` DATE DEFAULT NULL,
+      `remove_date` DATE DEFAULT NULL,
+      `type` SET('template_variable','email_variable') DEFAULT 'email_variable',
+      `active` SET('Y','N') DEFAULT 'Y',
+      PRIMARY KEY (`email_code_rec_id`)
+    ) ENGINE=INNODB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8
+
+email_info - data about people for that specific email (example specific billing cost generated by your CRM)
+    CREATE TABLE `email_info` (
+      `email_info_id` INT(11) NOT NULL AUTO_INCREMENT,
+      `bethel_id` INT(11) DEFAULT NULL,
+      `email_rec_id` INT(11) DEFAULT NULL,
+      `member_info` TEXT COMMENT 'name=>value|name=>value',
+      PRIMARY KEY (`email_info_id`)
+    ) ENGINE=INNODB AUTO_INCREMENT=595258 DEFAULT CHARSET=utf8
+
+/**/
+
+
+
