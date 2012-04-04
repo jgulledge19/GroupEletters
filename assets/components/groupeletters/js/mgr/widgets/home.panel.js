@@ -1,11 +1,11 @@
-Ditsnews.panel.Home = function(config) {
+GroupEletters.panel.Home = function(config) {
     config = config || {};
     Ext.apply(config,{
         border: false
         ,baseCls: 'modx-formpanel'
         ,items: [
             {
-                html: '<h2>'+_('ditsnews')+' - '+_('ditsnews.desc')+'</h2>'
+                html: '<h2>'+_('groupeletters')+' - '+_('groupeletters.desc')+'</h2>'
                 ,border: false
                 ,cls: 'modx-page-header'
             },{
@@ -15,34 +15,34 @@ Ditsnews.panel.Home = function(config) {
                 ,border: true
                 ,items: [
                     {
-                        title: _('ditsnews.newsletters')
+                        title: _('groupeletters.newsletters')
                         ,defaults: { autoHeight: true }
                         ,items: [
                             {
-                                xtype: 'ditsnews-grid-newsletters'
+                                xtype: 'groupeletters-grid-newsletters'
                                 ,preventRender: true
                             }
                         ]
                     },{
-                        title: _('ditsnews.groups')
+                        title: _('groupeletters.groups')
                         ,defaults: { autoHeight: true }
                         ,items: [{
-                            xtype: 'ditsnews-grid-groups'
+                            xtype: 'groupeletters-grid-groups'
                             ,preventRender: true
                         }]
                     },{
-                        title: _('ditsnews.subscribers')
+                        title: _('groupeletters.subscribers')
                         ,defaults: { autoHeight: true }
                         ,items: [{
-                            xtype: 'ditsnews-grid-subscribers'
+                            xtype: 'groupeletters-grid-subscribers'
                             ,preventRender: true
                         }]
                     },
                     {
-                        title: _('ditsnews.settings')
+                        title: _('groupeletters.settings')
                         ,defaults: { autoHeight: true }
                         ,items: [{
-                            xtype: 'ditsnews-panel-settings'
+                            xtype: 'groupeletters-panel-settings'
                             ,preventRender: true
                         }]
                         ,listeners: {
@@ -50,7 +50,7 @@ Ditsnews.panel.Home = function(config) {
                                 fn: function() {
                                     MODx.Ajax.request({
                                         scope: this,
-                                        url: Ditsnews.config.connectorUrl,
+                                        url: GroupEletters.config.connectorUrl,
                                         params: {
                                             action: 'mgr/settings/get'
                                         }
@@ -58,7 +58,7 @@ Ditsnews.panel.Home = function(config) {
                                             success: {fn:function(reply) {
                                                 var settingsConfig = reply;
                                                 settingsConfig = settingsConfig.object;
-                                                Ext.getCmp('ditsnews-panel-settings').getForm().setValues(settingsConfig);
+                                                Ext.getCmp('groupeletters-panel-settings').getForm().setValues(settingsConfig);
                                             }, scope:this}
                                         }
                                     });
@@ -70,7 +70,7 @@ Ditsnews.panel.Home = function(config) {
             }
         ]
     });
-    Ditsnews.panel.Home.superclass.constructor.call(this,config);
+    GroupEletters.panel.Home.superclass.constructor.call(this,config);
 };
-Ext.extend(Ditsnews.panel.Home,MODx.Panel);
-Ext.reg('ditsnews-panel-home',Ditsnews.panel.Home);
+Ext.extend(GroupEletters.panel.Home,MODx.Panel);
+Ext.reg('groupeletters-panel-home',GroupEletters.panel.Home);

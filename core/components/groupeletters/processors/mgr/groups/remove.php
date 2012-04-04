@@ -1,8 +1,8 @@
 <?php
-$group = $modx->getObject('dnGroup', $scriptProperties['id']);
+$group = $modx->getObject('EletterGroups', $scriptProperties['id']);
 
 if ($group == null) {
-	return $modx->error->failure($modx->lexicon('ditsnews.groups.err.nf'));
+	return $modx->error->failure($modx->lexicon('groupeletters.groups.err.nf'));
 }
 
 // Remove group

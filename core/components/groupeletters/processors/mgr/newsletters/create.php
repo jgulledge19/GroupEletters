@@ -1,7 +1,10 @@
 <?php
-if($doc = $modx->getObject('modResource', $scriptProperties['document'])) {
+/**
+ * This file needs to be rewritten
+ */
+if($doc = $modx->getObject('modResource', $scriptProperties['resource'])) {
 
-    $docUrl = preg_replace('/&amp;/', '&', $modx->makeUrl((int)$scriptProperties['document'], '', '&sending=1', 'full') );
+    $docUrl = preg_replace('/&amp;/', '&', $modx->makeUrl((int)$scriptProperties['rescource'], '', '&sending=1', 'full') );
 
     $context = $modx->getObject('modContext', array('key' => $doc->get('context_key')));
     $contextUrl = $context->getOption('site_url', $modx->getOption('site_url'));

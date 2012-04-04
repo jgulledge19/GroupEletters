@@ -1,8 +1,8 @@
 <?php
 //check for unique email address
-$emailcount = $modx->getCount('dnSubscriber', array('email' => $scriptProperties['email']));
+$emailcount = $modx->getCount('EletterSubscribers', array('email' => $scriptProperties['email']));
 if($emailcount > 0) {
-    return $modx->error->failure($modx->lexicon('ditsnews.subscribers.err.ae'));
+    return $modx->error->failure($modx->lexicon('groupeletters.subscribers.err.ae'));
 }
 
 $details = array(
@@ -16,7 +16,7 @@ $details = array(
 );
 
 
-$subscriber = $modx->newObject('dnSubscriber', $details);
+$subscriber = $modx->newObject('EletterSubscribers', $details);
 
 if ($subscriber->save()) {
     //remove current groups
@@ -26,12 +26,12 @@ if ($subscriber->save()) {
     }
     
     //add new groups
-    $groups = $modx->getCollection('dnGroup');
+    $groups = $modx->getCollection('EletterGroups');
     if( is_array($groups) ) {
         foreach($groups as $group) {
             $id = $group->get('id');
             if( $scriptProperties['groups_'.$id] ) {
-                $newGroup = $modx->newObject('dnGroupSubscribers', array('group' => $id, 'subscriber' => $subscriber->get('id'))  );
+                $newGroup = $modx->newObject('EletterGroupSubscribers', array('group' => $id, 'subscriber' => $subscriber->get('id'))  );
                 $newGroup->save();
             }
         }

@@ -19,9 +19,9 @@ switch($eventName) {
         $groupEletters =& $modx->groupEletters;
 
         $new = false;
-        if( !$newsletter = $modx->getObject('GroupElettersNewsletter', array('resource' => $resource->get('id') )) ) {
+        if( !$newsletter = $modx->getObject('EletterNewsletters', array('resource' => $resource->get('id') )) ) {
             // create a new newsletter:
-            $newsletter = $modx->newObject('GroupElettersNewsletter', array(
+            $newsletter = $modx->newObject('EletterNewsletters', array(
                 'date' => time(),
                 'resource' => $resource->get('id')
             ));

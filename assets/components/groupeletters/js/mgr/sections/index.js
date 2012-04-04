@@ -1,17 +1,17 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'ditsnews-page-home'});
+    MODx.load({ xtype: 'groupeletters-page-home'});
 });
 
-Ditsnews.page.Home = function(config) {
+GroupEletters.page.Home = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'ditsnews-panel-home'
-            ,renderTo: 'ditsnews-panel-home-div'
+            xtype: 'groupeletters-panel-home'
+            ,renderTo: 'groupeletters-panel-home-div'
         }]
     });
-    Ditsnews.page.Home.superclass.constructor.call(this,config);
+    GroupEletters.page.Home.superclass.constructor.call(this,config);
 };
 
-Ext.extend(Ditsnews.page.Home,MODx.Component);
-Ext.reg('ditsnews-page-home',Ditsnews.page.Home);
+Ext.extend(GroupEletters.page.Home,MODx.Component);
+Ext.reg('groupeletters-page-home',GroupEletters.page.Home);

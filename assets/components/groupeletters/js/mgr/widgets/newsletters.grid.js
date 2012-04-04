@@ -1,8 +1,8 @@
-Ditsnews.grid.Newsletters = function(config) {
+GroupEletters.grid.Newsletters = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'ditsnews-grid-newsletters'
-        ,url: Ditsnews.config.connectorUrl
+        id: 'groupeletters-grid-newsletters'
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/newsletters/list' }
         ,fields: ['id','title','date','total','sent']
         ,paging: true
@@ -16,7 +16,7 @@ Ditsnews.grid.Newsletters = function(config) {
             ,sortable: true
             ,width: 10
         },{
-            header: _('ditsnews.newsletters.subject')
+            header: _('groupeletters.newsletters.subject')
             ,dataIndex: 'title'
             ,sortable: true
         },{
@@ -24,25 +24,25 @@ Ditsnews.grid.Newsletters = function(config) {
             ,dataIndex: 'date'
             ,sortable: true
         },{
-            header: _('ditsnews.newsletters.total')
+            header: _('groupeletters.newsletters.total')
             ,dataIndex: 'total'
             ,sortable: true
         },{
-            header: _('ditsnews.newsletters.sent')
+            header: _('groupeletters.newsletters.sent')
             ,dataIndex: 'sent'
             ,sortable: false
         }]
         ,tbar: [{
-            text: _('ditsnews.newsletters.new')
+            text: _('groupeletters.newsletters.new')
             ,handler: this.createNewsletter
         }]
     });
-    Ditsnews.grid.Newsletters.superclass.constructor.call(this,config)
+    GroupEletters.grid.Newsletters.superclass.constructor.call(this,config)
 };
-Ext.extend(Ditsnews.grid.Newsletters,MODx.grid.Grid,{
+Ext.extend(GroupEletters.grid.Newsletters,MODx.grid.Grid,{
     getMenu: function() {
         var m = [{
-            text: _('ditsnews.newsletters.remove')
+            text: _('groupeletters.newsletters.remove')
             ,handler: this.removeNewsletter
         }];
         this.addContextMenuItem(m);
@@ -51,19 +51,19 @@ Ext.extend(Ditsnews.grid.Newsletters,MODx.grid.Grid,{
     ,createNewsletter: function(btn,e) {
         if (!this.CreateNewsletterWindow) {
             this.CreateNewsletterWindow = MODx.load({
-                xtype: 'ditsnews-window-newsletter-create'
+                xtype: 'groupeletters-window-newsletter-create'
                 ,listeners: {
                     'success': {fn:this.refresh,scope:this}
                 }
             });
         }
-        this.getGroups('ditsnews-window-newsletter-create');
+        this.getGroups('groupeletters-window-newsletter-create');
         this.CreateNewsletterWindow.show(e.target);
     }
     ,removeNewsletter: function() {
         MODx.msg.confirm({
-            title: _('ditsnews.newsletters.remove')
-            ,text: _('ditsnews.newsletters.remove.confirm')
+            title: _('groupeletters.newsletters.remove')
+            ,text: _('groupeletters.newsletters.remove.confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/newsletters/remove'
@@ -76,7 +76,7 @@ Ext.extend(Ditsnews.grid.Newsletters,MODx.grid.Grid,{
     }
     ,getGroups: function(formId) {
         MODx.Ajax.request({
-            url: Ditsnews.config.connectorUrl,
+            url: GroupEletters.config.connectorUrl,
             scope: this,
             params: {
                 action: 'mgr/groups/getgrouplist'
@@ -93,7 +93,7 @@ Ext.extend(Ditsnews.grid.Newsletters,MODx.grid.Grid,{
                                         Ext.getCmp('newslettergroups').add({
                                             xtype: 'checkbox',
                                             name: 'groups_'+item.id,
-                                            boxLabel: item.name+' ('+item.members+' '+_('ditsnews.groups.members')+')',
+                                            boxLabel: item.name+' ('+item.members+' '+_('groupeletters.groups.members')+')',
                                             inputValue: true,
                                             hideLabel: true,
                                             checked: item.checked
@@ -108,38 +108,38 @@ Ext.extend(Ditsnews.grid.Newsletters,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('ditsnews-grid-newsletters',Ditsnews.grid.Newsletters);
+Ext.reg('groupeletters-grid-newsletters',GroupEletters.grid.Newsletters);
 
-Ditsnews.window.CreateNewsletter = function(config) {
+GroupEletters.window.CreateNewsletter = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('ditsnews.newsletters.new')
-        ,url: Ditsnews.config.connectorUrl
+        title: _('groupeletters.newsletters.new')
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: {
             action: 'mgr/newsletters/create'
         }
         ,fields: [
             {
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.newsletters.subject')
+                ,fieldLabel: _('groupeletters.newsletters.subject')
                 ,name: 'title'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'numberfield'
-                ,fieldLabel: _('ditsnews.newsletters.document')
+                ,fieldLabel: _('groupeletters.newsletters.document')
                 ,name: 'document'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'fieldset'
                 ,id: 'newslettergroups'
-                ,fieldLabel: _('ditsnews.newsletters.groups')
+                ,fieldLabel: _('groupeletters.newsletters.groups')
                 ,items: []
             }
         ]
     });
-    Ditsnews.window.CreateNewsletter.superclass.constructor.call(this,config);
+    GroupEletters.window.CreateNewsletter.superclass.constructor.call(this,config);
 };
-Ext.extend(Ditsnews.window.CreateNewsletter,MODx.Window);
-Ext.reg('ditsnews-window-newsletter-create',Ditsnews.window.CreateNewsletter);
+Ext.extend(GroupEletters.window.CreateNewsletter,MODx.Window);
+Ext.reg('groupeletters-window-newsletter-create',GroupEletters.window.CreateNewsletter);

@@ -1,9 +1,9 @@
-Ditsnews.panel.Settings = function(config) {
+GroupEletters.panel.Settings = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'ditsnews-panel-settings'
+        id: 'groupeletters-panel-settings'
         ,layout: 'form'
-        ,url: Ditsnews.config.connectorUrl
+        ,url: GroupEletters.config.connectorUrl
         ,baseCls: 'modx-formpanel'
         ,baseParams: { action: 'mgr/settings/get' }
         ,buttonAlign: 'left'
@@ -16,16 +16,16 @@ Ditsnews.panel.Settings = function(config) {
                     action: 'mgr/settings/save'
                 }
                 MODx.Ajax.request({
-                    url: Ditsnews.config.connectorUrl
+                    url: GroupEletters.config.connectorUrl
                     ,params: postData
                     ,scope: this,
                     listeners: {
                         success: {fn:function(response) {
                                 var status = response;
                                 if(status.success == true) {
-                                    MODx.msg.status({title: _('ditsnews.settings.saved')});
+                                    MODx.msg.status({title: _('groupeletters.settings.saved')});
                                 } else {
-                                    MODx.msg.status({title: _('ditsnews.settings.error')});
+                                    MODx.msg.status({title: _('groupeletters.settings.error')});
                                 }
                             }
                         }
@@ -38,19 +38,19 @@ Ditsnews.panel.Settings = function(config) {
             ,items: [
                 {
                     xtype: 'textfield',
-                    fieldLabel: _('ditsnews.settings.name'),
+                    fieldLabel: _('groupeletters.settings.name'),
                     name: 'name',
                     allowBlank: false
                 },
                 {
                     xtype: 'textfield',
-                    fieldLabel: _('ditsnews.settings.email'),
+                    fieldLabel: _('groupeletters.settings.email'),
                     name: 'email',
                     allowBlank: false
                 },
                 {
                     xtype: 'textfield',
-                    fieldLabel: _('ditsnews.settings.bounceemail'),
+                    fieldLabel: _('groupeletters.settings.bounceemail'),
                     name: 'bounceemail',
                     allowBlank: false
                 }
@@ -58,7 +58,7 @@ Ditsnews.panel.Settings = function(config) {
         }]
         ,border: false
     });
-    Ditsnews.panel.Settings.superclass.constructor.call(this,config);
+    GroupEletters.panel.Settings.superclass.constructor.call(this,config);
 };
-Ext.extend(Ditsnews.panel.Settings,MODx.FormPanel, {});
-Ext.reg('ditsnews-panel-settings',Ditsnews.panel.Settings);
+Ext.extend(GroupEletters.panel.Settings,MODx.FormPanel, {});
+Ext.reg('groupeletters-panel-settings',GroupEletters.panel.Settings);

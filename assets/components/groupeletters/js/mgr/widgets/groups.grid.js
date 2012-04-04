@@ -1,16 +1,16 @@
-Ditsnews.grid.Groups = function(config) {
+GroupEletters.grid.Groups = function(config) {
     config = config || {};
 
     var publicCheckColumn = new Ext.ux.grid.CheckColumn({
-        header: _('ditsnews.groups.public')
+        header: _('groupeletters.groups.public')
         ,dataIndex: 'public'
         ,width: 10
         ,sortable: false
     });
 
     Ext.applyIf(config,{
-        id: 'ditsnews-grid-groups'
-        ,url: Ditsnews.config.connectorUrl
+        id: 'groupeletters-grid-groups'
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/groups/list' }
         ,fields: ['id','name','public','members']
         ,paging: true
@@ -24,30 +24,30 @@ Ditsnews.grid.Groups = function(config) {
             ,sortable: true
             ,width: 10
         },{
-            header: _('ditsnews.groups.name')
+            header: _('groupeletters.groups.name')
             ,dataIndex: 'name'
             ,sortable: true
         },publicCheckColumn,{
-            header: _('ditsnews.groups.members')
+            header: _('groupeletters.groups.members')
             ,dataIndex: 'members'
             ,sortable: true
             ,width: 10
         }]
         ,tbar: [{
-            text: _('ditsnews.groups.new')
-            ,handler: { xtype: 'ditsnews-window-group-create', blankValues: true }
+            text: _('groupeletters.groups.new')
+            ,handler: { xtype: 'groupeletters-window-group-create', blankValues: true }
         }]
     });
-    Ditsnews.grid.Groups.superclass.constructor.call(this,config)
+    GroupEletters.grid.Groups.superclass.constructor.call(this,config)
 };
-Ext.extend(Ditsnews.grid.Groups,MODx.grid.Grid,{
+Ext.extend(GroupEletters.grid.Groups,MODx.grid.Grid,{
     getMenu: function() {
         var m = [{
-                text: _('ditsnews.groups.remove')
+                text: _('groupeletters.groups.remove')
                 ,handler: this.removeGroup
             },
             {
-                text: _('ditsnews.groups.update')
+                text: _('groupeletters.groups.update')
                 ,handler: this.updateGroup
             }
         ];
@@ -56,8 +56,8 @@ Ext.extend(Ditsnews.grid.Groups,MODx.grid.Grid,{
     }
     ,removeGroup: function() {
         MODx.msg.confirm({
-            title: _('ditsnews.groups.remove')
-            ,text: _('ditsnews.groups.remove.confirm')
+            title: _('groupeletters.groups.remove')
+            ,text: _('groupeletters.groups.remove.confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/groups/remove'
@@ -71,7 +71,7 @@ Ext.extend(Ditsnews.grid.Groups,MODx.grid.Grid,{
     ,updateGroup: function(btn,e) {
         if (!this.UpdateGroupWindow) {
             this.UpdateGroupWindow = MODx.load({
-                xtype: 'ditsnews-window-group-update'
+                xtype: 'groupeletters-window-group-update'
                 ,record: this.menu.record
                 ,listeners: {
                     'success': {fn:this.refresh,scope:this}
@@ -83,42 +83,42 @@ Ext.extend(Ditsnews.grid.Groups,MODx.grid.Grid,{
         this.UpdateGroupWindow.show(e.target);
     }
 });
-Ext.reg('ditsnews-grid-groups',Ditsnews.grid.Groups);
+Ext.reg('groupeletters-grid-groups',GroupEletters.grid.Groups);
 
-Ditsnews.window.CreateGroup = function(config) {
+GroupEletters.window.CreateGroup = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('ditsnews.groups.new')
-        ,url: Ditsnews.config.connectorUrl
+        title: _('groupeletters.groups.new')
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: {
             action: 'mgr/groups/create'
         }
         ,fields: [
             {
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.groups.name')
+                ,fieldLabel: _('groupeletters.groups.name')
                 ,name: 'name'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'checkbox'
-                ,fieldLabel: _('ditsnews.groups.public')
+                ,fieldLabel: _('groupeletters.groups.public')
                 ,name: 'public'
                 ,width: 300
                 ,inputValue: 1
             }
         ]
     });
-    Ditsnews.window.CreateGroup.superclass.constructor.call(this,config);
+    GroupEletters.window.CreateGroup.superclass.constructor.call(this,config);
 };
-Ext.extend(Ditsnews.window.CreateGroup,MODx.Window);
-Ext.reg('ditsnews-window-group-create',Ditsnews.window.CreateGroup);
+Ext.extend(GroupEletters.window.CreateGroup,MODx.Window);
+Ext.reg('groupeletters-window-group-create',GroupEletters.window.CreateGroup);
 
-Ditsnews.window.UpdateGroup = function(config) {
+GroupEletters.window.UpdateGroup = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('ditsnews.groups.edit')
-        ,url: Ditsnews.config.connectorUrl
+        title: _('groupeletters.groups.edit')
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: {
             action: 'mgr/groups/update'
         }
@@ -128,20 +128,20 @@ Ditsnews.window.UpdateGroup = function(config) {
                 ,name: 'id'
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.groups.name')
+                ,fieldLabel: _('groupeletters.groups.name')
                 ,name: 'name'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'checkbox'
-                ,fieldLabel: _('ditsnews.groups.public')
+                ,fieldLabel: _('groupeletters.groups.public')
                 ,name: 'public'
                 ,width: 300
                 ,inputValue: 1
             }
         ]
     });
-    Ditsnews.window.UpdateGroup.superclass.constructor.call(this,config);
+    GroupEletters.window.UpdateGroup.superclass.constructor.call(this,config);
 };
-Ext.extend(Ditsnews.window.UpdateGroup,MODx.Window);
-Ext.reg('ditsnews-window-group-update',Ditsnews.window.UpdateGroup);
+Ext.extend(GroupEletters.window.UpdateGroup,MODx.Window);
+Ext.reg('groupeletters-window-group-update',GroupEletters.window.UpdateGroup);

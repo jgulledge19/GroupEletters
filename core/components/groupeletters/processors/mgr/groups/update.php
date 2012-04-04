@@ -1,6 +1,6 @@
 <?php
-$group = $modx->getObject('dnGroup', array('id' => $scriptProperties['id']));
-if (empty($group)) return $modx->error->failure($modx->lexicon('ditsnews.groups.err.nf'));
+$group = $modx->getObject('EletterGroups', array('id' => $scriptProperties['id']));
+if (empty($group)) return $modx->error->failure($modx->lexicon('groupeletters.groups.err.nf'));
 
 //set fields
 $group->fromArray(
@@ -14,6 +14,6 @@ $group->fromArray(
 if ($group->save()) {
     return $modx->error->success('', $group);
 } else {
-    return $modx->error->failure($modx->lexicon('ditsnews.groups.err.save'));
+    return $modx->error->failure($modx->lexicon('groupeletters.groups.err.save'));
 }
 

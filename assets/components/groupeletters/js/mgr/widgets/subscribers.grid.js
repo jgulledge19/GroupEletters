@@ -1,16 +1,16 @@
-Ditsnews.grid.Subscribers = function(config) {
+GroupEletters.grid.Subscribers = function(config) {
     config = config || {};
 
     var activeCheckColumn = new Ext.ux.grid.CheckColumn({
-        header: _('ditsnews.subscribers.active')
+        header: _('groupeletters.subscribers.active')
         ,dataIndex: 'active'
         ,width: 30
         ,sortable: false
     });
 
     Ext.applyIf(config,{
-        id: 'ditsnews-grid-subscribers'
-        ,url: Ditsnews.config.connectorUrl
+        id: 'groupeletters-grid-subscribers'
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/subscribers/list' }
         ,fields: ['id','active','email','firstname','lastname','company','signupdate']
         ,paging: true
@@ -24,33 +24,33 @@ Ditsnews.grid.Subscribers = function(config) {
             ,sortable: true
             ,width: 10
         },activeCheckColumn,{
-            header: _('ditsnews.subscribers.email')
+            header: _('groupeletters.subscribers.email')
             ,dataIndex: 'email'
             ,sortable: true
         },{
-            header: _('ditsnews.subscribers.firstname')
+            header: _('groupeletters.subscribers.firstname')
             ,dataIndex: 'firstname'
             ,sortable: true
         },{
-            header: _('ditsnews.subscribers.lastname')
+            header: _('groupeletters.subscribers.lastname')
             ,dataIndex: 'lastname'
             ,sortable: true
         },{
-            header: _('ditsnews.subscribers.company')
+            header: _('groupeletters.subscribers.company')
             ,dataIndex: 'company'
             ,sortable: true
         },{
-            header: _('ditsnews.subscribers.signupdate')
+            header: _('groupeletters.subscribers.signupdate')
             ,dataIndex: 'signupdate'
             ,sortable: true
         }]
         ,tbar: [{
-            text: _('ditsnews.subscribers.new')
+            text: _('groupeletters.subscribers.new')
             ,handler: this.createSubscriber
         },'-',{
             xtype: 'textfield'
             ,id: 'subscribers-search-filter'
-            ,emptyText: _('ditsnews.search...')
+            ,emptyText: _('groupeletters.search...')
             ,listeners: {
                 'change': {fn:this.search,scope:this}
                 ,'render': {fn: function(cmp) {
@@ -67,8 +67,8 @@ Ditsnews.grid.Subscribers = function(config) {
             }
         },'-',{
             xtype: 'modx-combo'
-            ,fieldLabel: _('ditsnews.groups')
-            ,url: Ditsnews.config.connectorUrl
+            ,fieldLabel: _('groupeletters.groups')
+            ,url: GroupEletters.config.connectorUrl
             ,baseParams: {
                 action: 'mgr/groups/list'
                 ,includeAll: 1
@@ -78,9 +78,9 @@ Ditsnews.grid.Subscribers = function(config) {
             }
         }]
     });
-    Ditsnews.grid.Subscribers.superclass.constructor.call(this,config)
+    GroupEletters.grid.Subscribers.superclass.constructor.call(this,config)
 };
-Ext.extend(Ditsnews.grid.Subscribers,MODx.grid.Grid,{
+Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
     search: function(tf,nv,ov) {
         var s = this.getStore();
         s.baseParams.query = tf.getValue();
@@ -95,11 +95,11 @@ Ext.extend(Ditsnews.grid.Subscribers,MODx.grid.Grid,{
     }
     ,getMenu: function() {
         var m = [{
-                text: _('ditsnews.subscribers.remove')
+                text: _('groupeletters.subscribers.remove')
                 ,handler: this.removeSubscriber
             },
             {
-                text: _('ditsnews.subscribers.update')
+                text: _('groupeletters.subscribers.update')
                 ,handler: this.updateSubscriber
             }
         ];
@@ -108,8 +108,8 @@ Ext.extend(Ditsnews.grid.Subscribers,MODx.grid.Grid,{
     }
     ,removeSubscriber: function() {
         MODx.msg.confirm({
-            title: _('ditsnews.subscribers.remove')
-            ,text: _('ditsnews.subscribers.remove.confirm')
+            title: _('groupeletters.subscribers.remove')
+            ,text: _('groupeletters.subscribers.remove.confirm')
             ,url: this.config.url
             ,params: {
                 action: 'mgr/subscribers/remove'
@@ -123,19 +123,19 @@ Ext.extend(Ditsnews.grid.Subscribers,MODx.grid.Grid,{
     ,createSubscriber: function(btn,e) {
         if (!this.CreateSubscriberWindow) {
             this.CreateSubscriberWindow = MODx.load({
-                xtype: 'ditsnews-window-subscriber-create'
+                xtype: 'groupeletters-window-subscriber-create'
                 ,listeners: {
                     'success': {fn:this.refresh,scope:this}
                 }
             });
         }
-        this.getGroups(0, 'ditsnews-window-subscriber-create');
+        this.getGroups(0, 'groupeletters-window-subscriber-create');
         this.CreateSubscriberWindow.show(e.target);
     }
     ,updateSubscriber: function(btn,e) {
         if (!this.UpdateSubscriberWindow) {
             this.UpdateSubscriberWindow = MODx.load({
-                xtype: 'ditsnews-window-subscriber-update'
+                xtype: 'groupeletters-window-subscriber-update'
                 ,record: this.menu.record
                 ,listeners: {
                     'success': {fn:this.refresh,scope:this}
@@ -144,12 +144,12 @@ Ext.extend(Ditsnews.grid.Subscribers,MODx.grid.Grid,{
         } else {
             this.UpdateSubscriberWindow.setValues(this.menu.record);
         }
-        this.getGroups(this.menu.record.id, 'ditsnews-window-subscriber-update');
+        this.getGroups(this.menu.record.id, 'groupeletters-window-subscriber-update');
         this.UpdateSubscriberWindow.show(e.target);
     },
     getGroups: function(subscriberId, formId) {
         MODx.Ajax.request({
-            url: Ditsnews.config.connectorUrl,
+            url: GroupEletters.config.connectorUrl,
             scope: this,
             params: {
                 action: 'mgr/groups/getgrouplist',
@@ -179,67 +179,67 @@ Ext.extend(Ditsnews.grid.Subscribers,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('ditsnews-grid-subscribers',Ditsnews.grid.Subscribers);
+Ext.reg('groupeletters-grid-subscribers',GroupEletters.grid.Subscribers);
 
-Ditsnews.window.CreateSubscriber = function(config) {
+GroupEletters.window.CreateSubscriber = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'ditsnews-window-subscriber-create'
-        ,title: _('ditsnews.subscribers.new')
-        ,url: Ditsnews.config.connectorUrl
+        id: 'groupeletters-window-subscriber-create'
+        ,title: _('groupeletters.subscribers.new')
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: {
             action: 'mgr/subscribers/create'
         }
         ,fields: [
             {
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.email')
+                ,fieldLabel: _('groupeletters.subscribers.email')
                 ,name: 'email'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.firstname')
+                ,fieldLabel: _('groupeletters.subscribers.firstname')
                 ,name: 'firstname'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.lastname')
+                ,fieldLabel: _('groupeletters.subscribers.lastname')
                 ,name: 'lastname'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.company')
+                ,fieldLabel: _('groupeletters.subscribers.company')
                 ,name: 'company'
                 ,width: 300
                 ,allowBlank: true
             },{
                 xtype: 'checkbox'
-                ,fieldLabel: _('ditsnews.subscribers.active')
+                ,fieldLabel: _('groupeletters.subscribers.active')
                 ,name: 'active'
                 ,width: 300
                 ,inputValue: 1
             },{
                 xtype: 'fieldset',
                 id: 'subscribergroups',
-                fieldLabel: _('ditsnews.subscribers.groups'),
+                fieldLabel: _('groupeletters.subscribers.groups'),
                 items: []
             }
         ]
     });
-    Ditsnews.window.CreateSubscriber.superclass.constructor.call(this,config);
+    GroupEletters.window.CreateSubscriber.superclass.constructor.call(this,config);
 };
-Ext.extend(Ditsnews.window.CreateSubscriber,MODx.Window);
-Ext.reg('ditsnews-window-subscriber-create',Ditsnews.window.CreateSubscriber);
+Ext.extend(GroupEletters.window.CreateSubscriber,MODx.Window);
+Ext.reg('groupeletters-window-subscriber-create',GroupEletters.window.CreateSubscriber);
 
-Ditsnews.window.UpdateSubscriber = function(config) {
+GroupEletters.window.UpdateSubscriber = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'ditsnews-window-subscriber-update'
-        ,title: _('ditsnews.subscribers.update')
-        ,url: Ditsnews.config.connectorUrl
+        id: 'groupeletters-window-subscriber-update'
+        ,title: _('groupeletters.subscribers.update')
+        ,url: GroupEletters.config.connectorUrl
         ,baseParams: {
             action: 'mgr/subscribers/update'
         }
@@ -249,43 +249,43 @@ Ditsnews.window.UpdateSubscriber = function(config) {
                 ,name: 'id'
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.email')
+                ,fieldLabel: _('groupeletters.subscribers.email')
                 ,name: 'email'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.firstname')
+                ,fieldLabel: _('groupeletters.subscribers.firstname')
                 ,name: 'firstname'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.lastname')
+                ,fieldLabel: _('groupeletters.subscribers.lastname')
                 ,name: 'lastname'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('ditsnews.subscribers.company')
+                ,fieldLabel: _('groupeletters.subscribers.company')
                 ,name: 'company'
                 ,width: 300
                 ,allowBlank: true
             },{
                 xtype: 'checkbox'
-                ,fieldLabel: _('ditsnews.subscribers.active')
+                ,fieldLabel: _('groupeletters.subscribers.active')
                 ,name: 'active'
                 ,width: 300
                 ,inputValue: 1
             },{
                 xtype: 'fieldset',
                 id: 'subscribergroups',
-                fieldLabel: _('ditsnews.subscribers.groups'),
+                fieldLabel: _('groupeletters.subscribers.groups'),
                 items: []
             }
         ]
     });
-    Ditsnews.window.UpdateSubscriber.superclass.constructor.call(this,config);
+    GroupEletters.window.UpdateSubscriber.superclass.constructor.call(this,config);
 };
-Ext.extend(Ditsnews.window.UpdateSubscriber,MODx.Window);
-Ext.reg('ditsnews-window-subscriber-update',Ditsnews.window.UpdateSubscriber);
+Ext.extend(GroupEletters.window.UpdateSubscriber,MODx.Window);
+Ext.reg('groupeletters-window-subscriber-update',GroupEletters.window.UpdateSubscriber);

@@ -4,7 +4,7 @@ header("Content-Disposition: attachment; filename=subscribers.csv");
 
 echo 'email;firstname;lastname;company;active;groups'.PHP_EOL;
 
-$subscribers = $modx->getCollection('dnSubscriber');
+$subscribers = $modx->getCollection('EletterSubscribers');
 foreach($subscribers as $subscriber)
 {
     echo $subscriber->get('email').';';
