@@ -20,6 +20,7 @@ class GroupEletters {
             'corePath' => $basePath,
             'modelPath' => $basePath.'model/',
             'processorsPath' => $basePath.'processors/',
+            'templatesPath' => $basePath.'templates/',
             'chunksPath' => $basePath.'elements/chunks/',
             'jsUrl' => $assetsUrl.'js/',
             'cssUrl' => $assetsUrl.'css/',
@@ -41,10 +42,13 @@ class GroupEletters {
     public function initialize($ctx = 'web') {
         switch ($ctx) {
             case 'mgr':
+                //                           groupeletterscontrollerrequest.class.php
+                //require_once $this->config['modelPath'].'groupeletters/request/groupeletterscontrollerrequest.class.php';
                 if (!$this->modx->loadClass('GroupElettersControllerRequest',$this->config['modelPath'].'groupeletters/request/',true,true)) {
-                    return 'Could not load controller request handler.';
+                    return 'Could not load controller request handler: '.__FILE__;
+                    // GroupElettersControllerRequest
                 }
-                $this->request = new groupElettersControllerRequest($this);
+                $this->request = new GroupElettersControllerRequest($this);
                 return $this->request->handleRequest();
             break;
         }

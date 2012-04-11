@@ -10,7 +10,7 @@ require_once MODX_CONNECTORS_PATH.'index.php';
 
 $corePath = $modx->getOption('groupeletters.core_path',null,$modx->getOption('core_path').'components/groupeletters/');
 // require_once $corePath.'model/groupeletters/groupeletters.class.php';
-$modx->addPackage('groupeletters', $corePath.'components/groupeletters/model/');
+$modx->addPackage('groupeletters', $corePath.'model/');
 $modx->groupEletters = $modx->getService('groupeletters', 'GroupEletters', $modx->getOption('core_path').'components/groupeletters/model/groupeletters/');
 
 $modx->lexicon->load('groupeletters:default');

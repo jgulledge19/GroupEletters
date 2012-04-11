@@ -1,0 +1,14 @@
+Build DB tables
+
+Templates
+    - SampleELetter
+TVs
+    -
+Snippets
+    - Manage Subscription
+    - Subscribe
+    - Unsubscribe
+Plugins
+    - GroupELetterCreator
+Chunks
+    - ?

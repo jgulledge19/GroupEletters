@@ -34,7 +34,7 @@ foreach ($groups as $group) {
         $group['members'] = (int)$members;
         $list[] = $group;
 }
-if($_REQUEST['includeAll']) {
+if(isset($_REQUEST['includeAll']) && !empty($_REQUEST['includeAll']) ) {
     array_unshift($list, array('id' => 0, 'name' => '--- '.$modx->lexicon('groupeletters.groups').' ---'));
 }
 return $this->outputArray($list,$count);

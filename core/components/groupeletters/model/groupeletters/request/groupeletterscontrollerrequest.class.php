@@ -14,7 +14,7 @@ class GroupElettersControllerRequest extends modRequest {
 
     function __construct(GroupEletters &$groupEletters) {
         parent :: __construct($groupEletters->modx);
-        $this->groupEletters =& $groupEletters;
+        $this->groupEletters =& $groupEletters; 
     }
 
     /**
@@ -30,7 +30,7 @@ class GroupElettersControllerRequest extends modRequest {
         $this->action = isset($_REQUEST[$this->actionVar]) ? $_REQUEST[$this->actionVar] : $this->defaultAction;
 
         $modx =& $this->modx;
-        $groupEletter =& $this->groupEletters;
+        $groupEletters =& $this->groupEletters;
         $viewHeader = include $this->groupEletters->config['corePath'].'controllers/mgr/header.php';
 
         $f = $this->groupEletters->config['corePath'].'controllers/mgr/'.$this->action.'.php';
