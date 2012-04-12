@@ -48,7 +48,7 @@ $snippets[$x]->fromArray(array(
 ),'',true,true);
 //$properties = include $sources['data'].'/properties/properties.mysnippet1.php';
 //$snippets[$x]->setProperties($properties);
-//unset($propert
+//unset($properties);
 
 $snippets[++$x]= $modx->newObject('modSnippet');
 $snippets[$x]->fromArray(array(
@@ -59,7 +59,54 @@ $snippets[$x]->fromArray(array(
 ),'',true,true);
 //$properties = include $sources['data'].'/properties/properties.mysnippet1.php';
 //$snippets[$x]->setProperties($properties);
+//unset($properties);
+
+$snippets[++$x]= $modx->newObject('modSnippet');
+$snippets[$x]->fromArray(array(
+    'id' => $x, // set this in order not the ID for the snippet
+    'name' => 'GroupEletterFromListGroups',
+    'description' => 'List avaiable Groups for the signup form, preHook',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/groupeletterformlistgroups.snippet.php'),
+),'',true,true);
+//$properties = include $sources['data'].'/properties/properties.mysnippet1.php';
+//$snippets[$x]->setProperties($properties);
+//unset($properties);
+
+$snippets[++$x]= $modx->newObject('modSnippet');
+$snippets[$x]->fromArray(array(
+    'id' => $x, // set this in order not the ID for the snippet
+    'name' => 'GroupEletterSignup',
+    'description' => 'The signup form postHook to assign subscriber to group(s)',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/groupelettersignup.snippet.php'),
+),'',true,true);
+//$properties = include $sources['data'].'/properties/properties.mysnippet1.php';
+//$snippets[$x]->setProperties($properties);
+//unset($properties);
+
+$snippets[++$x]= $modx->newObject('modSnippet');
+$snippets[$x]->fromArray(array(
+    'id' => $x, // set this in order not the ID for the snippet
+    'name' => 'GroupEletterConfirm',
+    'description' => 'Confirm the subscription after completing the signup form',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/groupeletterconfirm.snippet.php'),
+),'',true,true);
+//$properties = include $sources['data'].'/properties/properties.mysnippet1.php';
+//$snippets[$x]->setProperties($properties);
+//unset($properties);
+
+$snippets[++$x]= $modx->newObject('modSnippet');
+$snippets[$x]->fromArray(array(
+    'id' => $x, // set this in order not the ID for the snippet
+    'name' => 'GroupEletterUnsubscribe',
+    'description' => 'Unsubscribe from eletter groups',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/groupeletterunsubscribe.snippet.php'),
+),'',true,true);
+//$properties = include $sources['data'].'/properties/properties.mysnippet1.php';
+//$snippets[$x]->setProperties($properties);
 //unset($properties);ies);
+
+
+
 
 
 

@@ -42,10 +42,18 @@ $chunks[++$x]= $modx->newObject('modChunk');
 $chunks[$x]->fromArray(array(
     'id' => $x,
     'name' => 'GroupEletterSignupMail',
-    'description' => '?',
+    'description' => 'Basic Signup form',
     'snippet' => file_get_contents($sources['source_core'].'/elements/chunks/groupelettersignupmail.chunk.tpl'),
     'properties' => '',
 ),'',true,true);
 
+$chunks[++$x]= $modx->newObject('modChunk');
+$chunks[$x]->fromArray(array(
+    'id' => $x,
+    'name' => 'GroupEletterGroupCheckbox',
+    'description' => 'The checkboxes that are created for groups on the signup form.',
+    'snippet' => file_get_contents($sources['source_core'].'/elements/chunks/groupelettergroupcheckbox.chunk.tpl'),
+    'properties' => '',
+),'',true,true);
 
 return $chunks;

@@ -112,6 +112,8 @@ class EletterNewsletters extends xPDOSimpleObject {
         $placeholders['fullname'] = $placeholders['first_name'].' '.$placeholders['last_name'];
         // the URLs: 
         // newsletterID]]&amp;s=[[+subscriberID]]&amp;c=[[+code
+        $placeholders['unsubscribeID'] = $modx->getOption('groupeletters.unsubscribePageID', '', 1);
+        // manager subscribes page?
         
         $modx->getService('mail', 'mail.modPHPMailer');
         
