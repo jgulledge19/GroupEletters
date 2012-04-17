@@ -30,7 +30,7 @@ if ($subscriber->save()) {
     if( is_array($groups) ) {
         foreach($groups as $group) {
             $id = $group->get('id');
-            if( $scriptProperties['groups_'.$id] ) {
+            if( isset($scriptProperties['groups_'.$id]) ) {
                 $newGroup = $modx->newObject('EletterGroupSubscribers', array('group' => $id, 'subscriber' => $subscriber->get('id'))  );
                 $newGroup->save();
             }

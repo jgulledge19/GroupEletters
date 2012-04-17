@@ -15,15 +15,6 @@ GroupEletters.panel.Home = function(config) {
                 ,border: true
                 ,items: [
                     {
-                        title: _('groupeletters.newsletters')
-                        ,defaults: { autoHeight: true }
-                        ,items: [
-                            {
-                                xtype: 'groupeletters-grid-newsletters'
-                                ,preventRender: true
-                            }
-                        ]
-                    },{
                         title: _('groupeletters.groups')
                         ,defaults: { autoHeight: true }
                         ,items: [{
@@ -37,7 +28,16 @@ GroupEletters.panel.Home = function(config) {
                             xtype: 'groupeletters-grid-subscribers'
                             ,preventRender: true
                         }]
-                    },
+                    },{
+                        title: _('groupeletters.newsletters')
+                        ,defaults: { autoHeight: true }
+                        ,items: [
+                            {
+                                xtype: 'groupeletters-grid-newsletters'
+                                ,preventRender: true
+                            }
+                        ]
+                    }/*,
                     {
                         title: _('groupeletters.settings')
                         ,defaults: { autoHeight: true }
@@ -65,7 +65,7 @@ GroupEletters.panel.Home = function(config) {
                                 }
                             }
                         }
-                    }
+                    }*/
                 ]
             }
         ]

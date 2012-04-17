@@ -12,7 +12,8 @@ GroupEletters.grid.Groups = function(config) {
         id: 'groupeletters-grid-groups'
         ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/groups/list' }
-        ,fields: ['id','name','public','members']
+        ,save_action: 'mgr/groups/updateFromGrid'
+        ,fields: ['id','name', 'parent','description','department','allow_signup','date_created','active','date_inactive','members_count']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -27,11 +28,27 @@ GroupEletters.grid.Groups = function(config) {
             header: _('groupeletters.groups.name')
             ,dataIndex: 'name'
             ,sortable: true
-        },publicCheckColumn,{
-            header: _('groupeletters.groups.members')
-            ,dataIndex: 'members'
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('groupeletters.groups.active')
+            ,dataIndex: 'active'
             ,sortable: true
-            ,width: 10
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('groupeletters.groups.description')
+            ,dataIndex: 'description'
+            ,sortable: true
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('groupeletters.groups.department')
+            ,dataIndex: 'department'
+            ,sortable: true
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('groupeletters.groups.allow_signup')
+            ,dataIndex: 'allow_signup'
+            ,sortable: true
+            ,editor: { xtype: 'textfield' }
         }]
         ,tbar: [{
             text: _('groupeletters.groups.new')
@@ -101,11 +118,29 @@ GroupEletters.window.CreateGroup = function(config) {
                 ,width: 300
                 ,allowBlank: false
             },{
-                xtype: 'checkbox'
-                ,fieldLabel: _('groupeletters.groups.public')
-                ,name: 'public'
+                xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.groups.active')
+                ,name: 'active'
                 ,width: 300
-                ,inputValue: 1
+                ,allowBlank: false
+            },{
+                xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.groups.description')
+                ,name: 'discription'
+                ,width: 300
+                ,allowBlank: false
+            },{
+                xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.groups.department')
+                ,name: 'department'
+                ,width: 300
+                ,allowBlank: false
+            },{
+                xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.groups.allow_signup')
+                ,name: 'allow_signup'
+                ,width: 300
+                ,allowBlank: false
             }
         ]
     });

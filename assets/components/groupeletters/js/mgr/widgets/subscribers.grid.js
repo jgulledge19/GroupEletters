@@ -12,7 +12,8 @@ GroupEletters.grid.Subscribers = function(config) {
         id: 'groupeletters-grid-subscribers'
         ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/subscribers/list' }
-        ,fields: ['id','active','email','firstname','lastname','company','signupdate']
+        ,save_action: 'mgr/subscribers/updateFromGrid'
+        ,fields: ['id','crm_id','active','email','first_name','m_name','last_name','company', 'address','state','zip','country','phone','cell','date_created']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -29,19 +30,22 @@ GroupEletters.grid.Subscribers = function(config) {
             ,sortable: true
         },{
             header: _('groupeletters.subscribers.firstname')
-            ,dataIndex: 'firstname'
+            ,dataIndex: 'first_name'
             ,sortable: true
+            ,editor: { xtype: 'textfield' }
         },{
             header: _('groupeletters.subscribers.lastname')
-            ,dataIndex: 'lastname'
+            ,dataIndex: 'last_name'
             ,sortable: true
+            ,editor: { xtype: 'textfield' }
         },{
             header: _('groupeletters.subscribers.company')
             ,dataIndex: 'company'
             ,sortable: true
+            ,editor: { xtype: 'textfield' }
         },{
             header: _('groupeletters.subscribers.signupdate')
-            ,dataIndex: 'signupdate'
+            ,dataIndex: 'date_created'
             ,sortable: true
         }]
         ,tbar: [{
@@ -193,19 +197,25 @@ GroupEletters.window.CreateSubscriber = function(config) {
         ,fields: [
             {
                 xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.subscribers.crm_id')
+                ,name: 'crm_id'
+                ,width: 300
+                ,allowBlank: true
+            },{
+                xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.email')
                 ,name: 'email'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.firstname')
+                ,fieldLabel: _('groupeletters.subscribers.first_name')
                 ,name: 'firstname'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.lastname')
+                ,fieldLabel: _('groupeletters.subscribers.last_name')
                 ,name: 'lastname'
                 ,width: 300
                 ,allowBlank: false
@@ -213,6 +223,12 @@ GroupEletters.window.CreateSubscriber = function(config) {
                 xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.company')
                 ,name: 'company'
+                ,width: 300
+                ,allowBlank: true
+            },{
+                xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.subscribers.phone')
+                ,name: 'phone'
                 ,width: 300
                 ,allowBlank: true
             },{
@@ -249,6 +265,12 @@ GroupEletters.window.UpdateSubscriber = function(config) {
                 ,name: 'id'
             },{
                 xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.subscribers.crm_id')
+                ,name: 'crm_id'
+                ,width: 300
+                ,allowBlank: true
+            },{
+                xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.email')
                 ,name: 'email'
                 ,width: 300
@@ -256,19 +278,25 @@ GroupEletters.window.UpdateSubscriber = function(config) {
             },{
                 xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.firstname')
-                ,name: 'firstname'
+                ,name: 'first_name'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.lastname')
-                ,name: 'lastname'
+                ,name: 'last_name'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.company')
                 ,name: 'company'
+                ,width: 300
+                ,allowBlank: true
+            },{
+                xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.subscribers.phone')
+                ,name: 'phone'
                 ,width: 300
                 ,allowBlank: true
             },{

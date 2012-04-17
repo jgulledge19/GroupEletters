@@ -12,10 +12,10 @@ if( $_REQUEST['subscriberId'] ) {
 unset($subscriberGroups);
 
 //get all groups including checked/unchecked for current subscriber
-$groups = $modx->getCollection('EletterGroup');
+$groups = $modx->getCollection('EletterGroups');
 foreach( $groups as $group ) {
 
-    if($_REQUEST['memberCount']) {
+    if(isset($_REQUEST['memberCount'])) {
         $c = $modx->newQuery('EletterGroupSubscribers');
         $c->where( array('group' => $group->get('id')) );
         $members = $modx->getCount('EletterGroupSubscribers', $c);
