@@ -10,14 +10,14 @@ if (!isset($modx->groupEletters)) {
 }
 $groupEletters =& $modx->groupEletters;
 
-$confimPageID = $modx->getOption('confirmPage', $scriptProperties, $modx->getOption('confirmPageID') );
+$confirmPageID = $modx->getOption('confirmPage', $scriptProperties, $modx->getOption('confirmPageID') );
 // FormIt options:
 $options = array(
         'emailTpl' => $modx->getOption('emailTpl', $scriptProperties, 'GroupElettersSignupMail' ),
         'emailSubject' => $modx->getOption('emailSubject', $scriptProperties, $modx->lexicon('groupeletters.subscribers.confirm.subject') ),
-        'emailFrom' => $modx->getOption('emailFrom', $scriptProperties, $modx->getOption('emailsender') ),
-        'emailFromName' => $modx->getOption('emailFromName', $scriptProperties, $modx->getOption('site_name') ),
-        'emailReplyTo' => $modx->getOption('emailReplyTo', $scriptProperties, $modx->getOption('emailsender') ),
+        'emailFrom' => $modx->getOption('emailFrom', $scriptProperties, $modx->getOption('groupeletters.fromEmail') ),
+        'emailFromName' => $modx->getOption('emailFromName', $scriptProperties, $modx->getOption('groupeletters.fromName') ),
+        'emailReplyTo' => $modx->getOption('emailReplyTo', $scriptProperties, $modx->getOption('groupeletters.replyEmail') ),
     ); 
 
 // $hook->setValue('datestamp_submitted', $datestamp);

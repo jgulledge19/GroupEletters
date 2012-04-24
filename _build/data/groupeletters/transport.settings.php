@@ -48,5 +48,32 @@ $settings['groupeletters.unsubscribePageID']->fromArray(array (
     'namespace' => 'groupeletters',
     'area' => 'Subscriber Settings',
 ), '', true, true);
+// Email
+$settings['groupeletters.replyEmail']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.replyEmail']->fromArray(array (
+    'key' => 'groupeletter.replyEmail',
+    'value' => '0',
+    'xtype' => 'textfield',
+    'namespace' => 'groupeletters',
+    'area' => 'Email',
+), '', true, true);
+$settings['groupeletters.fromEmail']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.fromEmail']->fromArray(array (
+    'key' => 'groupeletter.fromEmail',
+    'value' => '0',
+    'xtype' => 'textfield',
+    'namespace' => 'groupeletters',
+    'area' => 'Email',
+), '', true, true);
+
+$settings['groupeletters.fromName']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.fromName']->fromArray(array (
+    'key' => 'groupeletter.fromName',
+    'value' => '0',
+    'xtype' => 'textfield',
+    'namespace' => 'groupeletters',
+    'area' => 'Email',
+), '', true, true);
+
 
 return $settings;

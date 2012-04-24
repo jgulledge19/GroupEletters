@@ -151,7 +151,7 @@ $templateVariables[$x]->fromArray(array(
     'caption' => 'Groups',
     'description' => 'Choose the group(s) that this eletter will go to',
     'display' => 'delim',
-    'elements' => '@EVAL return $modx->runSnippet(\'listELetterGroups\', array());',  /* input option values */
+    'elements' => '@EVAL return $modx->runSnippet(\'GroupEletterListGroups\', array());',  /* input option values */
     'locked' => 0,
     'rank' => 0,
     'display_params' => '',

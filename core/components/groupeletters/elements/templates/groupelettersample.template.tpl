@@ -3,7 +3,7 @@
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />   
         <title>[[*longtitle]]</title>
-        <base href="[[+site_url]]" />
+        <base href="[[++site_url]]" />
         <!--general stylesheet-->
         <style type="text/css">
             h1, h2, h3, h4, h5, h6, p, li, address, q, blockquote { font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; }

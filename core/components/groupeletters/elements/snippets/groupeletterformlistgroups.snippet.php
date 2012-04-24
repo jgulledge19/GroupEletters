@@ -3,7 +3,7 @@
  * Create a list of Groups for the subscribe/manage
  */
 
-$checkBoxes = $modx->getOption('checkBoxes', $scriptProperties, 'groupElettersGroupCheckbox' );
+$checkBoxes = $modx->getOption('checkBoxes', $scriptProperties, 'GroupElettersGroupCheckbox' );
 
 if (!isset($modx->groupEletters)) {
     $modx->addPackage('groupeletters', $modx->getOption('core_path').'components/groupeletters/model/');
@@ -23,6 +23,4 @@ foreach($groups as $group) {
     // this make a check box for the group item
     $output .= $modx->getChunk($checkBoxes, $properties);
 }
-$hook->setValue('groups', $output);
-
-return true;
+return $output;

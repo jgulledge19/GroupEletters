@@ -100,3 +100,4 @@ $_lang['groupeletters.settings.bounceemail'] = 'Bounce email address';
 $_lang['groupeletters.settings.template'] = 'Template';
 $_lang['groupeletters.settings.saved'] = 'Settings saved';
 $_lang['groupeletters.settings.error'] = 'Error while saving settings';
+// replyEmail, 

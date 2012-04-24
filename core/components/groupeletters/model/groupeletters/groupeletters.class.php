@@ -84,25 +84,47 @@ class GroupEletters {
      * @return (Boolean)
      */
     public function signup($fields, $confirmPage, $options=array()) {
-        if( !$this->checkUniqueEmail($fields['email']) ) {
+        /*if( !$this->checkUniqueEmail($fields['email']) ) {
             $this->errormsg[] = $this->modx->lexicon('groupeletters.subscribers.signup.err.emailunique');
             return false;
+        }*/
+        $subscriber = $this->modx->getObject('EletterSubscribers', array('email' => $fields['email']) );
+        if ( !is_object($subscriber)) {
+            // create the new subscriber
+    		$subscriber = $this->modx->newObject('EletterSubscribers');
+    		$subscriber->fromArray($fields);
+    		$subscriber->set('code', md5( time().$fields['first_name'].$fields['last_name'] ));
+    		$subscriber->set('active', 0);
+            $subscriber->set('signupdate', time());
+            $subscriber->save();            
         }
-        // create the new subscriber
-		$subscriber = $this->modx->newObject('EletterSubscribers');
-		$subscriber->fromArray($fields);
-		$subscriber->set('code', md5( time().$fields['first_name'].$fields['last_name'] ));
-		$subscriber->set('active', 0);
-        $subscriber->set('signupdate', time());
-        $subscriber->save();
-
+            
         //now add subscriber to selected groups
-        if( is_array($fields['groups']) ) {
-            foreach($fields['groups'] as $groupID) {
+        if( is_array($fields['group']) ) {
+            foreach($fields['group'] as $groupID) {
+                // $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] GroupID: '.$groupID);
                 $group = $this->modx->getObject('EletterGroups', array('id'=>$groupID));
                 if ( $group ) {
-                    $group->addOne($subscriber);
-                    $group->save();
+                    $myGroup = $subscriber->getOne('Groups', array('group' => $groupID) );
+                    if ( is_object($myGroup) ) {
+                        // this already exists
+                        //$this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] Subscriber Exists for group ('.$subscriber->get('id') .') to GroupID: '.$groupID);
+                        $myGroup->set('recieve_email', 'Y');
+                        $myGroup->save();
+                    } else {
+                        // http://rtfm.modx.com/display/XPDO10/addOne
+                        //$group->addOne($subscriber, 'Subscribers');
+                        $GroupSubscribers = $this->modx->newObject('EletterGroupSubscribers');
+                        $GroupSubscribers->set('group', $group);
+                        $GroupSubscribers->set('subscriber', $subscriber->get('id'));
+                        $GroupSubscribers->set('date_created', date('Y-m-d h:i:s'));
+                        $GroupSubscribers->save();
+                        //$group->addOne($GroupSubscribers, 'Subscribers');
+                        //$group->save();
+                        // $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] Add subscriber ('.$subscriber->get('id') .') to GroupID: '.$groupID);
+                    }
+                    
+                    
                 }
                 /*
                 //only allow public groups
@@ -127,14 +149,16 @@ class GroupEletters {
         $this->modx->mail->set(modMail::MAIL_FROM_NAME, $options['emailFromName'] );
         $this->modx->mail->set(modMail::MAIL_SENDER, $options['emailFromName'] );
         $this->modx->mail->set(modMail::MAIL_SUBJECT, $options['emailSubject']);
-        $this->modx->mail->address('to', $subscriber->get('email') );
+        $this->modx->mail->address('to', 'gulledj@bethelcollege.edu' /*$subscriber->get('email')*/ );
         $this->modx->mail->address('reply-to', $options['emailReplyTo'] );
         $this->modx->mail->setHTML(true);
+        $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->Send Confirmation Error to '.$subscriber->get('email').' From: '.$options['emailFrom'] );
+        
         if (!$this->modx->mail->send()) {
              $this->modx->log(modX::LOG_LEVEL_ERROR,'An error occurred while trying to send the confirmation email to '.$subscriber->get('email'));
         }
         $this->modx->mail->reset();
-
+        
         return true;
 	}
 

@@ -176,6 +176,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         
         // fix links/srcs:
         $message = $this->makeUrls($message);
+        // sets floating properties to html attributes
         $message = $this->imgAttributes($message);
         // Apply CSS:
         
@@ -239,13 +240,17 @@ class EletterNewsletters extends xPDOSimpleObject {
         if ( is_object($dom) ) {
             //$site_url = $dom->getElementsByTagName('base')->item(0)->getAttribute('href');
             //get site_url from base tag or default MODX setting
-            $base = $dom->getElementsByTagName('base')->item(0);
+            $base = $dom->getElementsByTagName('base');
             if (is_object($base)){
-                $site_url = $base->getAttribute('href');
+                $baseItem = $base->item(0);
+            }
+            if (is_object($baseItem)){
+                $baseUrl = $baseItem->getAttribute('href');
             }
         }
-        if(empty($site_url) || $site_url == '[[++site_url]]') {
-            $site_url = $modx->getOption('site_url');
+        if( empty($baseUrl) || $baseUrl == '[[++site_url]]') {
+            $baseUrl = $modx->getOption('site_url');
+            $html = str_replace('[[++site_url]]', $baseUrl, $html);
         }
         
         //return $html;//
@@ -370,6 +375,7 @@ class EletterNewsletters extends xPDOSimpleObject {
      */
     public function fullUrls($baseUrl, $html) {
         // THIS method seems to act funny for https and any placeholders: [[+firstname]]
+        $baseUrl = str_replace('https://', 'http://', $baseUrl);// @TODO Revise this to make option
         /* extract domain name from $baseUrl (http://example.com/) */
         $splitBase = explode('//', $baseUrl);
         $domain = $splitBase[1];// example.com/
@@ -395,7 +401,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         /* handle root-relative URLs */
         $html = preg_replace('@\<([^>]*) (href|src)="/([^"]*)"@i', '<\1 \2="' . $server . '\3"', $html);
 
-        /* handle base-relative URLs */
+        /* handle base-relative URLs DOes not seem to catch the src? */
         $html = preg_replace('@\<([^>]*) (href|src)="(?!http|mailto|sip|tel|callto|sms|ftp|sftp|gtalk|skype|\[\[)(([^\:"])*|([^"]*:[^/"].*))"@i', '<\1 \2="' . $baseUrl . '\3"', $html);
 
         return $html;
