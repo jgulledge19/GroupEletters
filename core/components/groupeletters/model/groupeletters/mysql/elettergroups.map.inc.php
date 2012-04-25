@@ -3,25 +3,7 @@ $xpdo_meta_map['EletterGroups']= array (
   'package' => 'groupeletters',
   'version' => '1.1',
   'table' => 'eletter_groups',
-  'composites' => 
-  array (
-    'Subscribers' => 
-    array (
-      'class' => 'EletterGroupSubscribers',
-      'local' => 'id',
-      'foreign' => 'group',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-    'Newsletters' => 
-    array (
-      'class' => 'EletterNewsletterGroups',
-      'local' => 'id',
-      'foreign' => 'group',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-  ),
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'name' => NULL,
@@ -90,6 +72,25 @@ $xpdo_meta_map['EletterGroups']= array (
       'dbtype' => 'datetime',
       'phptype' => 'datetime',
       'null' => true,
+    ),
+  ),
+  'composites' => 
+  array (
+    'Subscribers' => 
+    array (
+      'class' => 'EletterGroupSubscribers',
+      'local' => 'id',
+      'foreign' => 'group',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Newsletters' => 
+    array (
+      'class' => 'EletterNewsletterGroups',
+      'local' => 'id',
+      'foreign' => 'group',
+      'cardinality' => 'many',
+      'owner' => 'local',
     ),
   ),
   'validation' => 

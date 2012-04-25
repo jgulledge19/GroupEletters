@@ -3,39 +3,15 @@ $xpdo_meta_map['EletterSubscribers']= array (
   'package' => 'groupeletters',
   'version' => '1.1',
   'table' => 'eletter_subscribers',
-  'composites' => 
-  array (
-    'Groups' => 
-    array (
-      'class' => 'EletterGroupSubscribers',
-      'local' => 'id',
-      'foreign' => 'subscriber',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-    'Queue' => 
-    array (
-      'class' => 'EletterQueue',
-      'local' => 'id',
-      'foreign' => 'subscriber',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-    'Hits' => 
-    array (
-      'class' => 'EletterSubscriberHits',
-      'local' => 'id',
-      'foreign' => 'subscriber',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-  ),
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'crm_id' => 0,
+    'code' => '',
     'first_name' => NULL,
     'm_name' => NULL,
     'last_name' => NULL,
+    'company' => '',
     'address' => NULL,
     'state' => NULL,
     'zip' => NULL,
@@ -55,6 +31,14 @@ $xpdo_meta_map['EletterSubscribers']= array (
       'phptype' => 'integer',
       'null' => true,
       'default' => 0,
+    ),
+    'code' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '32',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
     ),
     'first_name' => 
     array (
@@ -76,6 +60,14 @@ $xpdo_meta_map['EletterSubscribers']= array (
       'precision' => '32',
       'phptype' => 'string',
       'null' => true,
+    ),
+    'company' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
     ),
     'address' => 
     array (
@@ -139,6 +131,33 @@ $xpdo_meta_map['EletterSubscribers']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
+    ),
+  ),
+  'composites' => 
+  array (
+    'Groups' => 
+    array (
+      'class' => 'EletterGroupSubscribers',
+      'local' => 'id',
+      'foreign' => 'subscriber',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Queue' => 
+    array (
+      'class' => 'EletterQueue',
+      'local' => 'id',
+      'foreign' => 'subscriber',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Hits' => 
+    array (
+      'class' => 'EletterSubscriberHits',
+      'local' => 'id',
+      'foreign' => 'subscriber',
+      'cardinality' => 'many',
+      'owner' => 'local',
     ),
   ),
   'validation' => 

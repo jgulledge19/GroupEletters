@@ -72,7 +72,7 @@ class GroupEletters {
         foreach ($newsletters as $newsletter ) {
             $limit -= $newsletter->sendList($limit, $delay);
             if ( $limit <= 0 ) {
-                continue;
+                break;
             }
         }
     }
@@ -93,9 +93,9 @@ class GroupEletters {
             // create the new subscriber
     		$subscriber = $this->modx->newObject('EletterSubscribers');
     		$subscriber->fromArray($fields);
-    		$subscriber->set('code', md5( time().$fields['first_name'].$fields['last_name'] ));
+    		$subscriber->set('code', md5( time().$fields['email'] ));
     		$subscriber->set('active', 0);
-            $subscriber->set('signupdate', time());
+            $subscriber->set('date_created', date('Y-m-d H:i:s'));
             $subscriber->save();            
         }
             
@@ -152,10 +152,10 @@ class GroupEletters {
         $this->modx->mail->address('to', 'gulledj@bethelcollege.edu' /*$subscriber->get('email')*/ );
         $this->modx->mail->address('reply-to', $options['emailReplyTo'] );
         $this->modx->mail->setHTML(true);
-        $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->Send Confirmation Error to '.$subscriber->get('email').' From: '.$options['emailFrom'] );
+        //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->Send Confirmation Error to '.$subscriber->get('email').' From: '.$options['emailFrom'] );
         
         if (!$this->modx->mail->send()) {
-             $this->modx->log(modX::LOG_LEVEL_ERROR,'An error occurred while trying to send the confirmation email to '.$subscriber->get('email'));
+             $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->Signup() - An error occurred while trying to send the confirmation email to '.$subscriber->get('email'));
         }
         $this->modx->mail->reset();
         
@@ -175,9 +175,8 @@ class GroupEletters {
 
 		if( $this->modx->getCount('EletterSubscribers', $c ) > 0) {
 			return false;
-		} else{
-			return true;
-	   }
+		}
+		return true;
     }
 
     /**
@@ -186,32 +185,50 @@ class GroupEletters {
      * @return boolean true on activated, false on not found
      */
     public function confirmSignup() {
-		$subscriber = $this->modx->getObject('EletterSubscribers', (int)$_GET['s']);
-
-		if( $subscriber && $subscriber->get('code') == $_GET['c'] ) {
+		if ( !isset($_GET['s']) || !isset($_GET['c']) ) {
+            return false;
+        }
+        $subscriber = $this->modx->getObject('EletterSubscribers', array('id' => (int)$_GET['s'], 'code' => $_GET['c']) );
+        if( $subscriber ) {
 			$subscriber->set('active', 1);
 			$subscriber->save();
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
     /**
      * Checks code and removes subscriber
-     * @TODO rewrite this method to unsubscribe from one group or more groups not to remove(delete) a subscriber
+     * @TODO rewrite this method to unsubscribe from all or individual groups
      * @access public
      * @return boolean true on removed, false on not found
      */
     public function unsubscribe() {
 		$subscriber = $this->modx->getObject('EletterSubscribers', (int)$_GET['s']);
-
-		if( $subscriber && $subscriber->get('code') == $_GET['c'] ) {
-			$subscriber->remove();
-			return true;
-		} else {
-			return false;
-		}
+        /**
+         * Unsubscribe from all - remove or set as inactive?  
+         *    Set as inactive that way can do stats on how many unsubscribe
+         * Set each EletterGroupSubscriber receive_email column to N 
+         */
+        if ( !isset($_GET['s']) || !isset($_GET['c']) ) {
+            return false;
+        }
+        $subscriber = $this->modx->getObject('EletterSubscribers', array('id' => (int)$_GET['s'], 'code' => $_GET['c']) );
+        if ( $subscriber ) {
+            $myGroups = $subscriber->getMany('Groups');
+            //$this->modx->log(modX::LOG_LEVEL_ERROR,'[GroupELetters->unsubscribe()] Set to inactive: ('.$subscriber->get('id') .')' );
+            foreach ($myGroups as $myGroup) {
+                //$this->modx->log(modX::LOG_LEVEL_ERROR,'[GroupELetters->unsubscribe()] Removed Subscriber ('.$subscriber->get('id') .') from group: '.$myGroup->get('group'));
+                $myGroup->set('receive_email', 'N');
+                $myGroup->set('receive_sms', 'N');
+                $myGroup->set('date_updated', date('Y-m-d H:i:s'));
+                $myGroup->save();
+            }
+            $subscriber->set('active', 0);
+            $subscriber->save();
+            return true;
+        }
+        return false;
 	}
 
     /**

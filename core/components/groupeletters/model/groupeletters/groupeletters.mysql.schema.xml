@@ -122,9 +122,11 @@
         <composite alias="Queue" class="EletterQueue" local="id" foreign="subscriber" cardinality="many" owner="local" />
         <composite alias="Hits" class="EletterSubscriberHits" local="id" foreign="subscriber" cardinality="many" owner="local" />
 		<field key="crm_id" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
+		<field key="code" dbtype="varchar" precision="32" phptype="string" null="false" default="" />
 		<field key="first_name" dbtype="varchar" precision="32" phptype="string" null="true" />
 		<field key="m_name" dbtype="varchar" precision="32" phptype="string" null="true" />
 		<field key="last_name" dbtype="varchar" precision="32" phptype="string" null="true" />
+		<field key="company" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
 		<field key="address" dbtype="varchar" precision="128" phptype="string" null="true" />
 		<field key="state" dbtype="varchar" precision="64" phptype="string" null="true" />
 		<field key="zip" dbtype="varchar" precision="16" phptype="string" null="true" />

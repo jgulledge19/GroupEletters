@@ -1,6 +1,32 @@
 <?php
 class EletterNewsletters extends xPDOSimpleObject {
+    /**
+     * Assign Groups to Newsletter
+     * @param (Array) $groups - just the IDs of the groups
+     * 
+     */
+    public function assignGroups($groups) {
+        global $modx;
+        $currentGroups = $this->getMany('Groups');
+        foreach ( $currentGroups as $group ) {
+            if ( in_array($group->get('id'), $groups) ) {
+                // already exists now remove from list
+                unset($groups[$group->get('id')]);
+            } else {
+                // remove as it is no longer used:
+                $group->remove();
+            }
+        }
+        // now create new records
+        foreach( $groups as $gID) {
+            $group = $modx->newObject('EletterNewsletterGroups');
+            $group->set('group',$gID);
+            // http://rtfm.modx.com/display/XPDO10/addOne
+            $this->addOne($group, 'Groups');
+        }
         
+        $this->save();
+    }
     /**
      * send a test email
      * @param (String) $emails - comma separated list
@@ -55,17 +81,26 @@ class EletterNewsletters extends xPDOSimpleObject {
         }
         
         // get list to send to:
-        $groups = $this->get('groups');
-        if (!empty($groups) ) {
+        $groups = $this->getMany('Groups');// 1 to many
+        
+        //$groups = $this->get('groups');// 1 to 1 or comma separted list 1,2,3 - bad design
+        if ( $groups ) {
             $c = $modx->newQuery('EletterSubscribers');
             $c->leftJoin('EletterGroupSubscribers', 'Groups');
-            $c->where(array('Groups.group:IN' => explode(',',$groups)));
+            //$c->where(array('Groups.group:IN' => explode(',',$groups)));
+            $c->leftJoin('EletterNewsletterGroups', 'NewsGroups');
+            $c->where(array('NewsGroups.newsletter' => $this->get('id') ) );
+            
             $c->andCondition(array('EletterSubscribers.active' => 1));
             if ( count($sendList)) {
                 $c->andCondition(array('EletterSubscribers.id:NOT IN' => $sendList));
             }
             $subscribers = $modx->getCollection('EletterSubscribers' , $c);
             foreach($subscribers as $subscriber) {
+                if ( in_array($subscriber->get('id'), $sendList) ) {
+                    // a user may be in several different groups but only should get one email
+                    continue;
+                }
                 $this->sendOne($subscriber);
                 $numSent++;
                 $queueItem = $modx->newObject('EletterQueue');
@@ -77,6 +112,7 @@ class EletterNewsletters extends xPDOSimpleObject {
                     )
                 );
                 $queueItem->save();
+                $sendList[] = $subscriber->get('id');
                 sleep($delay);
             }
         }
@@ -111,9 +147,18 @@ class EletterNewsletters extends xPDOSimpleObject {
         unset($placeholders['id']);
         $placeholders['fullname'] = $placeholders['first_name'].' '.$placeholders['last_name'];
         // the URLs: 
+        $urlData = array(
+                's' => $subscriber->get('id'),
+                'c' => $subscriber->get('code'),
+                'nwl' => $this->get('id'), 
+            );
+        $placeholders['manageSubscriptionsID'] = $modx->getOption('groupeletters.manageSubscriptionsPageID', '', 1);
+        // http://rtfm.modx.com/display/revolution20/modX.makeUrl
+        $placeholders['manageSubscriptionsUrl'] = $modx->makeUrl($placeholders['manageSubscriptionsID'], '', $urlData, 'full');
+        
         // newsletterID]]&amp;s=[[+subscriberID]]&amp;c=[[+code
         $placeholders['unsubscribeID'] = $modx->getOption('groupeletters.unsubscribePageID', '', 1);
-        // manager subscribes page?
+        $placeholders['unsubscribeUrl'] = $modx->makeUrl($placeholders['unsubscribeID'], '', $urlData, 'full');
         
         $modx->getService('mail', 'mail.modPHPMailer');
         
@@ -166,7 +211,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         $contextUrl = $context->getOption('site_url', $modx->getOption('site_url'));
         unset($context);
          
-        $message = $doc->process();//  
+        $message = $doc->process();
         //$message = $doc->getContent();
         
         // _output;
@@ -209,6 +254,8 @@ class EletterNewsletters extends xPDOSimpleObject {
         $message = $this->applyCss($message, $cssStyles);
         //CSS inline
         
+        // Hack:  Parse and/or applyCSS seems to turn all empty [[+]] that are in href="[[+placeholder]]" into HTML safe symboles? 
+        $message = str_replace(array('%5B%5B%2B','%5B%5B&#43;', '%5B%5B', '%5D%5D'), array('[[+', '[[+', '[[', ']]'), $message); 
         
         $this->set('message', $message);
         $this->save();
@@ -383,7 +430,7 @@ class EletterNewsletters extends xPDOSimpleObject {
 
         /* remove space around = sign */
         //$html = preg_replace('@(href|src)\s*=\s*@', '\1=', $html);
-        $html =& preg_replace('@(?<=href|src)\s*=\s*@', '=', $html);
+        $html = preg_replace('@(?<=href|src)\s*=\s*@', '=', $html);
 
         /* fix google link weirdness - what is this for? */
         //$html = str_ireplace('google.com/undefined', 'google.com',$html);
@@ -401,7 +448,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         /* handle root-relative URLs */
         $html = preg_replace('@\<([^>]*) (href|src)="/([^"]*)"@i', '<\1 \2="' . $server . '\3"', $html);
 
-        /* handle base-relative URLs DOes not seem to catch the src? */
+        /* handle base-relative URLs */
         $html = preg_replace('@\<([^>]*) (href|src)="(?!http|mailto|sip|tel|callto|sms|ftp|sftp|gtalk|skype|\[\[)(([^\:"])*|([^"]*:[^/"].*))"@i', '<\1 \2="' . $baseUrl . '\3"', $html);
 
         return $html;

@@ -1,6 +1,7 @@
 <!--
 * FormIt is required!
 * Fields used: firstname, lastname, company, email
+* Optional: m_name, company, address, state, zip, country, phone, cell, crm_id
 * The 'GroupEletterSignup' hook (snippet) adds the subscriber or returns an error message.
 * Optionally redirect to a 'thankyou' page!
 * You can also use this in a "normal" contactform.
@@ -22,11 +23,11 @@
 <input name="company" type="text" value="[[+fi.company]]" /></p>
 -->
     <li>
-        <label for="txt_first_name">First name</label>
+        <label for="txt_first_name">First name</label> <span class="error">[[!+fi.error.first_name]]</span>
         <input name="first_name" type="text" value="[[+fi.first_name]]" id="txt_first_name" />
     </li>
     <li>
-        <label for="txt_last_name">Last name</label>
+        <label for="txt_last_name">Last name</label> <span class="error">[[!+fi.error.last_name]]</span>
         <input name="last_name" type="text" value="[[+fi.last_name]]" />
     </li>
     

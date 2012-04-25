@@ -79,7 +79,7 @@
                                                 <tr>
                                                     <td valign="middle" height="58" style="height: 58px; vertical-align: middle; border-top-color: #d6d6d6; border-top-width: 1px; border-top-style: solid;">
                                                         <p style="font-size: 11px; font-weight: bold; color: #8a8a8a; text-align: center;">
-                                                            Don&rsquo;t want to receive these newsletters anymore? Manage your <a href="[[~[[+unsubscribeID]]? &nwl=`[[+newsletterID]]` &s=`[[+subscriberID]]` &c=`[[+code]]` ]]" style="color: #fd2323; text-decoration: none;">email preferences here</a>, or <a href="[[~[[+unsubscribeID]]? &nwl=`[[+newsletterID]]` &s=`[[+subscriberID]]` &c=`[[+code]]` ]]" style="color: #fd2323; text-decoration: none;">unsubscribe</a>. 
+                                                            Don&rsquo;t want to receive these newsletters anymore? Manage your <a href="[[+manageSubscriptionsUrl]]" style="color: #fd2323; text-decoration: none;">email preferences here</a>, or <a href="[[+unsubscribeUrl]]" style="color: #fd2323; text-decoration: none;">unsubscribe</a>. 
                                                         </p>
                                                     </td>
                                                 </tr>

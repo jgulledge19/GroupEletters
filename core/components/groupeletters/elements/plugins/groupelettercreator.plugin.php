@@ -54,8 +54,10 @@ switch($eventName) {
             } else {
                 $data['status'] = 'draft';
             }
-                    
             $newsletter->fromArray($data);
+            $newsletter->save();
+            $newsletter->assignGroups(explode(',', $resource->getTVValue('eletterToGroups') ) );
+            
         } else {
             // $newsletter->remove();
         }

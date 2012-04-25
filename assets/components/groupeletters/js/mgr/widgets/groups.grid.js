@@ -13,7 +13,7 @@ GroupEletters.grid.Groups = function(config) {
         ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/groups/list' }
         ,save_action: 'mgr/groups/updateFromGrid'
-        ,fields: ['id','name', 'parent','description','department','allow_signup','date_created','active','date_inactive','members_count']
+        ,fields: ['id','name', 'parent','description','department','allow_signup','date_created','active','date_inactive','members']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -30,10 +30,18 @@ GroupEletters.grid.Groups = function(config) {
             ,sortable: true
             ,editor: { xtype: 'textfield' }
         },{
+            header: _('groupeletters.groups.members')
+            ,dataIndex: 'members'
+            ,sortable: false
+            ,width: 30
+        },{
             header: _('groupeletters.groups.active')
             ,dataIndex: 'active'
             ,sortable: true
-            ,editor: { xtype: 'textfield' }
+            //,editor: { xtype: 'textfield' }
+            //,width: 50
+            ,allowBlank : false
+            ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' /*'boolean'*/ }
         },{
             header: _('groupeletters.groups.description')
             ,dataIndex: 'description'
@@ -48,7 +56,10 @@ GroupEletters.grid.Groups = function(config) {
             header: _('groupeletters.groups.allow_signup')
             ,dataIndex: 'allow_signup'
             ,sortable: true
-            ,editor: { xtype: 'textfield' }
+            //,editor: { xtype: 'textfield' }
+            //,width: 50
+            ,allowBlank : false
+            ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' /*'boolean'*/ }
         }]
         ,tbar: [{
             text: _('groupeletters.groups.new')
@@ -118,15 +129,17 @@ GroupEletters.window.CreateGroup = function(config) {
                 ,width: 300
                 ,allowBlank: false
             },{
-                xtype: 'textfield'
+                xtype: 'combo-boolean'
+                ,renderer: 'boolean'
+                ,value: 1
                 ,fieldLabel: _('groupeletters.groups.active')
                 ,name: 'active'
                 ,width: 300
                 ,allowBlank: false
             },{
-                xtype: 'textfield'
+                xtype: 'textarea'
                 ,fieldLabel: _('groupeletters.groups.description')
-                ,name: 'discription'
+                ,name: 'description'
                 ,width: 300
                 ,allowBlank: false
             },{
@@ -136,7 +149,9 @@ GroupEletters.window.CreateGroup = function(config) {
                 ,width: 300
                 ,allowBlank: false
             },{
-                xtype: 'textfield'
+                xtype: 'combo-boolean'
+                ,renderer: 'boolean'
+                //,value: 1
                 ,fieldLabel: _('groupeletters.groups.allow_signup')
                 ,name: 'allow_signup'
                 ,width: 300
@@ -168,12 +183,38 @@ GroupEletters.window.UpdateGroup = function(config) {
                 ,width: 300
                 ,allowBlank: false
             },{
+                xtype: 'combo-boolean'
+                ,renderer: 'boolean'
+                ,fieldLabel: _('groupeletters.groups.active')
+                ,name: 'active'
+                ,width: 300
+                ,allowBlank: false
+            },{
+                xtype: 'textarea'
+                ,fieldLabel: _('groupeletters.groups.description')
+                ,name: 'description'
+                ,width: 300
+                ,allowBlank: false
+            },{
+                xtype: 'textfield'
+                ,fieldLabel: _('groupeletters.groups.department')
+                ,name: 'department'
+                ,width: 300
+                ,allowBlank: false
+            },{
+                xtype: 'combo-boolean'
+                ,renderer: 'boolean'
+                ,fieldLabel: _('groupeletters.groups.allow_signup')
+                ,name: 'allow_signup'
+                ,width: 300
+                ,allowBlank: false
+            }/*{
                 xtype: 'checkbox'
                 ,fieldLabel: _('groupeletters.groups.public')
                 ,name: 'public'
                 ,width: 300
                 ,inputValue: 1
-            }
+            }*/
         ]
     });
     GroupEletters.window.UpdateGroup.superclass.constructor.call(this,config);

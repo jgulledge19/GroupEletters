@@ -34,7 +34,11 @@ $_lang['groupeletters.groups'] = 'Groups';
 $_lang['groupeletters.groups.name'] = 'Name';
 $_lang['groupeletters.groups.public'] = 'Public';
 $_lang['groupeletters.groups.public.desc'] = 'Public (allow subscription through form)';
-$_lang['groupeletters.groups.members'] = 'Members';
+$_lang['groupeletters.groups.active'] = 'Active';
+$_lang['groupeletters.groups.description'] = 'Description';
+$_lang['groupeletters.groups.department'] = 'Department';
+$_lang['groupeletters.groups.allow_signup'] = 'Allow Signup';
+
 $_lang['groupeletters.groups.members'] = 'Members';
 $_lang['groupeletters.groups.new'] = 'New group';
 $_lang['groupeletters.groups.edit'] = 'Edit group';
@@ -48,10 +52,23 @@ $_lang['groupeletters.groups.err.save'] = 'Could not save group';
 
 //subscribers
 $_lang['groupeletters.subscribers'] = 'Subscribers';
-$_lang['groupeletters.subscribers.firstname'] = 'First name';
-$_lang['groupeletters.subscribers.lastname'] = 'Last name';
+$_lang['groupeletters.subscribers.first_name'] = 'First name';
+$_lang['groupeletters.subscribers.last_name'] = 'Last name';
 $_lang['groupeletters.subscribers.company'] = 'Company';
 $_lang['groupeletters.subscribers.email'] = 'Email';
+$_lang['groupeletters.subscribers.crm_id'] = 'CRM ID';
+$_lang['groupeletters.subscribers.m_name'] = 'Middle Name';
+$_lang['groupeletters.subscribers.address'] = 'Street Address';
+$_lang['groupeletters.subscribers.state'] = 'State';
+$_lang['groupeletters.subscribers.zip'] = 'Zip';
+$_lang['groupeletters.subscribers.country'] = 'Country';
+$_lang['groupeletters.subscribers.phone'] = 'Phone';
+$_lang['groupeletters.subscribers.cell'] = 'Cell Phone';
+$_lang['groupeletters.subscribers.active'] = 'Active';
+$_lang['groupeletters.subscribers.date_created'] = 'Date Created';
+$_lang['groupeletters.subscribers.code'] = 'Generated Code';
+
+
 $_lang['groupeletters.subscribers.signupdate'] = 'Signup date';
 $_lang['groupeletters.subscribers.new'] = 'New subscriber';
 $_lang['groupeletters.subscribers.exportcsv'] = 'Export CSV';
@@ -89,10 +106,21 @@ $_lang['setting_groupeletters.delay'] = 'Delay';
 $_lang['setting_groupeletters.delay_desc'] = 'The delay in seconds between emails sent out in a batch.  Default is 10.';
 $_lang['setting_groupeletters.confirmPageID'] = 'Confirmation page';
 $_lang['setting_groupeletters.confirmPageID_desc'] = 'The ID of the Resource that is the Confirmation page';
+$_lang['setting_groupeletters.manageSubscriptionsPageID'] = 'Manage Subscriptions page';
+$_lang['setting_groupeletters.manageSubscriptionsPageID_desc'] = 'The ID of the Resource that is the manage subscriptions page';
 $_lang['setting_groupeletters.unsubscribePageID'] = 'Unsubscribe page';
 $_lang['setting_groupeletters.unsubscribePageID_desc'] = 'The ID of the Resource that is the Unsubsribe page';
+// replyEmail, fromEmail, fromName
+$_lang['setting_groupeletters.replyEmail'] = 'Reply Email Address';
+$_lang['setting_groupeletters.replyEmail_desc'] = 'The default reply email address';
+$_lang['setting_groupeletters.fromEmail'] = 'From Email Address';
+$_lang['setting_groupeletters.fromEmail_desc'] = 'The default from email address';
+$_lang['setting_groupeletters.fromName'] = 'From Name';
+$_lang['setting_groupeletters.fromName_desc'] = 'The default from name';
 
-// Settings - remove these..?
+
+
+/** Settings - remove these..
 $_lang['groupeletters.settings'] = 'Settings';
 $_lang['groupeletters.settings.name'] = 'Name';
 $_lang['groupeletters.settings.email'] = 'Email';
@@ -100,4 +128,4 @@ $_lang['groupeletters.settings.bounceemail'] = 'Bounce email address';
 $_lang['groupeletters.settings.template'] = 'Template';
 $_lang['groupeletters.settings.saved'] = 'Settings saved';
 $_lang['groupeletters.settings.error'] = 'Error while saving settings';
-// replyEmail, 
+*/

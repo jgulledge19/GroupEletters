@@ -3,6 +3,7 @@ $xpdo_meta_map['EletterLinks']= array (
   'package' => 'groupeletters',
   'version' => '1.1',
   'table' => 'eletter_links',
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'newsletter' => NULL,

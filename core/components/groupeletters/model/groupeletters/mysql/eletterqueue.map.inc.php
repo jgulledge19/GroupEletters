@@ -3,25 +3,7 @@ $xpdo_meta_map['EletterQueue']= array (
   'package' => 'groupeletters',
   'version' => '1.1',
   'table' => 'eletter_queue',
-  'aggregates' => 
-  array (
-    'Newsletter' => 
-    array (
-      'class' => 'EletterNewsletters',
-      'local' => 'newsletter',
-      'foreign' => 'id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
-    ),
-    'Subscriber' => 
-    array (
-      'class' => 'EletterSubscribers',
-      'local' => 'subscriber',
-      'foreign' => 'id',
-      'cardinality' => 'one',
-      'owner' => 'foreign',
-    ),
-  ),
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'newsletter' => 0,
@@ -93,6 +75,25 @@ $xpdo_meta_map['EletterQueue']= array (
           'null' => false,
         ),
       ),
+    ),
+  ),
+  'aggregates' => 
+  array (
+    'Newsletter' => 
+    array (
+      'class' => 'EletterNewsletters',
+      'local' => 'newsletter',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+    'Subscriber' => 
+    array (
+      'class' => 'EletterSubscribers',
+      'local' => 'subscriber',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
     ),
   ),
 );

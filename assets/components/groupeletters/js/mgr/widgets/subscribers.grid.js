@@ -29,12 +29,12 @@ GroupEletters.grid.Subscribers = function(config) {
             ,dataIndex: 'email'
             ,sortable: true
         },{
-            header: _('groupeletters.subscribers.firstname')
+            header: _('groupeletters.subscribers.first_name')
             ,dataIndex: 'first_name'
             ,sortable: true
             ,editor: { xtype: 'textfield' }
         },{
-            header: _('groupeletters.subscribers.lastname')
+            header: _('groupeletters.subscribers.last_name')
             ,dataIndex: 'last_name'
             ,sortable: true
             ,editor: { xtype: 'textfield' }
@@ -210,13 +210,13 @@ GroupEletters.window.CreateSubscriber = function(config) {
             },{
                 xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.first_name')
-                ,name: 'firstname'
+                ,name: 'first_name'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
                 ,fieldLabel: _('groupeletters.subscribers.last_name')
-                ,name: 'lastname'
+                ,name: 'last_name'
                 ,width: 300
                 ,allowBlank: false
             },{
@@ -277,13 +277,13 @@ GroupEletters.window.UpdateSubscriber = function(config) {
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.firstname')
+                ,fieldLabel: _('groupeletters.subscribers.first_name')
                 ,name: 'first_name'
                 ,width: 300
                 ,allowBlank: false
             },{
                 xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.lastname')
+                ,fieldLabel: _('groupeletters.subscribers.last_name')
                 ,name: 'last_name'
                 ,width: 300
                 ,allowBlank: false

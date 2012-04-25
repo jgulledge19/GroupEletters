@@ -3,33 +3,7 @@ $xpdo_meta_map['EletterNewsletters']= array (
   'package' => 'groupeletters',
   'version' => '1.1',
   'table' => 'eletter_newsletters',
-  'composites' => 
-  array (
-    'Groups' => 
-    array (
-      'class' => 'EletterNewsletterGroups',
-      'local' => 'id',
-      'foreign' => 'newsletter',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-    'Queue' => 
-    array (
-      'class' => 'EletterQueue',
-      'local' => 'id',
-      'foreign' => 'newsletter',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-    'Hits' => 
-    array (
-      'class' => 'EletterSubscriberHits',
-      'local' => 'id',
-      'foreign' => 'newsletter',
-      'cardinality' => 'many',
-      'owner' => 'local',
-    ),
-  ),
+  'extends' => 'xPDOSimpleObject',
   'fields' => 
   array (
     'resource' => 0,
@@ -200,6 +174,33 @@ $xpdo_meta_map['EletterNewsletters']= array (
           'null' => true,
         ),
       ),
+    ),
+  ),
+  'composites' => 
+  array (
+    'Groups' => 
+    array (
+      'class' => 'EletterNewsletterGroups',
+      'local' => 'id',
+      'foreign' => 'newsletter',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Queue' => 
+    array (
+      'class' => 'EletterQueue',
+      'local' => 'id',
+      'foreign' => 'newsletter',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'Hits' => 
+    array (
+      'class' => 'EletterSubscriberHits',
+      'local' => 'id',
+      'foreign' => 'newsletter',
+      'cardinality' => 'many',
+      'owner' => 'local',
     ),
   ),
 );

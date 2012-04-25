@@ -27,12 +27,16 @@ $groups = $modx->getCollection('EletterGroups',$c);
 $list = array();
 foreach ($groups as $group) {
 
-        $c = $modx->newQuery('EletterGroupSubscribers');
-        $c->where( array('group' => $group->get('id')) );
-        $members = $modx->getCount('EletterGroupSubscribers', $c);
-        $group = $group->toArray();
-        $group['members'] = (int)$members;
-        $list[] = $group;
+    $c = $modx->newQuery('EletterGroupSubscribers');
+    $c->where( array('group' => $group->get('id')) );
+    $members = $modx->getCount('EletterGroupSubscribers', $c);
+    $group = $group->toArray();
+    $group['members'] = (int)$members;
+    
+    $group['active'] = ($group['active'] == 'Y' ? 1 : 0 );
+    $group['allow_signup'] = ($group['allow_signup'] == 'Y' ? 1 : 0 );
+    
+    $list[] = $group;
 }
 if(isset($_REQUEST['includeAll']) && !empty($_REQUEST['includeAll']) ) {
     array_unshift($list, array('id' => 0, 'name' => '--- '.$modx->lexicon('groupeletters.groups').' ---'));
