@@ -34,7 +34,7 @@ $chunks[$x]->fromArray(array(
     'id' => $x,
     'name' => 'GroupELetterSignup',
     'description' => 'Newsletter signup chunk',
-    'snippet' => file_get_contents($sources['source_core'].'/elements/chunks/groupelettersignup.chunk.tpl'),
+    'snippet' => file_get_contents($sources['source_core'].'elements/chunks/groupelettersignup.chunk.tpl'),
     'properties' => '',
 ),'',true,true);
 
@@ -43,7 +43,7 @@ $chunks[$x]->fromArray(array(
     'id' => $x,
     'name' => 'GroupEletterSignupMail',
     'description' => 'Basic Signup form',
-    'snippet' => file_get_contents($sources['source_core'].'/elements/chunks/groupelettersignupmail.chunk.tpl'),
+    'snippet' => file_get_contents($sources['source_core'].'elements/chunks/groupelettersignupmail.chunk.tpl'),
     'properties' => '',
 ),'',true,true);
 
@@ -52,7 +52,7 @@ $chunks[$x]->fromArray(array(
     'id' => $x,
     'name' => 'GroupEletterGroupCheckbox',
     'description' => 'The checkboxes that are created for groups on the signup form.',
-    'snippet' => file_get_contents($sources['source_core'].'/elements/chunks/groupelettergroupcheckbox.chunk.tpl'),
+    'snippet' => file_get_contents($sources['source_core'].'elements/chunks/groupelettersgroupcheckbox.chunk.tpl'),
     'properties' => '',
 ),'',true,true);
 

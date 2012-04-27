@@ -92,7 +92,7 @@ class EletterNewsletters extends xPDOSimpleObject {
             $myGroups[] = $g->get('group');
         }
         
-        $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For newsletter: '.$this->get('id') );
+        //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For newsletter: '.$this->get('id') );
         //$groups = $this->get('groups');// 1 to 1 or comma separted list 1,2,3 - bad design
         if ( count($myGroups) > 0 ) {
             $startDate = date('Y-m-d H:i:s');
@@ -110,14 +110,14 @@ class EletterNewsletters extends xPDOSimpleObject {
             }
             $subscribers = $modx->getCollection('EletterSubscribers' , $c);
             
-            $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For subscribers: '.$modx->getCount('EletterSubscribers' , $c) );
+            //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For subscribers: '.$modx->getCount('EletterSubscribers' , $c) );
             
             foreach($subscribers as $subscriber) {
                 if ( in_array($subscriber->get('id'), $sendList) ) {
                     // a user may be in several different groups but only should get one email
                     continue;
                 }
-                $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Sendone subscribers: '.$subscriber->get('id') );
+                //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Sendone subscribers: '.$subscriber->get('id') );
                 
                 $this->sendOne($subscriber);
                 $numSent++;
@@ -144,8 +144,8 @@ class EletterNewsletters extends xPDOSimpleObject {
         }
         
         if ( $limit > $numSent && $current_status == 'approved' ) {
-            //$this->set('finish_date', date('Y-m-d H:i:s'));
-            //$this->set('status', 'complete');
+            $this->set('finish_date', date('Y-m-d H:i:s'));
+            $this->set('status', 'complete');
         }
         $sent_cnt += $numSent;
         $this->set('sent_cnt', $sent_cnt);
@@ -237,12 +237,11 @@ class EletterNewsletters extends xPDOSimpleObject {
         // process the eletter but leave the placeholders as
         $doc = $modx->getObject('modResource', array('id'=>$this->get('resource')));
         
-        $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource: '.$this->get('resource') );
+        //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource: '.$this->get('resource') );
         
         $docUrl = preg_replace('/&amp;/', '&', $modx->makeUrl($this->get('resource'), '', '&sending=1', 'full') );
         
-        
-        $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource URL: '.$docUrl );
+        //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource URL: '.$docUrl );
         
         $context = $modx->getObject('modContext', array('key' => $doc->get('context_key')));
         $contextUrl = $context->getOption('site_url', $modx->getOption('site_url'));
@@ -295,9 +294,9 @@ class EletterNewsletters extends xPDOSimpleObject {
         $message = str_replace(array('%5B%5B%2B','%5B%5B&#43;', '%5B%5B', '%5D%5D'), array('[[+', '[[+', '[[', ']]'), $message); 
         
         $this->set('message', $message);
-        if ( $save ) {
+        // if ( $save ) { // always save until I get the process() figured out!
             $this->save();
-        }
+        //}
         return true;
         
     }
@@ -430,7 +429,7 @@ class EletterNewsletters extends xPDOSimpleObject {
      * @return (String) $html
      */
     public function applyCss($html, $css_rules){
-        require_once MODX_CORE_PATH.'components/ditsnews/model/csstoinline/css_to_inline_styles.php';
+        require_once MODX_CORE_PATH.'components/groupeletters/model/csstoinline/css_to_inline_styles.php';
         // embedded CSS:
         preg_match_all('|<style(.*)>(.*)</style>|isU', $html, $css);
         if( !empty($css[2]) ) {

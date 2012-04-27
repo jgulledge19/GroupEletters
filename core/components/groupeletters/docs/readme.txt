@@ -2,10 +2,9 @@
 Component: GroupEletters
 -------------------
 Version: 1.0 alpha
-Date: March, 27rd, 2012
-Author: Joshua Gulledge (jgulledge19@hotmail.com) some code is from Ditsnews -> Dit's Media (info@ditsmedia.nl)
+Date: April, 27th, 2012
+Author: Joshua Gulledge (jgulledge19@hotmail.com) some code is basied on the Ditsnews Extra
 License: GNU GPLv2 (or later at your option)
-
 
 create TVs - 
     eletterFromEmail
@@ -18,58 +17,39 @@ create TVs -
     eletterToGroups
     eletterAllowComments
     
-
-
 ==========================================
  Installation
 ==========================================
 * Install through Package Management
-* Add a cronjob (change paths): */5 * * * * /path/to/php /path/to/core/components/ditsnews/cron/cron.php
+* Add the  CronManager 
 * Create the newsletter template (just a normal template; CSS must be in the template itself with full URL paths to images. No external CSS!)
-* Create a signup page (ditsnewssignup chunk; change as required)
-* Create a "Thank you" page (and set it as 'redirectTo' in the ditsnewssignup chunk)
-* Create a confirm / opt-in page (add ditsnewsconfirm snippet) and set it's id in ditsnewssignup chunk
-* Create a unsubscribe page (add ditsnewsunsubscribe snippet) and add a link to this page in your newsletter template
-* Go to Components -> DitsNews and change the settings (Menu -> Settings)
+* Create a signup page example: GroupEletterSignup chunk
+* Create a "Thank you" page (and set it as 'redirectTo' in your signup page FormIt snippet call)
+* Create a confirm / opt-in page (add GroupEletterConfirm snippet) and set it's id in the signup page FormIt snippet call
+* Create a unsubscribe page (add GroupEletterUnsubscribe snippet) and add a link to this page in your newsletter template [[+unsubscribeUrl]]
+* Go to Components -> GroupEletters and add some groups and if you want some subscribers
+* Go to System->System Setting and select GroupEletters and change the settings to match what you want.
 
 ==========================================
- How to send your first newsletter
+ How to send your first newsletter 
 ==========================================
-* Add a testing Group
-* Add yourself as a subscriber (and add yourself to the testing group)
-* Create a new newsletter and select the document you just created. Send it to the testing group only!
-* After the cronjob runs you will receive your newsletter
+* Create a Resource/Document and select the GroupEletterSample template.  Click on the Template Variables tab and fill out the information
+* Send a Test - this is a requried step and if you make a change in the content area you will need to send another test.
+* If you have CronManager set up then it will send out on the Publish Date or if it is published the next time it runs.
+    If you don't have CronManager Set up put  [[!GroupEletterQueue?]] in a page and load the page.  
+    Note you will make the page load might take several minutes this way! 
+    
 * Test the newsletter in many differtent email clients (Apple Mail, Outlook, Gmail, etc.)
 * For every webmail client: check the newsletter in different browsers!
 
 ==========================================
- Example newsletter template
-==========================================
-[[!ditsnewsPlaceholders? &firstnameDefault=`Subscriber`]] <!-- Sets firstname field of email newsletter to "Subscriber" when empty -->
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>My newsletter</title>
-<base href="[[++site_url]]" /><!-- Important! DitsNews needs this to create correct URLs! -->
-<style type="text/css">
-a {
- font-weight: bold;
- color: #ff0000
-}
-</style>
-</head>
-<body>
-<p>Hello [[!+firstname:default=`Subscriber`]],</p>
-[[*content]]
-<p><a href="[[~10]]">Unsubscribe</a></p><!-- Link to unsubscribe page: user data will be added while sending -->
-</body>
-</html>
-
-==========================================
  Available placeholders
 ==========================================
-[[+firstname]]
-[[+lastname]]
+[[+first_name]]
+[[+last_name]]
 [[+fullname]]
 [[+company]]
 [[+email]]
+[[+phone]]
+[[+cell]]
+

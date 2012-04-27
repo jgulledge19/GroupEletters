@@ -76,7 +76,7 @@ class GroupEletters {
         ));
         // 
         foreach ($newsletters as $newsletter ) {
-            $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
+            // $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
             $sendLimit -= $newsletter->sendList($sendLimit, $delay);
             if ( $sendLimit <= 0 ) {
                 break;
