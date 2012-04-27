@@ -21,8 +21,10 @@ class EletterNewsletters extends xPDOSimpleObject {
         foreach( $groups as $gID) {
             $group = $modx->newObject('EletterNewsletterGroups');
             $group->set('group',$gID);
+            $group->set('newsletter', $this->get('id'));
             // http://rtfm.modx.com/display/XPDO10/addOne
-            $this->addOne($group, 'Groups');
+            // $this->addOne($group, 'Groups'); -- why does this not work???
+            $group->save();
         }
         
         $this->save();
@@ -37,8 +39,8 @@ class EletterNewsletters extends xPDOSimpleObject {
         $testers = explode(',', $emails);
         $testerData = array();
         
-        // create the email for testing:
-        $this->_createELetter();
+        // create the email for testing but don't save it
+        $this->_createELetter(false);
         
         $defaultData = array(
             'first_name' => 'Firstname',
@@ -57,7 +59,7 @@ class EletterNewsletters extends xPDOSimpleObject {
                 $subscriber->fromArray($defaultData);
             }
             // send test
-            $this->sendOne($subscriber);
+            $this->sendOne($subscriber, false);
         }
         return true;
     }
@@ -73,7 +75,10 @@ class EletterNewsletters extends xPDOSimpleObject {
         $numSent = 0;
         // get the list that has already received their eletter 
         $c = $modx->newQuery('EletterQueue');
-        $c->where( array('sent' => 1) );
+        $c->where( array(
+            'sent' => 1,
+            'newsletter' => $this->get('id'),
+            ));
         $queue = $modx->getCollection('EletterQueue', $c);
         $sendList = array();
         foreach($queue as $qitem) {
@@ -81,26 +86,39 @@ class EletterNewsletters extends xPDOSimpleObject {
         }
         
         // get list to send to:
-        $groups = $this->getMany('Groups');// 1 to many
+        $groups = $this->getMany('Groups');// (EletterNewsletterGroups) 1 to many
+        $myGroups = array();
+        foreach ( $groups as $g ) {
+            $myGroups[] = $g->get('group');
+        }
         
+        $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For newsletter: '.$this->get('id') );
         //$groups = $this->get('groups');// 1 to 1 or comma separted list 1,2,3 - bad design
-        if ( $groups ) {
+        if ( count($myGroups) > 0 ) {
+            $startDate = date('Y-m-d H:i:s');
+            
             $c = $modx->newQuery('EletterSubscribers');
             $c->leftJoin('EletterGroupSubscribers', 'Groups');
-            //$c->where(array('Groups.group:IN' => explode(',',$groups)));
-            $c->leftJoin('EletterNewsletterGroups', 'NewsGroups');
-            $c->where(array('NewsGroups.newsletter' => $this->get('id') ) );
+            $c->where(array('Groups.group:IN' => $myGroups ));// OLD: explode(',',$groups)));
+            // 
+            //$c->leftJoin('EletterNewsletterGroups', 'NewsGroups');
+            //$c->where(array('NewsGroups.newsletter' => $this->get('id') ) );
             
             $c->andCondition(array('EletterSubscribers.active' => 1));
             if ( count($sendList)) {
                 $c->andCondition(array('EletterSubscribers.id:NOT IN' => $sendList));
             }
             $subscribers = $modx->getCollection('EletterSubscribers' , $c);
+            
+            $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For subscribers: '.$modx->getCount('EletterSubscribers' , $c) );
+            
             foreach($subscribers as $subscriber) {
                 if ( in_array($subscriber->get('id'), $sendList) ) {
                     // a user may be in several different groups but only should get one email
                     continue;
                 }
+                $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Sendone subscribers: '.$subscriber->get('id') );
+                
                 $this->sendOne($subscriber);
                 $numSent++;
                 $queueItem = $modx->newObject('EletterQueue');
@@ -117,27 +135,39 @@ class EletterNewsletters extends xPDOSimpleObject {
             }
         }
         $current_status = $this->get('status');
-        if ( $limit > $numSent && $current_status == 'approved' ) {
-            $this->set('end_date', date('Y-m-d H:i:s'));
-            $this->set('status', 'sent');
-            $this->save();
+        // add in the number sent for this round:
+        $sent_cnt = $this->get('sent_cnt');
+        if ( $numSent > 0 && $sent_cnt == 0 ) {
+            $this->set('start_date', $startDate );
+            // $this->set('status', 'sent');
+            //$this->save();
         }
         
+        if ( $limit > $numSent && $current_status == 'approved' ) {
+            //$this->set('finish_date', date('Y-m-d H:i:s'));
+            //$this->set('status', 'complete');
+        }
+        $sent_cnt += $numSent;
+        $this->set('sent_cnt', $sent_cnt);
+        $this->set('tot_cnt', $sent_cnt);
+        
+        $this->save();
        return $numSent;
     }
     /**
      * Send an eletter to a subscriber
      * @param (Array) $subscriber
+     * @param (Boolean) $save
      * @return (Boolean)
      */
-    public function sendOne($subscriber) {
+    public function sendOne($subscriber, $save=true) {
         global $modx;
         $success = true;
         
         // has the newsletter been created?  if not create it
         $body = $this->get('message');
         if (empty($body)) {
-            $this->_createELetter();
+            $this->_createELetter($save);
         }
         
         // set place 
@@ -199,19 +229,26 @@ class EletterNewsletters extends xPDOSimpleObject {
     /**
      * create and parse the eletter
      * @return (Boolean)
-     * @TODO rewrite this method
+     * @param (Boolean) $save
+     * @TODO review this method
      */
-    private function _createELetter() { 
+    private function _createELetter($save=true) { 
         global $modx;
         // process the eletter but leave the placeholders as
-        $doc = $modx->getObject('modResource', $this->get('resource'));
+        $doc = $modx->getObject('modResource', array('id'=>$this->get('resource')));
+        
+        $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource: '.$this->get('resource') );
+        
         $docUrl = preg_replace('/&amp;/', '&', $modx->makeUrl($this->get('resource'), '', '&sending=1', 'full') );
-
+        
+        
+        $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource URL: '.$docUrl );
+        
         $context = $modx->getObject('modContext', array('key' => $doc->get('context_key')));
         $contextUrl = $context->getOption('site_url', $modx->getOption('site_url'));
         unset($context);
-         
-        $message = $doc->process();
+        
+        $message = $doc->process();//NULL,$doc->getContent());
         //$message = $doc->getContent();
         
         // _output;
@@ -258,8 +295,9 @@ class EletterNewsletters extends xPDOSimpleObject {
         $message = str_replace(array('%5B%5B%2B','%5B%5B&#43;', '%5B%5B', '%5D%5D'), array('[[+', '[[+', '[[', ']]'), $message); 
         
         $this->set('message', $message);
-        $this->save();
-        
+        if ( $save ) {
+            $this->save();
+        }
         return true;
         
     }

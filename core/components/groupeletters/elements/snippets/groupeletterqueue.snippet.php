@@ -9,3 +9,9 @@ if (!isset($modx->groupEletters)) {
 $groupEletters =& $modx->groupEletters;
 
 $groupEletters->processQueue();
+
+if( $groupEletters->confirmSignup() ) {
+    return $modx->lexicon('groupeletters.subscribers.confirm.success');
+} else {
+    return $modx->lexicon('groupeletters.subscribers.confirm.err');
+}

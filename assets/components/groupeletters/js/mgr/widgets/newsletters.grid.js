@@ -31,11 +31,11 @@ GroupEletters.grid.Newsletters = function(config) {
             header: _('groupeletters.newsletters.sent')
             ,dataIndex: 'sent'
             ,sortable: false
-        }]
+        }]/*
         ,tbar: [{
             text: _('groupeletters.newsletters.new')
             ,handler: this.createNewsletter
-        }]
+        }]*/
     });
     GroupEletters.grid.Newsletters.superclass.constructor.call(this,config)
 };

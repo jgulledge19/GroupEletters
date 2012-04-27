@@ -16,7 +16,9 @@ if ($subscriber->save()) {
     $groups = $modx->getCollection('EletterGroups');
     foreach($groups as $group) {
         $id = $group->get('id');
-        $myGroup = $subscriber->getOne('Groups', array('group' => $id) );
+        // $myGroup = $subscriber->getOne('Groups', array('group' => $id) );
+        $myGroup = $modx->getObject('EletterGroupSubscribers', array('group'=>$id,'subscriber'=>$subscriber->get('id')));
+        
         if( isset($scriptProperties['groups_'.$id]) ) {
             // add or keep
             if ( is_object($myGroup) ) {
@@ -31,7 +33,7 @@ if ($subscriber->save()) {
                 // add subsciber to group
                 $modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters/Process/create()] add Subscriber for group ('.$subscriber->get('id') .') to GroupID: '.$id);
                 $GroupSubscribers = $modx->newObject('EletterGroupSubscribers');
-                $GroupSubscribers->set('group', $group);
+                $GroupSubscribers->set('group', $id);
                 $GroupSubscribers->set('subscriber', $subscriber->get('id'));
                 $GroupSubscribers->set('date_created', date('Y-m-d h:i:s'));
                 $GroupSubscribers->save();

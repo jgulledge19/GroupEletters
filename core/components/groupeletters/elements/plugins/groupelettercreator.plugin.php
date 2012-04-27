@@ -1,10 +1,10 @@
 <?php
-/*
+/**
  *
  * Written by: Joshua Gulledge
  * License: GNU GENERAL PUBLIC LICENSE Version 2, June 1991
  *
- * */
+ */
 
  
 // set OnHandleRequest 
@@ -29,7 +29,7 @@ switch($eventName) {
         } 
         
         $makeELetter = $resource->getTVValue('eletterMakeELetter');
-        if ( !empty($makeELetter) ) {
+        if ( !empty($makeELetter) && $makeELetter == 'Yes' ) {
             $data = array(
                     'title' => $resource->getTVValue('eletterSubject'),
                     'subject' => $resource->getTVValue('eletterSubject'),
@@ -44,22 +44,30 @@ switch($eventName) {
             // published
             if ( $resource->get('published') ) {
                 $pubOnDate = $resource->get('publishedon');
-                $pubDateFuture = $resource->get('pub_date'); // the pub date in the future
                 if ( !empty($pubOnDate) ) {
-                    $data['start_date'] = $pubOnDate;//date('Y-m-d H:i:s', $pubOnDate);
-                } else if ( !empty($pubDateFuture) ) {// 
-                    $data['start_date'] = $pubDateFuture;//date('Y-m-d H:i:s', $pubDateFuture);
-                } 
+                    $data['add_date'] = $pubOnDate;//date('Y-m-d H:i:s', $pubOnDate);
+                }  
                 //$modx->log(modX::LOG_LEVEL_ERROR,'Pub Date: '.$pubOnDate.' - Future: '.$pubDateFuture);
             } else {
-                $data['status'] = 'draft';
+                $pubDateFuture = $resource->get('pub_date'); // the pub date in the future
+                if ( !empty($pubDateFuture) ) {// 
+                    $data['add_date'] = $pubDateFuture;//date('Y-m-d H:i:s', $pubDateFuture);
+                    //$data['status'] = 'draft';
+                } else {
+                    $data['status'] = 'draft';
+                }
+                
+                
             }
             $newsletter->fromArray($data);
             $newsletter->save();
             $newsletter->assignGroups(explode(',', $resource->getTVValue('eletterToGroups') ) );
             
         } else {
-            // $newsletter->remove();
+            if ( !$new ){
+                $newsletter->remove();
+                // set to void?
+            }
         }
         
         if ( $makeELetter == 'Yes' ) {
@@ -68,6 +76,10 @@ switch($eventName) {
             // $resource->get('template');
             $sendTest = $resource->getTVValue('eletterSendTest');
             if ( $sendTest == 'Yes' ) {
+                // set test back to No - this way quick updates don't send tests or every save does not send tests
+                $resource->setTVValue('eletterSendTest', 'No');
+                $resource->save();
+                
                 $testTo = $resource->getTVValue('eletterTestTo');
                 if( !empty($testTo) ) {
                     $newsletter->sendTest($testTo);

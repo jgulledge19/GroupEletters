@@ -52,7 +52,7 @@
 		<index alias="newsletter" name="newsletter" primary="false" unique="false" type="BTREE" >
 			<column key="newsletter" length="" collation="A" null="true" />
 		</index>
-		<index alias="subscriber" name="subscriber" primary="false" unique="false" type="BTREE" >
+		<index alias="group" name="group" primary="false" unique="false" type="BTREE" >
 			<column key="group" length="" collation="A" null="true" />
 		</index>
 	</object>

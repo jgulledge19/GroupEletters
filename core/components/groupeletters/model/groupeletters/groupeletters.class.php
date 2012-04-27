@@ -3,6 +3,12 @@
  * @package groupEletters
  */
 class GroupEletters {
+    
+    /**
+     * A reference to the modX instance
+     * @var modX $modx
+     */
+    public $modx;
     /**
      * Constructs the groupEletters object
      *
@@ -57,24 +63,26 @@ class GroupEletters {
     /**
      * process the queue and send out the eletters
      * 
-     * @return void
+     * @return (Boolean)
      */
     public function processQueue() {
-        $sendLimit = $modx->getOption('groupeletters.batchSize', '', 15);
-        $delay = $modx->getOption('groupeletters.delay', '', 5);// delay in seconds between each send
-        // 1. select all newsletters that ready to be sent out 
-        $newsletters = $modx->getColletion('EletterNewsletters', array(
+        $sendLimit = $this->modx->getOption('groupeletters.batchSize', '', 15);
+        $delay = $this->modx->getOption('groupeletters.delay', '', 5);// delay in seconds between each send
+        // 1. select all newsletters that are ready to be sent out 
+        $newsletters = $this->modx->getCollection('EletterNewsletters', array(
             'status' => 'approved',
-            'start_date:>=' => date('Y-m-d g:i:a'),
-            'end_date' => NULL// if there is an end date then it is complete
+            //'add_date:>=' => date('Y-m-d g:i:a'),
+            'finish_date' => NULL// if there is an end date then it is complete
         ));
         // 
         foreach ($newsletters as $newsletter ) {
-            $limit -= $newsletter->sendList($limit, $delay);
-            if ( $limit <= 0 ) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
+            $sendLimit -= $newsletter->sendList($sendLimit, $delay);
+            if ( $sendLimit <= 0 ) {
                 break;
             }
         }
+        return true;
     }
     /**
      * Signup
