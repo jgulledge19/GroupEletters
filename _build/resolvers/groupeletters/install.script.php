@@ -61,14 +61,14 @@ $templates = array(
     // template name
     'GroupEletterSample' => array(
         // the TV names
-            'eletterSendTest',
             'eletterMakeELetter',
             'eletterSubject',
             'eletterFromEmail',
             'eletterFromName',
             'eletterReplyEmail',
-            'eletterTestTo',
             'eletterToGroups',
+            'eletterSendTest',
+            'eletterTestTo',
         ),
     );
 
@@ -158,12 +158,12 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
                     $tvs = $modx->getCollection('modTemplateVar', array('name:IN'=> $assignTvs));
                     
                     if (!empty($tvs)) {
-                        foreach ( $tvs as $k => $tv ) {
+                        foreach ( $tvs as $tv ) {
                             $tvt = $modx->newObject('modTemplateVarTemplate');
                             if ($tvt) {
                                 $r1 = $tvt->set('templateid', $template->get('id'));
                                 $r2 = $tvt->set('tmplvarid', $tv->get('id'));
-                                $tvt->set('rank', $k);
+                                $tvt->set('rank', (array_search($tv->get('name'), $assignTvs)+1));// want to set this?
                                 
                                 if ($r1 && $r2) {
                                     $tvt->save();

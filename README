@@ -1,0 +1,18 @@
+GroupEletters is a Addon for MODX Revolution that allows you to create & send beautiful email campaigns within MODX!  You can now take advantage of MODX advanted templating features to create custom eletter templates.  Easily manage lists & subscribers and allow subscribers to manage their own preferances.  Personalize your emails with some default placeholders.Features
+
+    Easy group and subscriber management
+    Allow users to subscribe through a contact form (FormIt)
+    Users must confirm subscription (link in email message)
+    User get an unsubscribe link in newsletters ([[+unsubscribeUrl]])
+    Select what groups users can subscribe to, one or many.
+    Message queue, via the the System Settings chose your batch size and the time in between each email sent
+
+Requirements
+
+    MODX Revolution 2.2+
+    FormIt - for subscribe page
+    CronManager - for automated queue
+
+Installation Instructions
+
+See the docs: http://rtfm.modx.com/display/ADDON/GroupEletters#GroupEletters-Installation
