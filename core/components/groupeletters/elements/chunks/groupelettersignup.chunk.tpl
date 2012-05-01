@@ -13,6 +13,10 @@
   &validate=`email:required:email,first_name:required,last_name:required` 
   &confirmPage=`2071` 
   &emailSubject=`Newsletter confirmation`
+  &emailReplyTo=`[[++groupeletters.replyEmail]]`
+  &emailFromName=`[[++groupeletters.fromEmail]]`
+  &emailFrom=`[[++groupeletters.fromName]]`
+  &emailTpl=`GroupEletterSignupMail`
 ]]
 <form action="[[~[[*id]]]]" method="post">
     

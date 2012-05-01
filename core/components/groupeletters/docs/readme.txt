@@ -1,15 +1,15 @@
 -------------------
 Component: GroupEletters
 -------------------
-Version: 1.0 alpha
-Date: April, 27th, 2012
+Version: 1.0 alpha3
+Date: May, 1, 2012
 Author: Joshua Gulledge (jgulledge19@hotmail.com) some code is basied on the Ditsnews Extra
 License: GNU GPLv2 (or later at your option)
 
 Description:
 
 GroupEletters is a Addon for MODX Revolution that allows you to create & send beautiful 
-email campaigns within MODX!  You can now take advantage of MODX advanted templating 
+email campaigns within MODX!  You can now take advantage of MODX advanced templating 
 features to create custom eletter templates.  Easily manage lists & subscribers and 
 allow subscribers to manage their own preferances.  Personalize your emails with some 
 default placeholders.

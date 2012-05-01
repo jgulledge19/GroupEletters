@@ -52,7 +52,7 @@ $chunks[$x]->fromArray(array(
     'id' => $x,
     'name' => 'GroupEletterGroupCheckbox',
     'description' => 'The checkboxes that are created for groups on the signup form.',
-    'snippet' => file_get_contents($sources['source_core'].'elements/chunks/groupelettersgroupcheckbox.chunk.tpl'),
+    'snippet' => file_get_contents($sources['source_core'].'elements/chunks/groupelettergroupcheckbox.chunk.tpl'),
     'properties' => '',
 ),'',true,true);
 

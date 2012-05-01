@@ -3,7 +3,7 @@
  * Create a list of Groups for the subscribe/manage
  */
 
-$checkBoxes = $modx->getOption('checkBoxes', $scriptProperties, 'GroupElettersGroupCheckbox' );
+$checkBoxes = $modx->getOption('checkBoxes', $scriptProperties, 'GroupEletterGroupCheckbox' );
 
 if (!isset($modx->groupEletters)) {
     $modx->addPackage('groupeletters', $modx->getOption('core_path').'components/groupeletters/model/');

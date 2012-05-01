@@ -110,11 +110,12 @@ class GroupEletters {
         //now add subscriber to selected groups
         if( is_array($fields['group']) ) {
             foreach($fields['group'] as $groupID) {
-                // $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] GroupID: '.$groupID);
+                //$this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] GroupID: '.$groupID);
                 $group = $this->modx->getObject('EletterGroups', array('id'=>$groupID));
                 if ( $group ) {
-                    $myGroup = $subscriber->getOne('Groups', array('group' => $groupID) );
-                    if ( is_object($myGroup) ) {
+                    // $myGroup = $subscriber->getOne('Groups', array('group' => $groupID) );
+                    $myGroup = $this->modx->getObject('EletterGroupSubscribers', array('group'=>$groupID,'subscriber'=> $subscriber->get('id')) );
+                    if ( $myGroup ) {
                         // this already exists
                         //$this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] Subscriber Exists for group ('.$subscriber->get('id') .') to GroupID: '.$groupID);
                         $myGroup->set('recieve_email', 'Y');
@@ -123,13 +124,13 @@ class GroupEletters {
                         // http://rtfm.modx.com/display/XPDO10/addOne
                         //$group->addOne($subscriber, 'Subscribers');
                         $GroupSubscribers = $this->modx->newObject('EletterGroupSubscribers');
-                        $GroupSubscribers->set('group', $group);
+                        $GroupSubscribers->set('group', $groupID);
                         $GroupSubscribers->set('subscriber', $subscriber->get('id'));
                         $GroupSubscribers->set('date_created', date('Y-m-d h:i:s'));
                         $GroupSubscribers->save();
                         //$group->addOne($GroupSubscribers, 'Subscribers');
                         //$group->save();
-                        // $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] Add subscriber ('.$subscriber->get('id') .') to GroupID: '.$groupID);
+                        //$this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] Add subscriber ('.$subscriber->get('id') .') to GroupID: '.$groupID);
                     }
                     
                     
@@ -157,7 +158,7 @@ class GroupEletters {
         $this->modx->mail->set(modMail::MAIL_FROM_NAME, $options['emailFromName'] );
         $this->modx->mail->set(modMail::MAIL_SENDER, $options['emailFromName'] );
         $this->modx->mail->set(modMail::MAIL_SUBJECT, $options['emailSubject']);
-        $this->modx->mail->address('to', 'gulledj@bethelcollege.edu' /*$subscriber->get('email')*/ );
+        $this->modx->mail->address('to', $subscriber->get('email') );
         $this->modx->mail->address('reply-to', $options['emailReplyTo'] );
         $this->modx->mail->setHTML(true);
         //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->Send Confirmation Error to '.$subscriber->get('email').' From: '.$options['emailFrom'] );

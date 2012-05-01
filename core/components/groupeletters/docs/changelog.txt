@@ -1,3 +1,14 @@
+1.0 alpha3
+-------------------
+- Removed my email address from the sender list!
+- Fix another spelling error and added more options in the GroupEletterSignup Chunk
+
+1.0 alpha2
+-------------------
+- Fix create group error that did not save all data
+- Fix spelling error for chunk name call
+- Fix subscribe to group on signup page
+
 1.0 alpha
 -------------------
 initial release

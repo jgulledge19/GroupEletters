@@ -14,7 +14,7 @@ $confirmPageID = $modx->getOption('confirmPage', $scriptProperties, $modx->getOp
 // FormIt options:
 //'emailFromName' => $modx->getOption('emailFromName', (isset($scriptProperties['emailFromName']) && !empty($scriptProperties['emailFromName']) ? $scriptProperties : NULL ), $modx->getOption('groupeletters.fromName') ),
 $options = array(
-        'emailTpl' => $modx->getOption('emailTpl', $scriptProperties, 'GroupElettersSignupMail' ),
+        'emailTpl' => $modx->getOption('emailTpl', $scriptProperties, 'GroupEletterSignupMail' ),
         'emailSubject' => $modx->getOption('emailSubject', $scriptProperties, $modx->lexicon('groupeletters.subscribers.confirm.subject') ),
         'emailFrom' => $modx->getOption('groupeletters.fromEmail'), //$modx->getOption('emailFrom', $scriptProperties, $modx->getOption('groupeletters.fromEmail') ),
         'emailFromName' => $modx->getOption('emailFromName', $scriptProperties, $modx->getOption('groupeletters.fromName') ),
