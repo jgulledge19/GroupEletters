@@ -64,7 +64,7 @@ $snippets[$x]->fromArray(array(
 $snippets[++$x]= $modx->newObject('modSnippet');
 $snippets[$x]->fromArray(array(
     'id' => $x, // set this in order not the ID for the snippet
-    'name' => 'GroupEletterFromListGroups',
+    'name' => 'GroupEletterFormListGroups',
     'description' => 'List avaiable Groups for the signup form, preHook',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/groupeletterformlistgroups.snippet.php'),
 ),'',true,true);

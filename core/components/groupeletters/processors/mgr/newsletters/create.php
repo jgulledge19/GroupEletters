@@ -15,7 +15,7 @@ if($doc = $modx->getObject('modResource', $scriptProperties['resource'])) {
     $message = str_replace('&#93;&#93;', ']]', $message); //convert entities back to normal placeholders
 
     //CSS inline
-    $modx->getService('emogrifier', 'Emogrifier', $modx->getOption('core_path').'components/ditsnews/model/emogrifier/');
+    $modx->getService('emogrifier', 'Emogrifier', $modx->getOption('core_path').'components/groupeletters/model/emogrifier/');
     $cssStyles = '';
     preg_match_all('|<style(.*)>(.*)</style>|isU', $message, $css);
     if( !empty($css[2]) )
@@ -75,7 +75,7 @@ if($doc = $modx->getObject('modResource', $scriptProperties['resource'])) {
 
 }
 else {
-    return $modx->error->failure($modx->lexicon('ditsnews.newsletters.err.nf'));
+    return $modx->error->failure($modx->lexicon('groupeletters.newsletters.err.nf'));
 }
 
 

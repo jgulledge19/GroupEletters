@@ -3,7 +3,7 @@
  * Get a list of subscribers
  *
  *
- * @package ditsnews
+ * @package groupeletters
  * @subpackage processors.subscribers.list
  */
 
