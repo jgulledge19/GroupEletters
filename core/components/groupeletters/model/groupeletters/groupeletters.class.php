@@ -71,12 +71,12 @@ class GroupEletters {
         // 1. select all newsletters that are ready to be sent out 
         $newsletters = $this->modx->getCollection('EletterNewsletters', array(
             'status' => 'approved',
-            'add_date:>=' => date('Y-m-d g:i:a'),
+            'add_date:<=' => date('Y-m-d g:i:a'),
             'finish_date' => NULL// if there is an end date then it is complete
         ));
-        // $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Run ');
+        //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Run date: '.date('Y-m-d g:i:a'));
         foreach ($newsletters as $newsletter ) {
-            // $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
+            //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
             $sendLimit -= $newsletter->sendList($sendLimit, $delay);
             if ( $sendLimit <= 0 ) {
                 break;
