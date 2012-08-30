@@ -42,7 +42,7 @@ $plugins[1]->fromArray(array(
     'id' => 1,
     'name' => 'groupEletterCreator',
     'description' => 'This will create the eletter from a resource on save.',
-    'plugincode' => getPluginContent($sources['source_core'].'/elements/plugins/groupelettercreator.plugin.php'),
+    'plugincode' => getPluginContent($sources['source_core'].'/elements/plugins/groupeletters.plugin.php'),
 ),'',true,true);
 //$properties = include $sources['data'].'properties/properties.myplugin1.php';
 //$plugins[1]->setProperties($properties);
