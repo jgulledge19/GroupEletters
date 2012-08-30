@@ -71,12 +71,13 @@ class GroupEletters {
         // 1. select all newsletters that are ready to be sent out 
         $newsletters = $this->modx->getCollection('EletterNewsletters', array(
             'status' => 'approved',
-            //'add_date:>=' => date('Y-m-d g:i:a'),
+            'add_date:>=' => date('Y-m-d g:i:a'),
             'finish_date' => NULL// if there is an end date then it is complete
         ));
         // 
+        $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Run ');
         foreach ($newsletters as $newsletter ) {
-            // $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
             $sendLimit -= $newsletter->sendList($sendLimit, $delay);
             if ( $sendLimit <= 0 ) {
                 break;
@@ -213,7 +214,7 @@ class GroupEletters {
      * @return boolean true on removed, false on not found
      */
     public function unsubscribe() {
-		$subscriber = $this->modx->getObject('EletterSubscribers', (int)$_GET['s']);
+		//$subscriber = $this->modx->getObject('EletterSubscribers', (int)$_GET['s']);
         /**
          * Unsubscribe from all - remove or set as inactive?  
          *    Set as inactive that way can do stats on how many unsubscribe

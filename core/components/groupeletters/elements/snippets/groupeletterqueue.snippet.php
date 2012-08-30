@@ -8,10 +8,8 @@ if (!isset($modx->groupEletters)) {
 }
 $groupEletters =& $modx->groupEletters;
 
-$groupEletters->processQueue();
-
-if( $groupEletters->confirmSignup() ) {
-    return $modx->lexicon('groupeletters.subscribers.confirm.success');
+if( $groupEletters->processQueue() ) {
+    return $modx->lexicon('groupeletters.queue.ran');
 } else {
-    return $modx->lexicon('groupeletters.subscribers.confirm.err');
+    return $modx->lexicon('groupeletters.queue.ran.err');
 }

@@ -28,6 +28,9 @@ $_lang['groupeletters.newsletters.saved'] = 'Newsletter saved (scheduled)';
 $_lang['groupeletters.newsletters.err.save'] = 'Could not save/schedule newsletter';
 $_lang['groupeletters.newsletters.err.nf'] = 'Could not open/find document';
 $_lang['groupeletters.newsletters.err.remove'] = 'Could not remove newsletter';
+// Queue
+$_lang['groupeletters.queue.ran'] = 'Newsletters Queue ran successfully';
+$_lang['groupeletters.queue.ran.err'] = 'Newsletters Queue could not send emails';
 
 //groups
 $_lang['groupeletters.groups'] = 'Groups';

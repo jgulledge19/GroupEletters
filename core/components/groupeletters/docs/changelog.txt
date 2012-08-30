@@ -1,3 +1,9 @@
+1.0 beta1
+ - added 2 new lexicons
+ - #3 fixed Queue snippet message
+ - #4 Fixed spelling error
+ - 
+ 
 1.0 alpha3
 -------------------
 - Removed my email address from the sender list!
