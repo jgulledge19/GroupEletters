@@ -12,10 +12,10 @@ $eventName = $modx->event->name;
 switch($eventName) {
     case 'OnDocFormSave':
         /* do something */
-        $modx->log(modX::LOG_LEVEL_ERROR,'[GroupEletters] Do Something!');
+        // $modx->log(modX::LOG_LEVEL_ERROR,'[GroupEletters] Do Something!');
         if (!isset($modx->groupEletters)) {
             $modx->addPackage('groupeletters', $modx->getOption('core_path').'components/groupeletters/model/');
-            $modx->groupEletters = $modx->getService('groupeletters', 'GroupEletters', $modx->getOption('core_path').'components/groupeletters/model/groupEletters/');
+            $modx->groupEletters = $modx->getService('groupeletters', 'GroupEletters', $modx->getOption('core_path').'components/groupeletters/model/groupeletters/');
         }
         $groupEletters =& $modx->groupEletters;
 
