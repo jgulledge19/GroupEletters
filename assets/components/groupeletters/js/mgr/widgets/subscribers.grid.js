@@ -13,7 +13,7 @@ GroupEletters.grid.Subscribers = function(config) {
         ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/subscribers/list' }
         ,save_action: 'mgr/subscribers/updateFromGrid'
-        ,fields: ['id','crm_id','active','email','first_name','m_name','last_name','company', 'address','state','zip','country','phone','cell','date_created']
+        ,fields: ['id','crm_id','active','email','first_name','m_name','last_name','company', 'address','city','state','zip','country','phone','cell','date_created']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -51,6 +51,9 @@ GroupEletters.grid.Subscribers = function(config) {
         ,tbar: [{
             text: _('groupeletters.subscribers.new')
             ,handler: this.createSubscriber
+        },{
+            text: _('groupeletters.subscribers.importcsv')
+            ,handler: this.importSubscribers
         },'-',{
             xtype: 'textfield'
             ,id: 'subscribers-search-filter'
@@ -124,6 +127,18 @@ Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
             }
         });
     }
+    ,importSubscribers: function(btn,e) {
+        if (!this.ImportSubscriberWindow) {
+            this.ImportSubscriberWindow = MODx.load({
+                xtype: 'groupeletters-window-subscriber-import'
+                ,listeners: {
+                    'success': {fn:this.refresh,scope:this}
+                }
+            });
+        }
+        this.getGroups(0, 'groupeletters-window-subscriber-import', 'subscribergroups-import');
+        this.ImportSubscriberWindow.show(e.target);
+    }
     ,createSubscriber: function(btn,e) {
         if (!this.CreateSubscriberWindow) {
             this.CreateSubscriberWindow = MODx.load({
@@ -145,9 +160,9 @@ Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
                     'success': {fn:this.refresh,scope:this}
                 }
             });
-        } else {
-            this.UpdateSubscriberWindow.setValues(this.menu.record);
         }
+        this.UpdateSubscriberWindow.setValues(this.menu.record);
+        
         this.getGroups(this.menu.record.id, 'groupeletters-window-subscriber-update', 'subscribergroups-update');
         this.UpdateSubscriberWindow.show(e.target);
     },
@@ -186,120 +201,229 @@ Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
 });
 Ext.reg('groupeletters-grid-subscribers',GroupEletters.grid.Subscribers);
 
-GroupEletters.window.CreateSubscriber = function(config) {
+function getSubscriberWindowObject(config, type) {
     config = config || {};
-    Ext.applyIf(config,{
-        id: 'groupeletters-window-subscriber-create'
-        ,title: _('groupeletters.subscribers.new')
+    this.ident = config.ident || 'cmp'+Ext.id();
+    var hidden = '';
+    if ( type == 'update') {
+        hidden = 'id';
+    }
+    
+    var object = {
+        id: 'groupeletters-window-subscriber-' + type
+        ,title: _('groupeletters.subscribers.'+type)
         ,url: GroupEletters.config.connectorUrl
         ,baseParams: {
-            action: 'mgr/subscribers/create'
+            action: 'mgr/subscribers/'+type
         }
-        ,fields: [
-            {
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.crm_id')
-                ,name: 'crm_id'
-                ,width: 300
-                ,allowBlank: true
+        
+        ,width: 620
+        ,action: type
+        ,autoHeight: true
+        ,shadow: false
+        ,fields: [{
+            xtype: 'modx-tabs'
+            ,bodyStyle: { background: 'transparent' }
+            ,autoHeight: true
+            ,deferredRender: false
+            ,items: [{
+                title: _('groupeletters.subscribers.basic_info')
+                ,layout: 'form'
+                ,cls: 'modx-panel'
+                ,forceLayout: true
+                ,bodyStyle: { background: 'transparent', padding: '10px' }
+                ,autoHeight: true
+                ,labelWidth: 130
+                ,items: [
+                // basic info
+                {
+                    xtype: 'hidden'
+                    ,name: hidden
+                },{
+                    xtype: 'checkbox'
+                    ,fieldLabel: _('groupeletters.subscribers.active')
+                    ,name: 'active'
+                    /* ,width: 300 */
+                    ,inputValue: 1
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('groupeletters.subscribers.crm_id')
+                    ,name: 'crm_id'
+                    ,width: 300
+                    ,maxLength: 11
+                    ,anchor: '100%'
+                    ,allowBlank: true
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('groupeletters.subscribers.email')
+                    ,name: 'email'
+                    ,width: 300
+                    ,maxLength: 128
+                    ,anchor: '100%'
+                    ,allowBlank: false
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('groupeletters.subscribers.first_name')
+                    ,name: 'first_name'
+                    ,width: 300
+                    ,maxLength: 32
+                    ,anchor: '100%'
+                    ,allowBlank: false
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('groupeletters.subscribers.m_name')
+                    ,name: 'm_name'
+                    ,width: 300
+                    ,maxLength: 32
+                    ,anchor: '100%'
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('groupeletters.subscribers.last_name')
+                    ,name: 'last_name'
+                    ,width: 300
+                    ,anchor: '100%'
+                    ,maxLength: 32
+                    ,allowBlank: false
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('groupeletters.subscribers.company')
+                    ,name: 'company'
+                    ,width: 300
+                    ,anchor: '100%'
+                    ,maxLength: 255
+                    ,allowBlank: true
+                }
+                ]
             },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.email')
-                ,name: 'email'
-                ,width: 300
-                ,allowBlank: false
+                id: 'modx-'+this.ident+'-group'
+                ,title: _('groupeletters.subscribers.groups_info')
+                ,layout: 'form'
+                ,cls: 'modx-panel'
+                ,autoHeight: true
+                ,forceLayout: true
+                ,labelWidth: 130
+                ,defaults: {autoHeight: true ,border: false}
+                ,style: 'background: transparent;'
+                ,bodyStyle: { background: 'transparent', padding: '10px' }
+                ,items: //MODx.getQRSettings(this.ident,config.record)
+                [
+                    {
+                        xtype: 'fieldset',
+                        id: 'subscribergroups-'+type,
+                        fieldLabel: _('groupeletters.subscribers.groups'),
+                        items: []
+                    }
+                ]
             },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.first_name')
-                ,name: 'first_name'
-                ,width: 300
-                ,allowBlank: false
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.last_name')
-                ,name: 'last_name'
-                ,width: 300
-                ,allowBlank: false
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.company')
-                ,name: 'company'
-                ,width: 300
-                ,allowBlank: true
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.phone')
-                ,name: 'phone'
-                ,width: 300
-                ,allowBlank: true
-            },{
-                xtype: 'checkbox'
-                ,fieldLabel: _('groupeletters.subscribers.active')
-                ,name: 'active'
-                ,width: 300
-                ,inputValue: 1
-            },{
-                xtype: 'fieldset',
-                id: 'subscribergroups-create',
-                fieldLabel: _('groupeletters.subscribers.groups'),
-                items: []
-            }
-        ]
-    });
+                id: 'modx-'+this.ident+'-settings'
+                ,title: _('groupeletters.subscribers.address_info')
+                ,layout: 'form'
+                ,cls: 'modx-panel'
+                ,autoHeight: true
+                ,forceLayout: true
+                ,labelWidth: 130
+                ,defaults: {autoHeight: true ,border: false}
+                ,style: 'background: transparent;'
+                ,bodyStyle: { background: 'transparent', padding: '10px' }
+                ,items: //MODx.getQRSettings(this.ident,config.record)
+                [
+                    {
+                        xtype: 'textfield'
+                        ,fieldLabel: _('groupeletters.subscribers.phone')
+                        ,name: 'phone'
+                        ,width: 300
+                        ,anchor: '100%'
+                        ,maxLength: 16
+                        ,allowBlank: true
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('groupeletters.subscribers.cell')
+                        ,name: 'cell'
+                        ,width: 300
+                        ,maxLength: 16
+                        ,anchor: '100%'
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('groupeletters.subscribers.address')
+                        ,name: 'address'
+                        ,maxLength: 128
+                        ,width: 300
+                        ,anchor: '100%'
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('groupeletters.subscribers.city')
+                        ,name: 'city'
+                        ,maxLength: 64
+                        ,width: 300
+                        ,anchor: '100%'
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('groupeletters.subscribers.state')
+                        ,name: 'state'
+                        ,maxLength: 64
+                        ,width: 300
+                        ,anchor: '100%'
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('groupeletters.subscribers.zip')
+                        ,name: 'zip'
+                        ,maxLength: 16
+                        ,width: 300
+                        ,anchor: '100%'
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('groupeletters.subscribers.country')
+                        ,name: 'country'
+                        ,maxLength: 64
+                        ,width: 300
+                        ,anchor: '100%'
+                    }
+                ]
+            }]
+        }]
+    };
+    return object;
+}
+
+GroupEletters.window.UpdateSubscriber = function(config) {
+    config = config || {};
+    var locObject = getSubscriberWindowObject(config, 'update');
+    Ext.applyIf(config,locObject);
+    GroupEletters.window.UpdateSubscriber.superclass.constructor.call(this,config);
+};
+Ext.extend(GroupEletters.window.UpdateSubscriber,MODx.Window);
+Ext.reg('groupeletters-window-subscriber-update',GroupEletters.window.UpdateSubscriber);
+
+GroupEletters.window.CreateSubscriber = function(config) {
+    config = config || {};
+    
+    var locObject = getSubscriberWindowObject(config, 'create');
+    Ext.applyIf(config,locObject);
     GroupEletters.window.CreateSubscriber.superclass.constructor.call(this,config);
 };
 Ext.extend(GroupEletters.window.CreateSubscriber,MODx.Window);
 Ext.reg('groupeletters-window-subscriber-create',GroupEletters.window.CreateSubscriber);
 
-GroupEletters.window.UpdateSubscriber = function(config) {
+/**
+ * Import CSV
+ */
+GroupEletters.window.ImportSubscribers = function(config) {
     config = config || {};
-    Ext.applyIf(config,{
-        id: 'groupeletters-window-subscriber-update'
-        ,title: _('groupeletters.subscribers.update')
+    var locObject = {
+        id: 'groupeletters-window-subscriber-import'
+        ,title: _('groupeletters.subscribers.importcsv')
         ,url: GroupEletters.config.connectorUrl
         ,baseParams: {
-            action: 'mgr/subscribers/update'
+            action: 'mgr/subscribers/import'
         }
+        ,fileUpload: true
         ,fields: [
             {
-                xtype: 'hidden'
-                ,name: 'id'
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.crm_id')
-                ,name: 'crm_id'
-                ,width: 300
-                ,allowBlank: true
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.email')
-                ,name: 'email'
-                ,width: 300
-                ,allowBlank: false
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.first_name')
-                ,name: 'first_name'
-                ,width: 300
-                ,allowBlank: false
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.last_name')
-                ,name: 'last_name'
-                ,width: 300
-                ,allowBlank: false
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.company')
-                ,name: 'company'
-                ,width: 300
-                ,allowBlank: true
-            },{
-                xtype: 'textfield'
-                ,fieldLabel: _('groupeletters.subscribers.phone')
-                ,name: 'phone'
-                ,width: 300
-                ,allowBlank: true
+                xtype: 'textfield',
+                inputType: 'file',
+                fieldLabel: _('groupeletters.subscribers.importcsv.file'),
+                name: 'csv',
+                allowBlank: false
             },{
                 xtype: 'checkbox'
                 ,fieldLabel: _('groupeletters.subscribers.active')
@@ -308,13 +432,14 @@ GroupEletters.window.UpdateSubscriber = function(config) {
                 ,inputValue: 1
             },{
                 xtype: 'fieldset',
-                id: 'subscribergroups-update',
-                fieldLabel: _('groupeletters.subscribers.groups'),
+                id: 'subscribergroups-import',
+                fieldLabel: _('groupeletters.subscribers.import'),
                 items: []
             }
         ]
-    });
-    GroupEletters.window.UpdateSubscriber.superclass.constructor.call(this,config);
+    };
+    Ext.applyIf(config,locObject);
+    GroupEletters.window.ImportSubscribers.superclass.constructor.call(this,config);
 };
-Ext.extend(GroupEletters.window.UpdateSubscriber,MODx.Window);
-Ext.reg('groupeletters-window-subscriber-update',GroupEletters.window.UpdateSubscriber);
+Ext.extend(GroupEletters.window.ImportSubscribers,MODx.Window);
+Ext.reg('groupeletters-window-subscriber-import',GroupEletters.window.ImportSubscribers);

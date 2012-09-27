@@ -54,14 +54,19 @@ $_lang['groupeletters.groups.err.nf'] = 'Group not found';
 $_lang['groupeletters.groups.err.save'] = 'Could not save group';
 
 //subscribers
+$_lang['groupeletters.subscribers.basic_info'] = 'Basic';
+$_lang['groupeletters.subscribers.groups_info'] = 'Groups';
+$_lang['groupeletters.subscribers.address_info'] = 'Phone &amp; Address';
 $_lang['groupeletters.subscribers'] = 'Subscribers';
 $_lang['groupeletters.subscribers.first_name'] = 'First name';
+$_lang['groupeletters.subscribers.m_name'] = 'Middle name';
 $_lang['groupeletters.subscribers.last_name'] = 'Last name';
 $_lang['groupeletters.subscribers.company'] = 'Company';
 $_lang['groupeletters.subscribers.email'] = 'Email';
 $_lang['groupeletters.subscribers.crm_id'] = 'CRM ID';
 $_lang['groupeletters.subscribers.m_name'] = 'Middle Name';
 $_lang['groupeletters.subscribers.address'] = 'Street Address';
+$_lang['groupeletters.subscribers.city'] = 'City';
 $_lang['groupeletters.subscribers.state'] = 'State';
 $_lang['groupeletters.subscribers.zip'] = 'Zip';
 $_lang['groupeletters.subscribers.country'] = 'Country';

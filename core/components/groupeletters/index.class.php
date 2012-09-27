@@ -14,7 +14,7 @@ abstract class GroupElettersManagerController extends modExtraManagerController 
     public function initialize() {
         $this->groupEletters = new GroupEletters($this->modx);
  
-        $this->addCss($this->groupEletters->config['cssUrl'].'mgr.css');
+        // $this->addCss($this->groupEletters->config['cssUrl'].'mgr.css');
         $this->addJavascript($this->groupEletters->config['jsUrl'].'mgr/groupeletters.js');
         $this->addHtml('<script type="text/javascript">
         Ext.onReady(function() {
