@@ -66,12 +66,11 @@ if ($object->xpdo) {
             
             break;
         case xPDOTransport::ACTION_UPGRADE:
-            /*
-            $modx->exec("ALTER TABLE {$modx->getTableName('ChurchEvents')} 
-                DROP COLUMN `locations`,
-                ADD COLUMN `prominent` SET('Yes','No') DEFAULT 'No' NULL AFTER `web_user_id`,
+            
+            $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')} 
+                ADD COLUMN `city` VARCHAR(64) NULL AFTER `address`
                 ");
-            */
+            /* */
             break;
     }
 }
