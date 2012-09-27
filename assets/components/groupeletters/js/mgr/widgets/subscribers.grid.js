@@ -133,7 +133,7 @@ Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
                 }
             });
         }
-        this.getGroups(0, 'groupeletters-window-subscriber-create');
+        this.getGroups(0, 'groupeletters-window-subscriber-create', 'subscribergroups-create');
         this.CreateSubscriberWindow.show(e.target);
     }
     ,updateSubscriber: function(btn,e) {
@@ -148,10 +148,10 @@ Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
         } else {
             this.UpdateSubscriberWindow.setValues(this.menu.record);
         }
-        this.getGroups(this.menu.record.id, 'groupeletters-window-subscriber-update');
+        this.getGroups(this.menu.record.id, 'groupeletters-window-subscriber-update', 'subscribergroups-update');
         this.UpdateSubscriberWindow.show(e.target);
     },
-    getGroups: function(subscriberId, formId) {
+    getGroups: function(subscriberId, formId, groupsId) {
         MODx.Ajax.request({
             url: GroupEletters.config.connectorUrl,
             scope: this,
@@ -162,11 +162,12 @@ Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
             listeners: {
                 success: {fn:function(response) {
                         groups = response.object;
-                        Ext.getCmp('subscribergroups').removeAll();
+                        
+                        Ext.getCmp(groupsId).removeAll();
 
                         if(groups.length > 0) {
                             Ext.each(groups, function(item, key) {
-                                        Ext.getCmp('subscribergroups').add({
+                                        Ext.getCmp(groupsId).add({
                                             xtype: 'checkbox',
                                             name: 'groups_'+item.id,
                                             boxLabel: item.name,
@@ -239,7 +240,7 @@ GroupEletters.window.CreateSubscriber = function(config) {
                 ,inputValue: 1
             },{
                 xtype: 'fieldset',
-                id: 'subscribergroups',
+                id: 'subscribergroups-create',
                 fieldLabel: _('groupeletters.subscribers.groups'),
                 items: []
             }
@@ -307,7 +308,7 @@ GroupEletters.window.UpdateSubscriber = function(config) {
                 ,inputValue: 1
             },{
                 xtype: 'fieldset',
-                id: 'subscribergroups',
+                id: 'subscribergroups-update',
                 fieldLabel: _('groupeletters.subscribers.groups'),
                 items: []
             }
