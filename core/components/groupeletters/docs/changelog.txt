@@ -1,8 +1,14 @@
+1.0 beta3
+ - Fixed #7 Added in city column/field to db table 
+ - Added #8 German Translation
+ 
+1.0 beta2
+ - Fixed #5 file path case wrong in plugin, could cause linux/unix not to work 
+ 
 1.0 beta1
  - added 2 new lexicons
  - #3 fixed Queue snippet message
  - #4 Fixed spelling error
- - 
  
 1.0 alpha3
 -------------------

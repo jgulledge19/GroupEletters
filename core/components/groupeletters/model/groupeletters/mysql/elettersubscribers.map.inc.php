@@ -13,6 +13,7 @@ $xpdo_meta_map['EletterSubscribers']= array (
     'last_name' => NULL,
     'company' => '',
     'address' => NULL,
+    'city' => NULL,
     'state' => NULL,
     'zip' => NULL,
     'country' => NULL,
@@ -73,6 +74,13 @@ $xpdo_meta_map['EletterSubscribers']= array (
     array (
       'dbtype' => 'varchar',
       'precision' => '128',
+      'phptype' => 'string',
+      'null' => true,
+    ),
+    'city' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '64',
       'phptype' => 'string',
       'null' => true,
     ),

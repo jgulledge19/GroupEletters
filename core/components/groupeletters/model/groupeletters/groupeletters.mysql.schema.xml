@@ -128,6 +128,7 @@
 		<field key="last_name" dbtype="varchar" precision="32" phptype="string" null="true" />
 		<field key="company" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
 		<field key="address" dbtype="varchar" precision="128" phptype="string" null="true" />
+        <field key="city" dbtype="varchar" precision="64" phptype="string" null="true" />
 		<field key="state" dbtype="varchar" precision="64" phptype="string" null="true" />
 		<field key="zip" dbtype="varchar" precision="16" phptype="string" null="true" />
 		<field key="country" dbtype="varchar" precision="64" phptype="string" null="true" />

@@ -46,9 +46,9 @@ $xpdo_meta_map['EletterNewsletterGroups']= array (
         ),
       ),
     ),
-    'subscriber' => 
+    'group' => 
     array (
-      'alias' => 'subscriber',
+      'alias' => 'group',
       'primary' => false,
       'unique' => false,
       'type' => 'BTREE',
