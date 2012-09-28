@@ -54,15 +54,19 @@ $_lang['groupeletters.groups.err.nf'] = 'Gruppe nicht gefunden';
 $_lang['groupeletters.groups.err.save'] = 'Gruppe konnte nicht gespeichert werden.';
 
 //subscribers
+$_lang['groupeletters.subscribers.basic_info'] = 'Basisinfos';
+$_lang['groupeletters.subscribers.groups_info'] = 'Gruppeninfos';
+$_lang['groupeletters.subscribers.address_info'] = 'Telefon &amp; Adresse';
 $_lang['groupeletters.subscribers'] = 'Abonnenten';
 $_lang['groupeletters.subscribers.first_name'] = 'Vorname';
+$_lang['groupeletters.subscribers.m_name'] = 'Zweiter Vorname';
 $_lang['groupeletters.subscribers.last_name'] = 'Nachname';
 $_lang['groupeletters.subscribers.company'] = 'Firma';
 $_lang['groupeletters.subscribers.email'] = 'eMail';
 $_lang['groupeletters.subscribers.crm_id'] = 'Kunden ID';
-$_lang['groupeletters.subscribers.m_name'] = 'Zweiter Vorname';
 $_lang['groupeletters.subscribers.address'] = 'Adresse';
-$_lang['groupeletters.subscribers.state'] = 'Kanton';
+$_lang['groupeletters.subscribers.city'] = 'Ort';
+$_lang['groupeletters.subscribers.state'] = 'Bundesstaat/Kanton';
 $_lang['groupeletters.subscribers.zip'] = 'PLZ';
 $_lang['groupeletters.subscribers.country'] = 'Land';
 $_lang['groupeletters.subscribers.phone'] = 'Telefon';
