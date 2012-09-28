@@ -64,7 +64,6 @@ $_lang['groupeletters.subscribers.last_name'] = 'Last name';
 $_lang['groupeletters.subscribers.company'] = 'Company';
 $_lang['groupeletters.subscribers.email'] = 'Email';
 $_lang['groupeletters.subscribers.crm_id'] = 'CRM ID';
-$_lang['groupeletters.subscribers.m_name'] = 'Middle Name';
 $_lang['groupeletters.subscribers.address'] = 'Street Address';
 $_lang['groupeletters.subscribers.city'] = 'City';
 $_lang['groupeletters.subscribers.state'] = 'State';
