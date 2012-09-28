@@ -106,6 +106,17 @@ $snippets[$x]->fromArray(array(
 //unset($properties);ies);
 
 
+$snippets[++$x]= $modx->newObject('modSnippet');
+$snippets[$x]->fromArray(array(
+    'id' => $x, // set this in order not the ID for the snippet
+    'name' => 'GroupEletterUpdateTables',
+    'description' => 'Update Tables if needed, only run once',
+    'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/update.snippet.php'),
+),'',true,true);
+//$properties = include $sources['data'].'/properties/properties.mysnippet1.php';
+//$snippets[$x]->setProperties($properties);
+//unset($properties);ies);
+
 
 
 

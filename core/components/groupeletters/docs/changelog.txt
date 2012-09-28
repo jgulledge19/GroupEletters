@@ -1,8 +1,13 @@
+1.0 beta4
+ - #11 Updated German Translation
+ - Added a snippet GroupElettersUpdateTables - only needed in you updated but it ran as install
+ 
 1.0 beta3
  - Added #9 CSV Import feature
  - Added tabs to Subsriber and added in all fields for the window 
-    New lexicons: groupeletters.subscribers.city, groupeletters.subscribers.basic_info, groupeletters.subscribers.address_info and groupeletters.subscribers.groups_info 
- - Fixed #10
+    New lexicons: groupeletters.subscribers.city, groupeletters.subscribers.m_name, 
+        groupeletters.subscribers.basic_info, groupeletters.subscribers.address_info and groupeletters.subscribers.groups_info 
+ - Fixed #10 Subscriber Add/Update Window issue
  - Fixed #7 Added in city column/field to db table 
  - Added #8 German Translation
  
