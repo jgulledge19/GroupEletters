@@ -141,7 +141,9 @@ class EletterNewsletters extends xPDOSimpleObject {
                     array(
                         'newsletter' => $this->get('id'),
                         'subscriber' => $subscriber->get('id'),
-                        'sent' => 1
+                        'sent' => 1,
+                        // add sent date
+                        'sent_time' => date('Y-m-d H:i:a')
                     )
                 );
                 $queueItem->save();

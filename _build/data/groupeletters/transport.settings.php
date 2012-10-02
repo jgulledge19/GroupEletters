@@ -84,5 +84,13 @@ $settings['groupeletters.fromName']->fromArray(array (
     'area' => 'Email',
 ), '', true, true);
 
+$settings['groupeletters.debug']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.debug']->fromArray(array (
+    'key' => 'groupeletters.debug',
+    'value' => '0',
+    'xtype' => 'combo-boolean',
+    'namespace' => 'groupeletters',
+    'area' => 'Batch',
+), '', true, true);
 
 return $settings;

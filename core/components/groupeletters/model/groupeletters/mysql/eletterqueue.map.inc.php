@@ -9,6 +9,7 @@ $xpdo_meta_map['EletterQueue']= array (
     'newsletter' => 0,
     'subscriber' => 0,
     'sent' => 0,
+    'sent_date' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -40,6 +41,12 @@ $xpdo_meta_map['EletterQueue']= array (
       'phptype' => 'integer',
       'null' => false,
       'default' => 0,
+    ),
+    'sent_date' => 
+    array (
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
+      'null' => true,
     ),
   ),
   'indexes' => 

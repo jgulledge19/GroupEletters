@@ -89,6 +89,7 @@
 		<field key="newsletter" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
 		<field key="subscriber" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
 		<field key="sent" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+        <field key="sent_date" dbtype="datetime" phptype="datetime" null="true" />
 
 		<index alias="newsletter" name="newsletter" primary="false" unique="false" type="BTREE" >
 			<column key="newsletter" length="" collation="A" null="false" />

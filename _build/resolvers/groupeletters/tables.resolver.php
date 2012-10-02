@@ -66,11 +66,14 @@ if ($object->xpdo) {
             
             break;
         case xPDOTransport::ACTION_UPGRADE:
-            
+            /* beta3 */
             $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')} 
                 ADD COLUMN `city` VARCHAR(64) NULL AFTER `address`
                 ");
-            /* */
+            /* beta5 */
+            $modx->exec("ALTER TABLE {$modx->getTableName('EletterQueue')} 
+                ADD COLUMN `sent_date` DATETIME NULL AFTER `sent`
+                ");
             break;
     }
 }
