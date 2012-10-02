@@ -1,6 +1,17 @@
 <?php
 class EletterNewsletters extends xPDOSimpleObject {
     /**
+     * @param (boolean) debug 
+     */
+    protected $debug = false;
+    /**
+     * Set the debug value
+     * @param (Boolean) $debug
+     */
+    public function setDebug($debug=TRUE) {
+        $this->debug = (boolean) $debug;
+    }
+    /**
      * Assign Groups to Newsletter
      * @param (Array) $groups - just the IDs of the groups
      * 
@@ -108,19 +119,21 @@ class EletterNewsletters extends xPDOSimpleObject {
             if ( count($sendList)) {
                 $c->andCondition(array('EletterSubscribers.id:NOT IN' => $sendList));
             }
-            // added limit!!!! for 1.0 beta5
+            
             $c->limit($limit, 0);
             $subscribers = $modx->getCollection('EletterSubscribers' , $c);
-            
-            //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For subscribers: '.$modx->getCount('EletterSubscribers' , $c) );
-            
+            if ( $this->debug ) {
+                $process_id = time();
+                $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Start send loop for '.$modx->getCount('EletterSubscribers' , $c).' subscribers, processID: '.$process_id );
+            }
             foreach($subscribers as $subscriber) {
                 if ( in_array($subscriber->get('id'), $sendList) ) {
                     // a user may be in several different groups but only should get one email
                     continue;
                 }
-                //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Sendone subscribers: '.$subscriber->get('id') );
-                
+                if ( $this->debug ) {
+                    $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Sendone subscribers: '.$subscriber->get('id').' '.$subscriber->get('email').', processID: '.$process_id );
+                }
                 $this->sendOne($subscriber);
                 $numSent++;
                 $queueItem = $modx->newObject('EletterQueue');

@@ -1,3 +1,8 @@
+1.0 beta5
+ - Fixed #13 properly set the batchsize for the queue
+ - Corrected a date query issue which effected when a queue would send out
+ - Added a debug setting that will log notes to the error log
+ 
 1.0 beta4
  - #11 Updated German Translation
  - Added a snippet GroupElettersUpdateTables - only needed in you updated but it ran as install

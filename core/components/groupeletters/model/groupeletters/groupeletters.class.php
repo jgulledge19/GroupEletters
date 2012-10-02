@@ -32,6 +32,7 @@ class GroupEletters {
             'cssUrl' => $assetsUrl.'css/',
             'assetsUrl' => $assetsUrl,
             'connectorUrl' => $assetsUrl.'connector.php',
+            'debug' => $this->modx->getOption('groupeletters.debug',NULL, 0)
         ),$config);
 
         $this->modx->addPackage('groupeletters',$this->config['modelPath']);
@@ -74,9 +75,14 @@ class GroupEletters {
             'add_date:<=' => date('Y-m-d H:i:a'),
             'finish_date' => NULL// if there is an end date then it is complete
         ));
-        //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Run date: '.date('Y-m-d H:i:a'));
+        if ( $this->config['debug'] ) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Run date: '.date('Y-m-d H:i:a'));
+        }
         foreach ($newsletters as $newsletter ) {
-            //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
+            if ( $this->config['debug'] ) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() -> newsletter->sendList() for '.$newsletter->get('id').' newsletter');
+                $newsletter->setDebug();
+            }
             $sendLimit -= $newsletter->sendList($sendLimit, $delay);
             if ( $sendLimit <= 0 ) {
                 break;
