@@ -71,10 +71,10 @@ class GroupEletters {
         // 1. select all newsletters that are ready to be sent out 
         $newsletters = $this->modx->getCollection('EletterNewsletters', array(
             'status' => 'approved',
-            'add_date:<=' => date('Y-m-d g:i:a'),
+            'add_date:<=' => date('Y-m-d H:i:a'),
             'finish_date' => NULL// if there is an end date then it is complete
         ));
-        //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Run date: '.date('Y-m-d g:i:a'));
+        //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Run date: '.date('Y-m-d H:i:a'));
         foreach ($newsletters as $newsletter ) {
             //$this->modx->log(modX::LOG_LEVEL_ERROR,'GroupEletters->processQueue() - Send emails for '.$newsletter->get('id').' newsletter');
             $sendLimit -= $newsletter->sendList($sendLimit, $delay);
@@ -126,7 +126,7 @@ class GroupEletters {
                         $GroupSubscribers = $this->modx->newObject('EletterGroupSubscribers');
                         $GroupSubscribers->set('group', $groupID);
                         $GroupSubscribers->set('subscriber', $subscriber->get('id'));
-                        $GroupSubscribers->set('date_created', date('Y-m-d h:i:s'));
+                        $GroupSubscribers->set('date_created', date('Y-m-d H:i:s'));
                         $GroupSubscribers->save();
                         //$group->addOne($GroupSubscribers, 'Subscribers');
                         //$group->save();

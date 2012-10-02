@@ -108,6 +108,8 @@ class EletterNewsletters extends xPDOSimpleObject {
             if ( count($sendList)) {
                 $c->andCondition(array('EletterSubscribers.id:NOT IN' => $sendList));
             }
+            // added limit!!!! for 1.0 beta5
+            $c->limit($limit, 0);
             $subscribers = $modx->getCollection('EletterSubscribers' , $c);
             
             //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For subscribers: '.$modx->getCount('EletterSubscribers' , $c) );
