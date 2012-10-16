@@ -1,9 +1,22 @@
 <?php
 class EletterNewsletters extends xPDOSimpleObject {
     /**
+     * @param (string) sendOneError
+     */
+    protected $sendOneError = '';
+    /**
      * @param (boolean) debug 
      */
     protected $debug = false;
+    /**
+     * @param (Array) created_urls
+     */
+    protected $created_urls = array();
+    /**
+     * MODX
+     */
+    public $modx = NULL;
+    
     /**
      * Set the debug value
      * @param (Boolean) $debug
@@ -11,13 +24,14 @@ class EletterNewsletters extends xPDOSimpleObject {
     public function setDebug($debug=TRUE) {
         $this->debug = (boolean) $debug;
     }
+    
     /**
      * Assign Groups to Newsletter
      * @param (Array) $groups - just the IDs of the groups
      * 
      */
     public function assignGroups($groups) {
-        global $modx;
+        $this->setMODX();
         $currentGroups = $this->getMany('Groups');
         foreach ( $currentGroups as $group ) {
             if ( in_array($group->get('id'), $groups) ) {
@@ -30,7 +44,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         }
         // now create new records
         foreach( $groups as $gID) {
-            $group = $modx->newObject('EletterNewsletterGroups');
+            $group = $this->modx->newObject('EletterNewsletterGroups');
             $group->set('group',$gID);
             $group->set('newsletter', $this->get('id'));
             // http://rtfm.modx.com/display/XPDO10/addOne
@@ -46,7 +60,7 @@ class EletterNewsletters extends xPDOSimpleObject {
      * @return (Boolean)
      */
     public function sendTest($emails) {
-        global $modx;
+        $this->setMODX();
         $testers = explode(',', $emails);
         $testerData = array();
         
@@ -62,10 +76,10 @@ class EletterNewsletters extends xPDOSimpleObject {
         
         foreach ($testers as $email ) {
             // check to see if email/user(s) are in subsriber table
-            if ( $subscriber = $modx->getObject('EletterSubscribers', array('email' => $email) ) ) {
+            if ( $subscriber = $this->modx->getObject('EletterSubscribers', array('email' => $email) ) ) {
                 
             } else {
-                $subscriber = $modx->newObject('EletterSubscribers');
+                $subscriber = $this->modx->newObject('EletterSubscribers');
                 $defaultData['email'] = $email;
                 $subscriber->fromArray($defaultData);
             }
@@ -81,16 +95,15 @@ class EletterNewsletters extends xPDOSimpleObject {
      * @return (Int) $numSent - the number sent 
      */
     public function sendList($limit,$delay=10) {
-        global $modx;
-        
+        $this->setMODX();
         $numSent = 0;
         // get the list that has already received their eletter 
-        $c = $modx->newQuery('EletterQueue');
+        $c = $this->modx->newQuery('EletterQueue');
         $c->where( array(
             'sent' => 1,
             'newsletter' => $this->get('id'),
             ));
-        $queue = $modx->getCollection('EletterQueue', $c);
+        $queue = $this->modx->getCollection('EletterQueue', $c);
         $sendList = array();
         foreach($queue as $qitem) {
             $sendList[] = $qitem->get('subscriber');
@@ -103,12 +116,12 @@ class EletterNewsletters extends xPDOSimpleObject {
             $myGroups[] = $g->get('group');
         }
         
-        //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For newsletter: '.$this->get('id') );
+        //$this->modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - For newsletter: '.$this->get('id') );
         //$groups = $this->get('groups');// 1 to 1 or comma separted list 1,2,3 - bad design
         if ( count($myGroups) > 0 ) {
             $startDate = date('Y-m-d H:i:s');
             
-            $c = $modx->newQuery('EletterSubscribers');
+            $c = $this->modx->newQuery('EletterSubscribers');
             $c->leftJoin('EletterGroupSubscribers', 'Groups');
             $c->where(array('Groups.group:IN' => $myGroups ));// OLD: explode(',',$groups)));
             // 
@@ -121,10 +134,10 @@ class EletterNewsletters extends xPDOSimpleObject {
             }
             
             $c->limit($limit, 0);
-            $subscribers = $modx->getCollection('EletterSubscribers' , $c);
+            $subscribers = $this->modx->getCollection('EletterSubscribers' , $c);
             if ( $this->debug ) {
                 $process_id = time();
-                $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Start send loop for '.$modx->getCount('EletterSubscribers' , $c).' subscribers, processID: '.$process_id );
+                $this->modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Start send loop for '.$this->modx->getCount('EletterSubscribers' , $c).' subscribers, processID: '.$process_id );
             }
             foreach($subscribers as $subscriber) {
                 if ( in_array($subscriber->get('id'), $sendList) ) {
@@ -132,18 +145,20 @@ class EletterNewsletters extends xPDOSimpleObject {
                     continue;
                 }
                 if ( $this->debug ) {
-                    $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Sendone subscribers: '.$subscriber->get('id').' '.$subscriber->get('email').', processID: '.$process_id );
+                    $this->modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->sendList() - Sendone subscribers: '.$subscriber->get('id').' '.$subscriber->get('email').', processID: '.$process_id );
                 }
-                $this->sendOne($subscriber);
+                $delivered = $this->sendOne($subscriber);
                 $numSent++;
-                $queueItem = $modx->newObject('EletterQueue');
+                $queueItem = $this->modx->newObject('EletterQueue');
                 $queueItem->fromArray(
                     array(
                         'newsletter' => $this->get('id'),
                         'subscriber' => $subscriber->get('id'),
                         'sent' => 1,
-                        // add sent date
-                        'sent_time' => date('Y-m-d H:i:a')
+                        // added in RC1
+                        'sent_time' => date('Y-m-d H:i:a'),
+                        'delivered' => $delivered,
+                        'error' => $this->sendOneError,
                     )
                 );
                 $queueItem->save();
@@ -178,7 +193,7 @@ class EletterNewsletters extends xPDOSimpleObject {
      * @return (Boolean)
      */
     public function sendOne($subscriber, $save=true) {
-        global $modx;
+        $this->setMODX();
         $success = true;
         
         // has the newsletter been created?  if not create it
@@ -199,29 +214,37 @@ class EletterNewsletters extends xPDOSimpleObject {
                 'c' => $subscriber->get('code'),
                 'nwl' => $this->get('id'), 
             );
-        $placeholders['manageSubscriptionsID'] = $modx->getOption('groupeletters.manageSubscriptionsPageID', '', 1);
+        $placeholders['manageSubscriptionsID'] = $this->modx->getOption('groupeletters.manageSubscriptionsPageID', '', 1);
+        $placeholders['trackingPageID'] = $this->modx->getOption('groupeletters.trackingPageID', '', 1);
         // http://rtfm.modx.com/display/revolution20/modX.makeUrl
-        $placeholders['manageSubscriptionsUrl'] = $modx->makeUrl($placeholders['manageSubscriptionsID'], '', $urlData, 'full');
+        $placeholders['manageSubscriptionsUrl'] = $this->modx->makeUrl($placeholders['manageSubscriptionsID'], '', $urlData, 'full');
         
         // newsletterID]]&amp;s=[[+subscriberID]]&amp;c=[[+code
-        $placeholders['unsubscribeID'] = $modx->getOption('groupeletters.unsubscribePageID', '', 1);
-        $placeholders['unsubscribeUrl'] = $modx->makeUrl($placeholders['unsubscribeID'], '', $urlData, 'full');
+        $placeholders['unsubscribeID'] = $this->modx->getOption('groupeletters.unsubscribePageID', '', 1);
+        $placeholders['unsubscribeUrl'] = $this->modx->makeUrl($placeholders['unsubscribeID'], '', $urlData, 'full');
+        if ( (boolean) $this->modx->getOption('groupeletters.useUrlTracking', '', FALSE) ) {
+            require_once 'elettertracking.class.php';
+            $tracking = new EletterTracking($this->modx);
+            $placeholders['trackingImage'] = $tracking->makeUrl('trackingImage', $this->get('id'), 'image');
+        }
+        $this->modx->getService('mail', 'mail.modPHPMailer');
         
-        $modx->getService('mail', 'mail.modPHPMailer');
+        $this->modx->mail->set(modMail::MAIL_BODY,      $this->getELetter($placeholders));
+        $this->modx->mail->set(modMail::MAIL_FROM,      $this->get('from') );
+        $this->modx->mail->set(modMail::MAIL_FROM_NAME, $this->get('from_name') );
+        $this->modx->mail->set(modMail::MAIL_SENDER,    $this->get('from'));
+        $this->modx->mail->set(modMail::MAIL_SUBJECT,   $this->get('title'));
+        $this->modx->mail->address('to',                $subscriber->get('email'));
+        $this->modx->mail->address('reply-to', $this->get('reply_to'));
+        $this->modx->mail->setHTML(true);
         
-        $modx->mail->set(modMail::MAIL_BODY,      $this->getELetter($placeholders));
-        $modx->mail->set(modMail::MAIL_FROM,      $this->get('from') );
-        $modx->mail->set(modMail::MAIL_FROM_NAME, $this->get('from_name') );
-        $modx->mail->set(modMail::MAIL_SENDER,    $this->get('from'));
-        $modx->mail->set(modMail::MAIL_SUBJECT,   $this->get('title'));
-        $modx->mail->address('to',                $subscriber->get('email'));
-        $modx->mail->address('reply-to', $this->get('reply_to'));
-        $modx->mail->setHTML(true);
-        if (!$modx->mail->send()) {
-            $modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->newsletter->sendOne()] An error occurred while trying to send newsletter to: '.$subscriber->get('email').' E: '.$modx->mail->mailer->ErrorInfo);
+        $this->sendOneError = '';
+        if (!$this->modx->mail->send()) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->newsletter->sendOne()] An error occurred while trying to send newsletter to: '.$subscriber->get('email').' E: '.$this->modx->mail->mailer->ErrorInfo);
+            $this->sendOneError = $this->modx->mail->mailer->ErrorInfo;
             $success = false;
         }
-        $modx->mail->reset();
+        $this->modx->mail->reset();
         return $success;
     }
     /**
@@ -230,11 +253,11 @@ class EletterNewsletters extends xPDOSimpleObject {
      * @return (String) $html
      */
     public function getELetter($placeholders) {
-        global $modx;
+        $this->setMODX();
         // set placeholders
         // process
         //get message including parsed placeholders
-        $chunk = $modx->newObject('modChunk');
+        $chunk = $this->modx->newObject('modChunk');
         $chunk->setContent($this->get('message'));
         $html = $chunk->process($placeholders);
         unset($chunk);
@@ -250,18 +273,18 @@ class EletterNewsletters extends xPDOSimpleObject {
      * @TODO review this method
      */
     private function _createELetter($save=true) { 
-        global $modx;
+        $this->setMODX();
         // process the eletter but leave the placeholders as
-        $doc = $modx->getObject('modResource', array('id'=>$this->get('resource')));
+        $doc = $this->modx->getObject('modResource', array('id'=>$this->get('resource')));
         
-        //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource: '.$this->get('resource') );
+        //$this->modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource: '.$this->get('resource') );
         
-        $docUrl = preg_replace('/&amp;/', '&', $modx->makeUrl($this->get('resource'), '', '&sending=1', 'full') );
+        $docUrl = preg_replace('/&amp;/', '&', $this->modx->makeUrl($this->get('resource'), '', '&sending=1', 'full') );
         
-        //$modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource URL: '.$docUrl );
+        //$this->modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->_createEletter() - Resource URL: '.$docUrl );
         
-        $context = $modx->getObject('modContext', array('key' => $doc->get('context_key')));
-        $contextUrl = $context->getOption('site_url', $modx->getOption('site_url'));
+        $context = $this->modx->getObject('modContext', array('key' => $doc->get('context_key')));
+        $contextUrl = $context->getOption('site_url', $this->modx->getOption('site_url'));
         unset($context);
         
         $message = $doc->process();//NULL,$doc->getContent());
@@ -285,13 +308,13 @@ class EletterNewsletters extends xPDOSimpleObject {
         
         $cssStyles = "\n";
         // Embedded CSS Chunk 
-        $tempCss = $modx->getChunk('cssEmbed_'.str_replace(' ', '', $this->get('title')));// cssFile_templateName, cssEmbed_templateName, cssResouce_templateName
+        $tempCss = $this->modx->getChunk('cssEmbed_'.str_replace(' ', '', $this->get('title')));// cssFile_templateName, cssEmbed_templateName, cssResouce_templateName
         if (!empty($tempCss)) {
             // apply styles
             $cssStyles .= $tempCss;
         }
         // File CSS Chunk - comma separated list:
-        $tempCss = $modx->getChunk('cssFile_'.str_replace(' ', '', $this->get('title')));// cssFile_templateName, cssEmbed_templateName, cssResouce_templateName
+        $tempCss = $this->modx->getChunk('cssFile_'.str_replace(' ', '', $this->get('title')));// cssFile_templateName, cssEmbed_templateName, cssResouce_templateName
         if (!empty($tempCss)) {
             $files = explode(',', $tempCss);
             foreach ($files as $file) {
@@ -318,14 +341,6 @@ class EletterNewsletters extends xPDOSimpleObject {
         
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
     /** 
      *  Make the tracking links:
      * @param (Sring) $html
@@ -333,7 +348,7 @@ class EletterNewsletters extends xPDOSimpleObject {
      * @return (String) $html
      */
     public function makeUrls($html, $tracking=false){ // bool
-        global $modx;
+        $this->setMODX();
         // Make full URLs:
         $baseUrl = ''; 
         $dom = new DOMDocument('1.0', 'utf-8');
@@ -350,94 +365,30 @@ class EletterNewsletters extends xPDOSimpleObject {
             }
         }
         if( empty($baseUrl) || $baseUrl == '[[++site_url]]') {
-            $baseUrl = $modx->getOption('site_url');
+            $baseUrl = $this->modx->getOption('site_url');
             $html = str_replace('[[++site_url]]', $baseUrl, $html);
         }
         
-        //return $html;//
-        return $this->fullUrls($baseUrl, $html);
-        
-        // @TODO Make trackable URLs:
-        /* 
-        //convert local link URLs to full URLs
-        $links = $dom->getElementsByTagName('a');
-        foreach($links as $link) {
-            if( $href = $link->getAttribute('href') ) {
-                if(substr($href, 0, 7) != 'http://' && substr(trim($href), 0, 7) != 'mailto:') {
-                    $newhref = $site_url.$href;
-                    //add tracking vars
-                    $newhref .= ( strpos($newhref, '?') ? '&amp;' : '?' );
-                    $newhref .= 'nwl=[[+newsletterID]]&amp;s=[[+subscriberID]]&amp;c=[[+code]]';
-                    $link->setAttribute('href',$newhref);
-                }
-            }
-        }*/
-        
-        // Make tracking URLs:
-        
-        // 1. Convert all links to /tiny/Link id(base 64)/Person ID(base 64?) -> email_links
-        $temp_links = explode("<a ",$message);
-        $shortened_email = NULL;
-        
-        foreach ($temp_links as $link_str ) {
-            // get the first occurance of href
-            $position = strpos($link_str, 'href="');
-            if ( $position === false ) {
-                // no link:
-                $shortened_email .= $link_str;
-                continue;
-            }
-            $before = substr($link_str, 0, $position );
-            $link = substr($link_str, ($position+6) );
-            $quote_position = strpos($link, '"');
-            $after = substr($link, ($quote_position+1) );
-            $link = substr($link, 0, $quote_position );
-            
-            if ( strpos($link, 'mailto:') === false  && strpos($link, '[[') === false ) {
-            
-            } else {
-                // mailto link:
-                $shortened_email .= '<a '.$link_str;
-                continue;
-            }
-            // now reconstruct the link_str:
-            $shortened_email .= '<a '.$before.' href="'.$this->tinyURL($link).'|CODE"'.$after;
+        $html = $this->fullUrls($baseUrl, $html);
+        //return $html;
+        // add in the tracking URLs:
+        if ( (boolean) $this->modx->getOption('groupeletters.useUrlTracking', '', FALSE) ) {
+            require_once 'elettertracking.class.php';
+            $tracking = new EletterTracking($this->modx);
+            $html = $tracking->makeTrackingUrls($html, $this);
         }
-        $this->content = $shortened_email;
-        return true;
+        return $html;
     }
     /**
-     * 
-     * /
-    public function tinyURL($current_url){
-        if ( empty($this->created_urls[$current_url]) ){
-            //echo '<br>Create URL ';
-            $sql = "SELECT * FROM email_links 
-            WHERE
-                email_rec_id = ".$this->email_id." AND
-                url = '".addslashes($current_url)."'
-                ";
-            $data = $this->rs->query($sql, true, true);
-            
-            //echo '<br>SQL: '.mysql_error();
-            //echo '<br>'.$sql;
-            //print_r($data);
-            
-            if ( isset($data['email_link_id']) ) {
-                $this->created_urls[$current_url] = $data['email_link_id'];
-            } else {
-                // save the link:
-                $save_data = array(
-                        'email_rec_id' => $this->email_id,
-                        'url' => $current_url,
-                        'type' => 'link' );
-                if ( $this->rs->add_record($save_data, 'email_links', 'email_link_id') ) {
-                    $this->created_urls[$current_url] = mysql_insert_id();
-                }
-            }
+     * Set modx 
+     */
+    public function setMODX() {
+        if (!is_object($this->modx) ) {
+            global $modx;
+            $this->modx = &$modx;
         }
-        return $this->base_link.base_convert($this->created_urls[$current_url],10,36);
-    }*/
+    }
+    
     /**
      * Apply CSS rules:
      * @param (String) $html
@@ -462,11 +413,6 @@ class EletterNewsletters extends xPDOSimpleObject {
         //$html = preg_replace('/^<!DOCTYPE.+? >/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $html) );
         return $html;
     }
-    
-    
-    
-    
-    // 
     
     /**
      * Make full URLs of HTML body function From emailresource: http://modx.com/extras/package/emailresource

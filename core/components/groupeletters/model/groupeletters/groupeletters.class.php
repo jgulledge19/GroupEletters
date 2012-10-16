@@ -245,7 +245,16 @@ class GroupEletters {
         }
         return false;
 	}
-
+    
+    /**
+     * Load Tracker:
+     */
+    public function loadTracker() {
+        require_once 'elettertracking.class.php';
+        $tracking = new EletterTracking($this->modx);
+        return $tracking;
+    }
+    
     /**
      * Utility function, will return a checked="checked" for radio and checkboxes
      * @param mixed $input

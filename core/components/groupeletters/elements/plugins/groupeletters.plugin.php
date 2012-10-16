@@ -85,32 +85,36 @@ switch($eventName) {
                 if( !empty($testTo) ) {
                     $newsletter->sendTest($testTo);
                 }
-                //$newsletter->sendList(50);
-                //$newsletter->proc
-                //$groupEletters->processQueue();
             }
-            
-            /*  
-                eletterMakeELetter
-             * 
-                eletterSendTest
-                eletterTestTo
-             * 
-                eletterFromEmail
-                eletterFromName
-                eletterReplyEmail
-                eletterSubject
-             * 
-                eletterToGroups
-                eletterAllowComments
-            */
-        
-        } else {
-            // delete eletter
         }
         break;
+     case 'OnLoadWebDocument': 
+        /* tracking */
+        if (is_object($modx->resource) && count($_GET) >= 1 ) {
+            // get the current page ID and compare to the system settings ID for 
+            
+            if (!isset($modx->groupEletters)) {
+                $modx->addPackage('groupeletters', $modx->getOption('core_path').'components/groupeletters/model/');
+                $modx->groupEletters = $modx->getService('groupeletters', 'GroupEletters', $modx->getOption('core_path').'components/groupeletters/model/groupeletters/');
+            }
+            $groupEletters =& $modx->groupEletters;
+            
+            $page_id = $modx->resource->get('id');
+            $tracking_id = $modx->getOption('groupeletters.trackingPageID');
+            $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->Plugin - pageID: '.$page_id.' TrackingID: '.$tracking_id );
+            
+            if ( $page_id == $tracking_id ) {
+                // process the url and redirect if needed:
+                // now load the tracking stuff:
+                $etracker = $groupEletters->loadTracker();
+                $etracker->debug = TRUE;
+                $etracker->logAction('click');
+            }
+        }
+        break;
+        
     case 'OnWebPagePrerender':
-        /* do something else */
+        
         break;
 }
 return;

@@ -34,4 +34,15 @@ $xpdo_meta_map['EletterLinks']= array (
       'default' => 'link',
     ),
   ),
+  'composites' => 
+  array (
+    'SubscriberHits' => 
+    array (
+      'class' => 'EletterSubscriberHits',
+      'local' => 'id',
+      'foreign' => 'link',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+  ),
 );

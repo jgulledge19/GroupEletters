@@ -39,6 +39,7 @@
         </validation>
 	</object>
 	<object class="EletterLinks" table="eletter_links" extends="xPDOSimpleObject">
+        <composite alias="SubscriberHits" class="EletterSubscriberHits" local="id" foreign="link" cardinality="many" owner="local" />
 		<field key="newsletter" dbtype="int" precision="11" phptype="integer" null="true" />
 		<field key="url" dbtype="text" phptype="string" null="true" />
 		<field key="type" dbtype="set" precision="'link','image'" phptype="string" null="true" default="link" />
@@ -90,6 +91,8 @@
 		<field key="subscriber" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
 		<field key="sent" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="sent_date" dbtype="datetime" phptype="datetime" null="true" />
+        <field key="delivered" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="1" />
+        <field key="error" dbtype="text" phptype="string" null="true" />
 
 		<index alias="newsletter" name="newsletter" primary="false" unique="false" type="BTREE" >
 			<column key="newsletter" length="" collation="A" null="false" />
@@ -101,16 +104,15 @@
 	<object class="EletterSubscriberHits" table="eletter_subscriber_hits" extends="xPDOSimpleObject">
         <aggregate alias="Subscriber" class="EletterSubscribers" local="subscriber" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Newsletter" class="EletterNewsletters" local="newsletter" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Link" class="EletterLinks" local="link" foreign="id" cardinality="one" owner="foreign" />
+        
 		<field key="newsletter" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
 		<field key="subscriber" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
-		<field key="url" dbtype="varchar" precision="255" phptype="string" null="true" />
-		<field key="hit_type" dbtype="varchar" precision="32" phptype="string" null="true" />
-		<field key="hit_time" dbtype="int" precision="11" phptype="integer" null="true" />
+		<field key="link" dbtype="int" precision="11" phptype="string" null="true" />
+		<field key="hit_type" dbtype="varchar" precision="16" phptype="string" null="true" />
 		<field key="hit_date" dbtype="datetime" phptype="datetime" null="true" />
 		<field key="view_total" dbtype="int" precision="11" phptype="integer" null="true" />
-		<field key="landing" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="N" />
-		<field key="goal" dbtype="tinyint" precision="4" phptype="integer" null="true" />
-
+		
 		<index alias="newsletter" name="newsletter" primary="false" unique="false" type="BTREE" >
 			<column key="newsletter" length="" collation="A" null="true" />
 		</index>

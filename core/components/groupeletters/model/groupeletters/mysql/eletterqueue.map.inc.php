@@ -10,6 +10,8 @@ $xpdo_meta_map['EletterQueue']= array (
     'subscriber' => 0,
     'sent' => 0,
     'sent_date' => NULL,
+    'delivered' => 1,
+    'error' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -46,6 +48,21 @@ $xpdo_meta_map['EletterQueue']= array (
     array (
       'dbtype' => 'datetime',
       'phptype' => 'datetime',
+      'null' => true,
+    ),
+    'delivered' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 1,
+    ),
+    'error' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
       'null' => true,
     ),
   ),

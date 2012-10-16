@@ -119,6 +119,11 @@ $_lang['setting_groupeletters.manageSubscriptionsPageID'] = 'Manage Subscription
 $_lang['setting_groupeletters.manageSubscriptionsPageID_desc'] = 'The ID of the Resource that is the manage subscriptions page';
 $_lang['setting_groupeletters.unsubscribePageID'] = 'Unsubscribe page';
 $_lang['setting_groupeletters.unsubscribePageID_desc'] = 'The ID of the Resource that is the Unsubsribe page';
+$_lang['setting_groupeletters.trackingPageID'] = 'Tracking Page';
+$_lang['setting_groupeletters.trackingPageID_desc'] = 'The ID of the Resource that is the Tracking Redirect page';
+$_lang['setting_groupeletters.useUrlTracking'] = 'URL Tracking';
+$_lang['setting_groupeletters.useUrlTracking_desc'] = 'Set to true to use URL click tracking';
+
 // replyEmail, fromEmail, fromName
 $_lang['setting_groupeletters.replyEmail'] = 'Reply Email Address';
 $_lang['setting_groupeletters.replyEmail_desc'] = 'The default reply email address';

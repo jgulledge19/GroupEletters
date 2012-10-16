@@ -1,7 +1,11 @@
-1.0 beta5
+1.0 RC1
  - Fixed #13 properly set the batchsize for the queue
  - Corrected a date query issue which effected when a queue would send out
  - Added a debug setting that will log notes to the error log
+ - Added basic stats
+    - new setting: trackingPageID, useUrlTracking
+    - [[+trackingImage]] - for Open rate, you can put a custom image/banner doing this: [[+trackingImage]]image=test.jpg  then put the image in assets/components/groupeletters/images/
+    
  
 1.0 beta4
  - #11 Updated German Translation

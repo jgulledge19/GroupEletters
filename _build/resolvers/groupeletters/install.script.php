@@ -55,7 +55,7 @@ $plugins = array(
     // name
     'groupEletterCreator' =>
         // events, comma separated list 
-        array('OnDocFormSave')
+        array('OnDocFormSave', 'OnLoadWebDocument')
     );
 $templates = array(
     // template name

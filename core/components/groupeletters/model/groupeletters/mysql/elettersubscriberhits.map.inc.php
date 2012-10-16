@@ -8,13 +8,10 @@ $xpdo_meta_map['EletterSubscriberHits']= array (
   array (
     'newsletter' => NULL,
     'subscriber' => NULL,
-    'url' => NULL,
+    'link' => NULL,
     'hit_type' => NULL,
-    'hit_time' => NULL,
     'hit_date' => NULL,
     'view_total' => NULL,
-    'landing' => 'N',
-    'goal' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -34,25 +31,18 @@ $xpdo_meta_map['EletterSubscriberHits']= array (
       'null' => true,
       'index' => 'index',
     ),
-    'url' => 
+    'link' => 
     array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
+      'dbtype' => 'int',
+      'precision' => '11',
       'phptype' => 'string',
       'null' => true,
     ),
     'hit_type' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '32',
+      'precision' => '16',
       'phptype' => 'string',
-      'null' => true,
-    ),
-    'hit_time' => 
-    array (
-      'dbtype' => 'int',
-      'precision' => '11',
-      'phptype' => 'integer',
       'null' => true,
     ),
     'hit_date' => 
@@ -65,21 +55,6 @@ $xpdo_meta_map['EletterSubscriberHits']= array (
     array (
       'dbtype' => 'int',
       'precision' => '11',
-      'phptype' => 'integer',
-      'null' => true,
-    ),
-    'landing' => 
-    array (
-      'dbtype' => 'set',
-      'precision' => '\'Y\',\'N\'',
-      'phptype' => 'string',
-      'null' => true,
-      'default' => 'N',
-    ),
-    'goal' => 
-    array (
-      'dbtype' => 'tinyint',
-      'precision' => '4',
       'phptype' => 'integer',
       'null' => true,
     ),
@@ -133,6 +108,14 @@ $xpdo_meta_map['EletterSubscriberHits']= array (
     array (
       'class' => 'EletterNewsletters',
       'local' => 'newsletter',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+    'Link' => 
+    array (
+      'class' => 'EletterLinks',
+      'local' => 'link',
       'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',

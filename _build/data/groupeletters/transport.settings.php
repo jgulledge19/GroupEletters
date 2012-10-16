@@ -93,4 +93,23 @@ $settings['groupeletters.debug']->fromArray(array (
     'area' => 'Batch',
 ), '', true, true);
 
+$settings['groupeletters.useUrlTracking']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.useUrlTracking']->fromArray(array (
+    'key' => 'groupeletters.useUrlTracking',
+    'value' => '0',
+    'xtype' => 'combo-boolean',
+    'namespace' => 'groupeletters',
+    'area' => 'Tracking',
+), '', true, true);
+
+$settings['groupeletters.trackingPageID']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.trackingPageID']->fromArray(array (
+    'key' => 'groupeletters.trackingPageID',
+    'value' => '1',
+    'xtype' => 'textfield',
+    'namespace' => 'groupeletters',
+    'area' => 'Tracking',
+), '', true, true);
+
+
 return $settings;
