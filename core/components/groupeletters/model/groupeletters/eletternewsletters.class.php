@@ -168,8 +168,12 @@ class EletterNewsletters extends xPDOSimpleObject {
         }
         $current_status = $this->get('status');
         // add in the number sent for this round:
-        $sent_cnt = $this->get('sent_cnt');
-        if ( $numSent > 0 && $sent_cnt == 0 ) {
+        $sent = $this->get('sent');
+        $been_delivered = $this->get('delivered');
+        if ( $delivered ) {
+            $been_delivered += 1;
+        }
+        if ( $numSent > 0 && $sent == 0 ) {
             $this->set('start_date', $startDate );
             // $this->set('status', 'sent');
             //$this->save();
@@ -179,9 +183,9 @@ class EletterNewsletters extends xPDOSimpleObject {
             $this->set('finish_date', date('Y-m-d H:i:s'));
             $this->set('status', 'complete');
         }
-        $sent_cnt += $numSent;
-        $this->set('sent_cnt', $sent_cnt);
-        $this->set('tot_cnt', $sent_cnt);
+        $sent += $numSent;
+        $this->set('sent', $sent);// total number sent
+        $this->set('delivered', $delivered);// total sent with out errors
         
         $this->save();
        return $numSent;

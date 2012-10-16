@@ -89,6 +89,13 @@ if ($object->xpdo) {
             $modx->exec("ALTER TABLE {$modx->getTableName('EletterLinks')}
                 CHANGE `type` `type` SET('click','image') CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'click' NULL
                 ");
+                
+            $modx->exec("ALTER TABLE {$modx->getTableName('EletterNewsletters')}
+                    CHANGE `sent_cnt` `sent` INT(11) DEFAULT '0' NULL ,
+                    CHANGE `tot_cnt` `delivered` INT(11) DEFAULT '0' NULL ,
+                    CHANGE `bounce_cnt` `bounced` INT(11) UNSIGNED DEFAULT '0' NULL 
+                ");
+            
             break;
     }
 }

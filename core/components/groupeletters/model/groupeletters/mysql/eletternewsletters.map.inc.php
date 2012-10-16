@@ -20,9 +20,9 @@ $xpdo_meta_map['EletterNewsletters']= array (
     'add_date' => NULL,
     'start_date' => NULL,
     'finish_date' => NULL,
-    'sent_cnt' => 0,
-    'tot_cnt' => 0,
-    'bounce_cnt' => 0,
+    'sent' => 0,
+    'delivered' => 0,
+    'bounced' => 0,
     'extended' => NULL,
   ),
   'fieldMeta' => 
@@ -125,7 +125,7 @@ $xpdo_meta_map['EletterNewsletters']= array (
       'phptype' => 'datetime',
       'null' => true,
     ),
-    'sent_cnt' => 
+    'sent' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
@@ -133,7 +133,7 @@ $xpdo_meta_map['EletterNewsletters']= array (
       'null' => true,
       'default' => 0,
     ),
-    'tot_cnt' => 
+    'delivered' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
@@ -141,7 +141,7 @@ $xpdo_meta_map['EletterNewsletters']= array (
       'null' => true,
       'default' => 0,
     ),
-    'bounce_cnt' => 
+    'bounced' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',

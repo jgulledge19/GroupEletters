@@ -75,9 +75,9 @@
 		<field key="add_date" dbtype="datetime" phptype="datetime" null="true" />
 		<field key="start_date" dbtype="datetime" phptype="datetime" null="true" />
 		<field key="finish_date" dbtype="datetime" phptype="datetime" null="true" />
-		<field key="sent_cnt" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
-		<field key="tot_cnt" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
-		<field key="bounce_cnt" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="true" default="0" />
+		<field key="sent" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
+		<field key="delivered" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
+		<field key="bounced" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="true" default="0" />
 		<field key="extended" dbtype="text" phptype="string" null="true" />
 
 		<index alias="resource" name="resource" primary="false" unique="false" type="BTREE" >

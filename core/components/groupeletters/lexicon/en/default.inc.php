@@ -17,8 +17,12 @@ $_lang['groupeletters.newsletters'] = 'Newsletters';
 $_lang['groupeletters.newsletters.subject'] = 'Subject';
 $_lang['groupeletters.newsletters.date'] = 'Date';
 $_lang['groupeletters.newsletters.document'] = 'Document';
-$_lang['groupeletters.newsletters.total'] = 'Total';
 $_lang['groupeletters.newsletters.sent'] = 'Sent';
+$_lang['groupeletters.newsletters.delivered'] = 'Delivered';
+$_lang['groupeletters.newsletters.bounced'] = 'Bounced';
+$_lang['groupeletters.newsletters.opened'] = 'Opened/Read';
+$_lang['groupeletters.newsletters.clicks'] = 'Clicks';
+
 $_lang['groupeletters.newsletters.new'] = 'New newsletter';
 $_lang['groupeletters.newsletters.groups'] = 'Groups';
 $_lang['groupeletters.newsletters.remove'] = 'Remove newsletter';

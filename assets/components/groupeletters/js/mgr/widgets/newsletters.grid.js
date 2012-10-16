@@ -4,7 +4,7 @@ GroupEletters.grid.Newsletters = function(config) {
         id: 'groupeletters-grid-newsletters'
         ,url: GroupEletters.config.connectorUrl
         ,baseParams: { action: 'mgr/newsletters/list' }
-        ,fields: ['id','title','date','total','sent']
+        ,fields: ['id','title','date','delivered','sent', 'bounced', 'opened', 'clicks']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -24,12 +24,24 @@ GroupEletters.grid.Newsletters = function(config) {
             ,dataIndex: 'date'
             ,sortable: true
         },{
-            header: _('groupeletters.newsletters.total')
-            ,dataIndex: 'total'
-            ,sortable: true
-        },{
             header: _('groupeletters.newsletters.sent')
             ,dataIndex: 'sent'
+            ,sortable: false
+        },{
+            header: _('groupeletters.newsletters.delivered')
+            ,dataIndex: 'delivered'
+            ,sortable: true
+        },{
+            header: _('groupeletters.newsletters.bounced')
+            ,dataIndex: 'bounced'
+            ,sortable: false
+        },{
+            header: _('groupeletters.newsletters.opened')
+            ,dataIndex: 'opened'
+            ,sortable: false
+        },{
+            header: _('groupeletters.newsletters.clicks')
+            ,dataIndex: 'clicks'
             ,sortable: false
         }]/*
         ,tbar: [{

@@ -5,7 +5,6 @@
  * License: GNU GENERAL PUBLIC LICENSE Version 2, June 1991
  *
  */
-
  
 // set OnHandleRequest 
 $eventName = $modx->event->name;
