@@ -29,6 +29,7 @@
         </style>
     </head>
     <body marginheight="0" topmargin="0" marginwidth="0" leftmargin="0" background="" style="margin: 0px; background-color: #ffffff;" bgcolor="#ffffff">
+        
         <table cellspacing="0" border="0" cellpadding="0" width="100%">
             <tbody>
                 <tr valign="top">
@@ -38,7 +39,7 @@
                                 <tr>
                                     <td valign="middle" bgcolor="#ebebeb" height="30" style="vertical-align: middle; border-bottom-color: #d6d6d6; border-bottom-width: 1px; border-bottom-style: solid;">
                                         <p class="notice" >
-                                            You&rsquo;re receiving this newsletter because you signed up at <a href="[[++site_url]]" style="color: #fd2323; text-decoration: none;">[[++site_url]]</a>. You can <a href="[[~[[*id]]? &nwl=`[[+newsletterID]]` &s=`[[+subscriberID]]` &c=`[[+code]]` ]]" style="color: #fd2323; text-decoration: none;">view it in your web browser</a>.
+                                            <img src="[[+trackingImage]]" alt="" />You&rsquo;re receiving this newsletter because you signed up at <a href="[[++site_url]]" style="color: #fd2323; text-decoration: none;">[[++site_url]]</a>. You can <a href="[[~[[*id]]? &nwl=`[[+newsletterID]]` &s=`[[+subscriberID]]` &c=`[[+code]]` ]]" style="color: #fd2323; text-decoration: none;">view it in your web browser</a>.
                                         </p>
                                     </td>
                                 </tr>
