@@ -57,7 +57,13 @@ foreach ($newsletters as $newsletter) {
     if ( empty($newsletter['start_date']) ) {
         $newsletter['date'] = ' - ';
     } else {
-        $newsletter['date'] = date($modx->getOption('manager_date_format', NULL, 'Y-m-d'),strtotime($newsletter['start_date']));
+        $newsletter['date'] = date($modx->getOption('manager_date_format', NULL, 'Y-m-d').' '.$modx->getOption('manager_time_format', NULL, 'g:i a') ,strtotime($newsletter['start_date']));
+    }
+    // do end date:
+    if ( empty($newsletter['finish_date']) ) {
+        $newsletter['date'] .= ' - ';
+    } else {
+        $newsletter['date'] .= ' - '. date($modx->getOption('manager_date_format', NULL, 'Y-m-d').' '.$modx->getOption('manager_time_format', NULL, 'g:i a') ,strtotime($newsletter['finish_date']));
     }
     $list[] = $newsletter;
 }

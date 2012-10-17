@@ -15,7 +15,7 @@ $_lang['groupeletters.search...'] = 'Search...';
 //newsletters
 $_lang['groupeletters.newsletters'] = 'Newsletters';
 $_lang['groupeletters.newsletters.subject'] = 'Subject';
-$_lang['groupeletters.newsletters.date'] = 'Date';
+$_lang['groupeletters.newsletters.date'] = 'Start - Finish Date';
 $_lang['groupeletters.newsletters.document'] = 'Document';
 $_lang['groupeletters.newsletters.sent'] = 'Sent';
 $_lang['groupeletters.newsletters.delivered'] = 'Delivered';

@@ -22,6 +22,15 @@ Features
     User get an unsubscribe link in newsletters ([[+unsubscribeUrl]])
     Select what groups users can subscribe to, one or many.
     Message queue, via the the System Settings chose your batch size and the time in between each email sent
+    Basic Statistics - 
+        - Messages Sent, Messages Delivered, 
+        - Messages Opened. This is the number of recipients who open your email to read it. Due to the way open rates are 
+            tracked and the rise of image-blocking software, this number will never be accurate, but can still be useful.
+            Use [[+trackingImage]] for an image, you can also put a custom image/banner doing this: [[+trackingImage]]image=test.jpg then put the image in assets/components/groupeletters/images/
+            Example useage: <img src="[[+trackingImage]]" alt="" />
+        - Click-Throughs. This is the number of times any recipient clicks on any trackable link within the email. 
+            Ideally, each link should be counted only once, even if it is clicked on multiple times.
+
 
 Requirements
 
@@ -29,7 +38,8 @@ Requirements
     FormIt - for subscribe page
     CronManager - for automated queue
 
-    
+Website: http://www.joshua19media.com
+Docs: 
 ==========================================
  Installation
 ==========================================
@@ -60,6 +70,7 @@ First you will need to install through Package Management and then do the follow
 ==========================================
  Available placeholders
 ==========================================
+[[+trackingImage]]
 [[+first_name]]
 [[+m_name]]
 [[+last_name]]
@@ -92,6 +103,8 @@ Snippets -
     * GroupEletterQueue
     * GroupEletterSignup
     * GroupEletterUnsubscribe
+    * GroupEletterUpdateTables - you may need to run this after updating to latest version
+    
 Templates - 
     * GroupEletterSample
 TVs - 

@@ -19,10 +19,12 @@ GroupEletters.grid.Newsletters = function(config) {
             header: _('groupeletters.newsletters.subject')
             ,dataIndex: 'title'
             ,sortable: true
+            ,width: 140
         },{
-            header: _('date')
+            header: _('groupeletters.newsletters.date')
             ,dataIndex: 'date'
             ,sortable: true
+            ,width: 120
         },{
             header: _('groupeletters.newsletters.sent')
             ,dataIndex: 'sent'

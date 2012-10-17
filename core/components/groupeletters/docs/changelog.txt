@@ -1,10 +1,14 @@
+ - Removed some error logging and set them to respect the groupeletters.debug setting
+ - Imporved how statistics are recorded
+
 1.0 RC1
  - Fixed #13 properly set the batchsize for the queue
  - Corrected a date query issue which effected when a queue would send out
  - Added a debug setting that will log notes to the error log
- - Added basic stats
+ - Added basic stats #12
+    - Numerous database changes
     - new setting: trackingPageID, useUrlTracking
-    - [[+trackingImage]] - for Open rate, you can put a custom image/banner doing this: [[+trackingImage]]image=test.jpg  then put the image in assets/components/groupeletters/images/
+    - [[+trackingImage]] - for Opened
     
  
 1.0 beta4

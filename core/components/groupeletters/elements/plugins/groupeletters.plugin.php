@@ -100,13 +100,12 @@ switch($eventName) {
             
             $page_id = $modx->resource->get('id');
             $tracking_id = $modx->getOption('groupeletters.trackingPageID');
-            $modx->log(modX::LOG_LEVEL_ERROR,'EletterNewsletter->Plugin - pageID: '.$page_id.' TrackingID: '.$tracking_id );
             
             if ( $page_id == $tracking_id ) {
                 // process the url and redirect if needed:
                 // now load the tracking stuff:
                 $etracker = $groupEletters->loadTracker();
-                $etracker->debug = TRUE;
+                $etracker->debug = (boolean)$this->modx->getOption('groupeletters.debug',NULL, 0);
                 $etracker->logAction('click');
             }
         }

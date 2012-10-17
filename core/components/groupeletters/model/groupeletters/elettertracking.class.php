@@ -31,16 +31,12 @@ class EletterTracking {
     /**
      * Create the URL
      * @param (String) $html
+     * @param (Object) $newsletter
      * @return (String) $html - processed
      */
     public function makeTrackingUrls ($html, $newsletter) {
         // 1. get all existing tracking URLs for current newsletter:
-        $savedList = $this->modx->getCollection('EletterLinks', array('newsletter' => $newsletter->get('id') ) );
-        $this->created_urls = array();
-        foreach ( $savedList as $aLink ) {
-            $tmp = $aLink->toArray();
-            $this->created_urls[$tmp['url']] = $tmp['id'];
-        }
+        $this->getTrackingUrls($newsletter->get('id'));
         
         // 2. Convert all links to /tiny/Link id(base 64)/Person ID(base 64?) -> email_links
         $link_list = explode("<a ",$html);
@@ -79,16 +75,19 @@ class EletterTracking {
     /**
      * Create the URLs
      * @param (STring) $url
-     * @param (Int) $newsletter
+     * @param (Int) $newsletterID
      * @param (string) $type - click or image
      * 
      * @return (String) $url - the tracking URL
      */
-    public function makeUrl ($url,$newsletter, $type='click') {
+    public function makeUrl ($url,$newsletterID, $type='click') {
+        if ( $type == 'image' ) {
+            $this->getTrackingUrls($newsletterID);
+        }
         if ( empty($this->created_urls[$url]) ){
             $link = $this->modx->newObject('EletterLinks');
             $link->set('url',$url);
-            $link->set('newsletter', $newsletter);
+            $link->set('newsletter', $newsletterID);
             $link->set('type',$type);
             $link->save();
             
@@ -104,6 +103,21 @@ class EletterTracking {
         } 
         return str_replace('https://', 'http://', $url);
     }
+    /**
+     * get Tracking Url list:
+     * @param (Int) $newsletterID
+     * @return Void
+     * 
+     */
+    protected function getTrackingUrls($newsletterID) {
+        $savedList = $this->modx->getCollection('EletterLinks', array('newsletter' => $newsletterID ) );
+        $this->created_urls = array();
+        foreach ( $savedList as $aLink ) {
+            $tmp = $aLink->toArray();
+            $this->created_urls[$tmp['url']] = $tmp['id'];
+        }
+    }
+    
     /**
      * Record and redirect the URLs
      * @param (String) $type - click or image, click will redirect and image will send back an image
@@ -148,21 +162,49 @@ class EletterTracking {
                                 'hit_date' => date('Y-m-d H:i:s'),
                                 'view_total' => 1,
                             );
-                        $click->fromArray(
-                            $data
-                        );
+                        $click->fromArray($data);
                     }
                     $click->save();
                     $placeholders = $subscriber->toArray();
                 }
                 
                 // set cookies?
-                
                 if ( $type == 'click' ) {
                     // set all info and process the string:
                     $chunk = $this->modx->newObject('modChunk');
                     $chunk->setContent($link->get('url'));
                     $url = $chunk->process($placeholders);
+                    
+                    // add image(open) stat if not already:
+                    $conditions = array('newsletter' => $link->get('newsletter'), 'url' => 'trackingImage', 'type' => 'image' );
+                    $image = $this->modx->getObject('EletterLinks', $conditions );
+                    
+                    if ( is_object($image) && is_object($subscriber) ){
+                        $opened = $this->modx->getObject('EletterSubscriberHits', array('link' => $image->get('id'), 'subscriber' => $subscriber->get('id')));
+                        if ( is_object($opened) ) {
+                            // it all ready has been recorded so no need to do anything
+                        } else {
+                            $opened = $this->modx->newObject('EletterSubscriberHits');
+                            $data = array(
+                                    'newsletter' => $link->get('newsletter'),
+                                    'subscriber' => $subscriber->get('id'),
+                                    'link' => $image->get('id'),
+                                    'hit_type' => 'image',
+                                    'hit_date' => date('Y-m-d H:i:s'),
+                                    'view_total' => 1,
+                                );
+                            $opened->fromArray($data);
+                            $opened->save();
+                        }
+                    }
+                    // add campaign/newsletter title for analytics:
+                    $newsletter = $this->modx->getObject('EletterNewsletters', array('id' => $link->get('newsletter') ) );
+                    if ( strpos($url, '?') === FALSE ) {
+                        $url .= '?';
+                    } else {
+                        $url .= '&';
+                    }
+                    $url .= 'campaign='.urlencode(str_replace(' ','-',$newsletter->get('title')));
                     $this->modx->sendRedirect($url);
                 }
             }
