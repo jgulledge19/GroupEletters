@@ -84,6 +84,15 @@ $settings['groupeletters.fromName']->fromArray(array (
     'area' => 'Email',
 ), '', true, true);
 
+$settings['groupeletters.testPrefix']= $modx->newObject('modSystemSetting');
+$settings['groupeletters.testPrefix']->fromArray(array (
+    'key' => 'groupeletters.testPrefix',
+    'value' => 'TEST - ',
+    'xtype' => 'textfield',
+    'namespace' => 'groupeletters',
+    'area' => 'Email',
+), '', true, true);
+
 $settings['groupeletters.debug']= $modx->newObject('modSystemSetting');
 $settings['groupeletters.debug']->fromArray(array (
     'key' => 'groupeletters.debug',

@@ -1,5 +1,8 @@
  - Removed some error logging and set them to respect the groupeletters.debug setting
  - Imporved how statistics are recorded
+ - #19 added cs localization 
+ - #17 added in new system setting testPrefix to allow admin to prefix all test email subject lines
+ - 
 
 1.0 RC1
  - Fixed #13 properly set the batchsize for the queue

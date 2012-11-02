@@ -135,6 +135,8 @@ $_lang['setting_groupeletters.fromEmail'] = 'From Email Address';
 $_lang['setting_groupeletters.fromEmail_desc'] = 'The default from email address';
 $_lang['setting_groupeletters.fromName'] = 'From Name';
 $_lang['setting_groupeletters.fromName_desc'] = 'The default from name';
+$_lang['setting_groupeletters.testPrefix'] = 'Test Email Subject Prefix';
+$_lang['setting_groupeletters.testPrefix_desc'] = 'Set a value to prefix all test email subject lines.';
 
 
 

@@ -84,7 +84,8 @@ class EletterNewsletters extends xPDOSimpleObject {
                 $subscriber->fromArray($defaultData);
             }
             // send test
-            $this->sendOne($subscriber, false);
+            $subjectPrefix = $this->modx->getOption('groupeletters.testPrefix', '', NULL);
+            $this->sendOne($subscriber, false, $subjectPrefix);
         }
         return true;
     }
@@ -194,9 +195,10 @@ class EletterNewsletters extends xPDOSimpleObject {
      * Send an eletter to a subscriber
      * @param (Array) $subscriber
      * @param (Boolean) $save
+     * @param (String) $subjectPrefix
      * @return (Boolean)
      */
-    public function sendOne($subscriber, $save=true) {
+    public function sendOne($subscriber, $save=true, $subjectPrefix=NULL) {
         $this->setMODX();
         $success = true;
         
@@ -237,7 +239,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         $this->modx->mail->set(modMail::MAIL_FROM,      $this->get('from') );
         $this->modx->mail->set(modMail::MAIL_FROM_NAME, $this->get('from_name') );
         $this->modx->mail->set(modMail::MAIL_SENDER,    $this->get('from'));
-        $this->modx->mail->set(modMail::MAIL_SUBJECT,   $this->get('title'));
+        $this->modx->mail->set(modMail::MAIL_SUBJECT,   $subjectPrefix.$this->get('title'));
         $this->modx->mail->address('to',                $subscriber->get('email'));
         $this->modx->mail->address('reply-to', $this->get('reply_to'));
         $this->modx->mail->setHTML(true);
