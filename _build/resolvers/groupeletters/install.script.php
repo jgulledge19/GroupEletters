@@ -69,6 +69,7 @@ $templates = array(
             'eletterToGroups',
             'eletterSendTest',
             'eletterTestTo',
+            'eletterAttachment',
         ),
     );
 

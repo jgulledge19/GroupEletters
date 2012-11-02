@@ -34,7 +34,11 @@ switch($eventName) {
             //$attachments = array($resource->getTVValue('eletterAttachment'));
             
             $tv = $modx->getObject('modTemplateVar', array('name'=>'eletterAttachment'));
-            $attachments = array($tv->renderOutput($resource->get('id')));// default to the current resource
+            $tvValue = $tv->getValue($resource->get('id'));
+            $source = $tv->getSource();
+            $source->initialize();
+            $path = $source->getBasePath();
+            $attachments = array(str_replace(MODX_BASE_PATH, '', $path).'/'.ltrim($tvValue,'/'));
             
             $data = array(
                     'title' => $resource->getTVValue('eletterSubject'),

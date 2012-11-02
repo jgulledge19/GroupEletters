@@ -95,7 +95,10 @@ if ($object->xpdo) {
                     CHANGE `tot_cnt` `delivered` INT(11) DEFAULT '0' NULL ,
                     CHANGE `bounce_cnt` `bounced` INT(11) UNSIGNED DEFAULT '0' NULL 
                 ");
-            
+            // added in 1.0rc2?
+            $modx->exec("ALTER TABLE {$modx->getTableName('EletterNewsletters')}
+                    ADD COLUMN `attachments` TEXT NULL AFTER `bounced`; 
+                ");
             break;
     }
 }

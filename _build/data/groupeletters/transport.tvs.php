@@ -160,5 +160,21 @@ $templateVariables[$x]->fromArray(array(
     'properties' => array(),
 ),'',true,true);
 
+$templateVariables[++$x]= $modx->newObject('modTemplateVar');
+$templateVariables[$x]->fromArray(array(
+    'id' => $x,
+    'type' => 'file',
+    'name' => 'eletterAttachment',
+    'caption' => 'Add an attachment',
+    'description' => 'PDF, Word Document or small media file under 10mb.',
+    'display' => 'default',
+    'elements' => '',  /* input option values */
+    'locked' => 0,
+    'rank' => 0,
+    'display_params' => '',
+    'default_text' => '',
+    'properties' => array(),
+),'',true,true);
+
 
 return $templateVariables;
