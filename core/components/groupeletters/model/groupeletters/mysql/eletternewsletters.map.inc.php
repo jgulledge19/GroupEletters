@@ -23,6 +23,7 @@ $xpdo_meta_map['EletterNewsletters']= array (
     'sent' => 0,
     'delivered' => 0,
     'bounced' => 0,
+    'attachments' => NULL,
     'extended' => NULL,
   ),
   'fieldMeta' => 
@@ -149,6 +150,12 @@ $xpdo_meta_map['EletterNewsletters']= array (
       'phptype' => 'integer',
       'null' => true,
       'default' => 0,
+    ),
+    'attachments' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => true,
     ),
     'extended' => 
     array (

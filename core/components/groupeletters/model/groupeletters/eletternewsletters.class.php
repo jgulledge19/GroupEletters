@@ -235,7 +235,9 @@ class EletterNewsletters extends xPDOSimpleObject {
         }
         $this->modx->getService('mail', 'mail.modPHPMailer');
         
-        $this->modx->mail->set(modMail::MAIL_BODY,      $this->getELetter($placeholders));
+        $this->modx->mail->set(modMail::MAIL_BODY,      $body=$this->getELetter($placeholders));
+        // ->AltBody
+        $this->modx->mail->set(modMail::MAIL_BODY_TEXT, strip_tags($body));
         $this->modx->mail->set(modMail::MAIL_FROM,      $this->get('from') );
         $this->modx->mail->set(modMail::MAIL_FROM_NAME, $this->get('from_name') );
         $this->modx->mail->set(modMail::MAIL_SENDER,    $this->get('from'));
@@ -243,7 +245,14 @@ class EletterNewsletters extends xPDOSimpleObject {
         $this->modx->mail->address('to',                $subscriber->get('email'));
         $this->modx->mail->address('reply-to', $this->get('reply_to'));
         $this->modx->mail->setHTML(true);
-        
+        // attachments:
+        $attachments = json_decode($this->get('attachments'));
+        foreach ( $attachments as $attachment ) {
+            if ( !file_exists(MODX_BASE_PATH.DIRECTORY_SEPARATOR.$attachment) ) {
+                continue;
+            }
+            $this->modx->mail->attach(MODX_BASE_PATH.DIRECTORY_SEPARATOR.$attachment);
+        }
         $this->sendOneError = '';
         if (!$this->modx->mail->send()) {
             $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->newsletter->sendOne()] An error occurred while trying to send newsletter to: '.$subscriber->get('email').' E: '.$this->modx->mail->mailer->ErrorInfo);

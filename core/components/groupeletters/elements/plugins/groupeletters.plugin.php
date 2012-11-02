@@ -30,6 +30,12 @@ switch($eventName) {
         
         $makeELetter = $resource->getTVValue('eletterMakeELetter');
         if ( !empty($makeELetter) && $makeELetter == 'Yes' ) {
+            // send to array then JSON - need to get the path from the TV?
+            //$attachments = array($resource->getTVValue('eletterAttachment'));
+            
+            $tv = $modx->getObject('modTemplateVar', array('name'=>'eletterAttachment'));
+            $attachments = array($tv->renderOutput($resource->get('id')));// default to the current resource
+            
             $data = array(
                     'title' => $resource->getTVValue('eletterSubject'),
                     'subject' => $resource->getTVValue('eletterSubject'),
@@ -40,6 +46,7 @@ switch($eventName) {
                     'status' => 'approved', //draft, submitted, approved $resource->getTVValue('eletterAllowComments'),
                     'allow_comments' => 'N',// Y/N $resource->getTVValue('eletter'),
                     'user' => $resource->get('publishedby'),
+                    'attachments' => json_encode($attachments),
                 );
             // published
             if ( $resource->get('published') ) {

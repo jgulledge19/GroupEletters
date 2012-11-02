@@ -78,6 +78,7 @@
 		<field key="sent" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
 		<field key="delivered" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
 		<field key="bounced" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="true" default="0" />
+		<field key="attachments" dbtype="text" phptype="string" null="true" />
 		<field key="extended" dbtype="text" phptype="string" null="true" />
 
 		<index alias="resource" name="resource" primary="false" unique="false" type="BTREE" >
