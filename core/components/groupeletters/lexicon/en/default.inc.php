@@ -92,7 +92,10 @@ $_lang['groupeletters.subscribers.importcsv.err.cantopenfile'] = 'Can\'t open fi
 $_lang['groupeletters.subscribers.importcsv.err.firstrow'] = 'First row must contain column names (first column must be email)';
 $_lang['groupeletters.subscribers.importcsv.err.cantsaverow'] = 'Can\'t save row [[+rownum]]';
 $_lang['groupeletters.subscribers.importcsv.err.skippedrow'] = 'Skipped row [[+rownum]]';
-$_lang['groupeletters.subscribers.importcsv.msg.complete'] = 'Import complete. Imported [[+importCount]] records ([[+newCount]] new)';
+// Updated in 1.0RC2
+$_lang['groupeletters.subscribers.importcsv.msg.complete'] = 'New imported records: [[+newCount]] <br>Existing untouched records: [[+existCount]] '.
+        '<br>Invalid CSV records: [[+invalidCount]] <br>Total records in CSV file: [[+csvCount]]';
+// 'Import complete. Imported [[+importCount]] records ([[+newCount]] new)';
 $_lang['groupeletters.subscribers.confirm.subject'] = 'Confirm your newsletter subscription';
 $_lang['groupeletters.subscribers.confirm.success'] = 'You are now subscribed to our newsletter.';
 $_lang['groupeletters.subscribers.confirm.err'] = 'Subscriber / code combination incorrect.';

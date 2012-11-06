@@ -2,8 +2,10 @@
  - Removed some error logging and set them to respect the groupeletters.debug setting
  - Imporved how statistics are recorded
  - #19 added cs localization - Czech language
+ - #18 added very basic mime with strip_tags
  - #17 added in new system setting testPrefix to allow admin to prefix all test email subject lines
- - 
+ - #6 added a way to attach a single file attachment
+ - #14 improved the CSV import process
 
 1.0 RC1
  - Fixed #13 properly set the batchsize for the queue

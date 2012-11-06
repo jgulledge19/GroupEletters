@@ -9,6 +9,28 @@
 	//set_time_limit(300); 
 	//max_execution_time(100);
 /**
+ * http://us3.php.net/manual/en/function.fgetcsv.php#101335
+ */
+class utf8encode_filter extends php_user_filter {
+    function filter($in, $out, &$consumed, $closing) {
+        while ($bucket = stream_bucket_make_writeable($in)) {
+            if ( !mb_check_encoding($bucket->data, 'UTF-8') ) {
+                $sEncoding = mb_detect_encoding($bucket->data/*, "auto", true*/);
+                if ( $sEncoding != "UTF-8" && ( $sEncoding === FALSE || $sEncoding === TRUE ) ){
+                    // echo 'Encoding: '. $sEncoding;
+                    $bucket->data = mb_convert_encoding($bucket->data, "UTF-8", $sEncoding);
+                }
+            }
+            // $bucket->data = utf8_encode($bucket->data);
+            
+            $consumed += $bucket->datalen;
+            stream_bucket_append($out, $bucket);
+        }
+        return PSFS_PASS_ON;
+    }
+}
+
+/**
  * @desciption Make CSV files and/or import them
  */
 class CSV {
@@ -28,6 +50,10 @@ class CSV {
      */
 	protected $bind = false;
     
+    /**
+     * @param (Boolean) $auto_detect - ini_set('auto_detect_line_endings', 1); 
+     */
+    protected $auto_detect = false;
     
     
     /**
@@ -157,6 +183,14 @@ class CSV {
 	
 	####################################################################################
 	/**
+     * set the auto_detect option
+     * @param (Boolean) $value
+     */
+	public function autoDetect($value=TRUE) {
+		$this->auto_detect = $value;
+	}
+	
+	/**
      * Import CSV data
      * @param (String) $file - the full file path and name
      * @param (Int) $length
@@ -170,8 +204,14 @@ class CSV {
 		$row_number = 0;
 		$this->import_columns = 0;
 		$this->import_rows = 0;
+        
+        ini_set('auto_detect_line_endings', $this->auto_detect);
         // get the header for the first row
 		if( $handle = fopen($file, "r") ){
+		    if (stream_filter_register("utf8encode", "utf8encode_filter") ){
+                stream_filter_prepend($handle, "utf8encode"); 
+            }
+            
 			//echo '<br>CSV GET';
 			$this->columns = array();
             $colOrder = array();
@@ -196,6 +236,8 @@ class CSV {
 			}
 			$this->import_rows = --$row_number;
 			fclose($handle);
+		} else {
+		    return FALSE;
 		}
 		return $this->data;
 	}

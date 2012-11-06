@@ -4,7 +4,7 @@
  */
 
 $newData = array();
-$total = $exists = $invalid = 0;
+$total = $imported = $exists = $invalid = 0;
 
 // get possible group ids:
 $my_groups = array();
@@ -28,57 +28,67 @@ if (!empty($_FILES['csv']['name']) && !empty($_FILES['csv']['tmp_name'])) {
     require_once MODX_CORE_PATH.'components/groupeletters/model/groupeletters/csv.class.php';
     $csv = new CSV();
     // returns array( name=>value)
-    $data = $csv->import($_FILES['csv']['tmp_name']);
     
-    foreach ( $data as $individual ) {
-        // $modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters/Process/Import()] Individual: ('.print_r($individual,TRUE) .')');
-        if (!isset($individual['email']) || empty($individual['email'])) {
-            // if there is no email do not import
-            $invalid++;
-            continue;
-        }
-        $subscriber = $modx->getObject('EletterSubscribers', array('email'=>$individual['email']));
-        if ( is_object($subscriber) ) {
-            // they all ready exist!
-            $exists++;
-            continue;
-        }
-        
-        $subscriber = $modx->newObject('EletterSubscribers');
-        $subscriber->fromArray($individual);
-        
-        $subscriber->set('code', md5( time().$individual['email'] ));
-        //$subscriber->set('active', 0);
-        $subscriber->set('date_created', date('Y-m-d H:i:s'));
-        $subscriber->set('active', $scriptProperties['active']);
-        
-        if ($subscriber->save()) {
+    $csv->autoDetect(TRUE);// this just sets ini_set('auto_detect_line_endings', VALUE);
+    
+    $data = $csv->import($_FILES['csv']['tmp_name']);// return the data without the header column but in name(column)=>value pairs
+    if ( $data === FALSE ) {
+        return $modx->error->failure($modx->lexicon('groupeletters.subscribers.importcsv.err.cantopenfile') );
+    } else {
+        $total = count($data);
+        foreach ( $data as $individual ) {
+            // $modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters/Process/Import()] Individual: ('.print_r($individual,TRUE) .')');
+            if (!isset($individual['email']) || empty($individual['email'])) {
+                // if there is no email do not import
+                $invalid++;
+                continue;
+            }
+            $subscriber = $modx->getObject('EletterSubscribers', array('email'=>$individual['email']));
+            if ( is_object($subscriber) ) {
+                // they all ready exist!
+                $exists++;
+                continue;
+            }
             
-            //add new groups
-            foreach($groups as $group) {
-                $id = $group->get('id');
-                // $myGroup = $subscriber->getOne('Groups', array('group' => $id) );
-                $myGroup = $modx->getObject('EletterGroupSubscribers', array('group'=>$id,'subscriber'=>$subscriber->get('id')));
-                        // add subsciber to group
-                // $modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters/Process/Import()] add Subscriber for group ('.$subscriber->get('id') .') to GroupID: '.$id);
-                $GroupSubscribers = $modx->newObject('EletterGroupSubscribers');
-                $GroupSubscribers->set('group', $id);
-                $GroupSubscribers->set('subscriber', $subscriber->get('id'));
-                $GroupSubscribers->set('date_created', date('Y-m-d h:i:s'));
-                $GroupSubscribers->save();
-                unset($myGroup);
-                // $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] GroupID: '.$groupID);
+            $subscriber = $modx->newObject('EletterSubscribers');
+            $subscriber->fromArray($individual);
+            
+            $subscriber->set('code', md5( time().$individual['email'] ));
+            //$subscriber->set('active', 0);
+            $subscriber->set('date_created', date('Y-m-d H:i:s'));
+            $subscriber->set('active', $scriptProperties['active']);
+            
+            if ($subscriber->save()) {
+                
+                //add new groups
+                foreach($groups as $group) {
+                    $id = $group->get('id');
+                    // $myGroup = $subscriber->getOne('Groups', array('group' => $id) );
+                    $myGroup = $modx->getObject('EletterGroupSubscribers', array('group'=>$id,'subscriber'=>$subscriber->get('id')));
+                            // add subsciber to group
+                    // $modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters/Process/Import()] add Subscriber for group ('.$subscriber->get('id') .') to GroupID: '.$id);
+                    $GroupSubscribers = $modx->newObject('EletterGroupSubscribers');
+                    $GroupSubscribers->set('group', $id);
+                    $GroupSubscribers->set('subscriber', $subscriber->get('id'));
+                    $GroupSubscribers->set('date_created', date('Y-m-d h:i:s'));
+                    $GroupSubscribers->save();
+                    unset($myGroup);
+                    // $this->modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters->signup()] GroupID: '.$groupID);
+                }
+                $imported++;
+            } else {
+                // there was an error!
             }
         }
-        
-        $total++;
+        $status = 'success';
+        $message = 'Data was imported';
     }
-    $status = 'success';
-    $message = 'Data was imported';
 } else {
     $status = 'failed';
     $message = 'File did not upload';
     $newData[] = array();
+    
+    return $modx->error->failure($modx->lexicon('groupeletters.subscribers.importcsv.err.uploadfile') );
 }
 //$item = $item->toArray();
 //$data[] = $item;
@@ -86,12 +96,33 @@ if (!empty($_FILES['csv']['name']) && !empty($_FILES['csv']['tmp_name'])) {
 //return $modx->error->failure('');
 
 // return $modx->error->failure($total.' imported, '.$invalid.' and '.$exists.' already existed');
+/**
+ * Total record on CSV
+ * Total imported
+ * Total existed
+ * Total invalid
+ */
+
 $modx->log(modX::LOG_LEVEL_ERROR,'[Group ELetters/Process/Import()] Imported: '.$total.' imported, '.$invalid.' were invalid and '.$exists.' already existed');
 
-return $modx->error->success($total.' imported, '.$invalid.' were invalid and '.$exists.' already existed', $subscriber);
+//
+$message = 'New imported records: '.$imported.
+        '<br>Existing untouched records: '.$exists.
+        '<br>Invalid CSV records:  '.$invalid.
+        '<br>Total records in CSV file: '.$total;
+
+        $message = $modx->lexicon('groupeletters.subscribers.importcsv.msg.complete', array('newCount' => $imported, 'existCount' => $exists, 'invalidCount' => $invalid, 'csvCount' => $total, ));
+return $modx->error->success($message);// $total.' imported, '.$invalid.' were invalid and '.$exists.' already existed', $subscriber);
 
         
-
+/**
+ * groupeletters.subscribers.importcsv.err.uploadfile'] = 'Please, upload a file';
+$_lang['groupeletters.subscribers.importcsv.err.cantopenfile'] = 'Can\'t open file';
+$_lang['groupeletters.subscribers.importcsv.err.firstrow'] = 'First row must contain column names (first column must be email)';
+$_lang['groupeletters.subscribers.importcsv.err.cantsaverow'] = 'Can\'t save row [[+rownum]]';
+$_lang['groupeletters.subscribers.importcsv.err.skippedrow'] = 'Skipped row [[+rownum]]';
+$_lang['groupeletters.subscribers.importcsv.msg.complete
+ */
 
 
 

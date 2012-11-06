@@ -132,7 +132,35 @@ Ext.extend(GroupEletters.grid.Subscribers,MODx.grid.Grid,{
             this.ImportSubscriberWindow = MODx.load({
                 xtype: 'groupeletters-window-subscriber-import'
                 ,listeners: {
-                    'success': {fn:this.refresh,scope:this}
+                    'success': {
+                        //fn:this.importMessage
+                        fn: function(xhr) {
+                            /**
+                            var output = '';
+                            for (property in xhr) {
+                              output += property + ': ' + xhr[property]+'; ';
+                            }
+                            console.log(xhr);
+                            console.log(xhr.f.getValues());
+                            console.log(xhr.a.result);
+                            */
+                            var m = xhr.a.result.message.split("<br>");
+                            var o = '';
+                            for(i = 0; i < m.length; i++){
+                                // console.log(m[i]);
+                                var tmp = m[i].split(":");
+                                o += '<tr><td>' + tmp[0] + ' </td><td>' + tmp[1] + '</td></tr>';
+                            }
+                            if ( o.length > 1 ) {
+                                o = '<table>' + o + '</table>';
+                            } else {
+                                o = xhr.a.result.message;
+                            }
+                            Ext.MessageBox.alert(_('groupeletters.subscribers.importcsv.results'), o );
+                            
+                        },scope:this
+                        
+                        }
                 }
             });
         }
