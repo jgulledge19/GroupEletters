@@ -22,7 +22,7 @@ Features
     User get an unsubscribe link in newsletters ([[+unsubscribeUrl]])
     Select what groups users can subscribe to, one or many.
     Message queue, via the the System Settings chose your batch size and the time in between each email sent
-    Basic Statistics - 
+    Basic Statistics - Set the URL Tracking (groupeletters.useUrlTracking) to Yes
         - Messages Sent, Messages Delivered, 
         - Messages Opened. This is the number of recipients who open your email to read it. Due to the way open rates are 
             tracked and the rise of image-blocking software, this number will never be accurate, but can still be useful.

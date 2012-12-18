@@ -116,7 +116,7 @@ switch($eventName) {
                 // process the url and redirect if needed:
                 // now load the tracking stuff:
                 $etracker = $groupEletters->loadTracker();
-                $etracker->debug = (boolean)$this->modx->getOption('groupeletters.debug',NULL, 0);
+                $etracker->debug = (boolean)$modx->getOption('groupeletters.debug',NULL, 0);
                 $etracker->logAction('click');
             }
         }

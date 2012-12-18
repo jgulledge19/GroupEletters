@@ -178,4 +178,25 @@ Email Statistics: http://www.idealware.org/articles/email_metrics.php
     - Click-Throughs. This is the number of times any recipient clicks on any trackable link within the email. 
         Ideally, each link should be counted only once, even if it is clicked on multiple times.
 
+Email Design:
+    - http://webadvent.org/2012/dealing-with-email-image-blocking-by-chesley-andrews
+    - 136 Best Email Templates: http://slodive.com/design/136-best-email-templates/
+    - http://webdesignerwall.com/general/make-your-html-email-5-times-more-mobile-friendly
+    - http://blog.getresponse.com/how-to-create-mobile-newsletters.html
+    - http://www.email-marketing-reports.com/wireless-mobile/design/ 
+    - Mobile chart: http://stylecampaign.com/blog/category/mobile-email/
+    - Mobile: http://www.templatemonster.com/mobile-templates.php
+    
 
+Other Docs:
+    - E-Mail Routing and Message Header: http://technopedia.info/tech/2006/02/15/internet-e-mail-message-header-explained.html
+    - Bounce: http://stackoverflow.com/questions/5571806/bounced-mail-handling-in-php-any-up-to-date-solutions
+    
+    
+E-letter programs
+    - http://www.imnicamail.com/features/
+    - PHPMailer: http://phpmailer.worxware.com/index.php -> http://phpmailer.worxware.com/index.php?pg=properties
+    - http://docs.phplist.com/
+    - Bounce driver: http://www.phpclasses.org/browse/file/11665.html
+    
+     
