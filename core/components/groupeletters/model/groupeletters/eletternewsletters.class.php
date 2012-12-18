@@ -186,7 +186,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         }
         $sent += $numSent;
         $this->set('sent', $sent);// total number sent
-        $this->set('delivered', $delivered);// total sent with out errors
+        $this->set('delivered', $been_delivered);// total sent with out errors
         
         $this->save();
        return $numSent;
