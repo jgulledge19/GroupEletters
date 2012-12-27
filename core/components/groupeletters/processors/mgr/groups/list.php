@@ -17,6 +17,7 @@ $dir        = $modx->getOption('dir',$_REQUEST,'ASC');
 
 /* query for groups */
 $c = $modx->newQuery('EletterGroups');
+$c = $c->sortby('name','ASC'); //Put the groups in alpha order
 $count = $modx->getCount('EletterGroups',$c);
 
 $c->sortby($sort,$dir);
