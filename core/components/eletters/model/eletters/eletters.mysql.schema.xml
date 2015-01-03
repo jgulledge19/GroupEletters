@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="eletters" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+	<object class="EletterGroupSubscribers" table="eletter_group_subscribers" extends="xPDOSimpleObject">
+        <aggregate alias="Subscriber" class="EletterSubscribers" local="subscriber" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Group" class="EletterGroups" local="group" foreign="id" cardinality="one" owner="foreign" />
+		<field key="group" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="subscriber" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="receive_email" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="Y" />
+		<field key="receive_sms" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="N" />
+		<field key="date_created" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="date_updated" dbtype="datetime" phptype="datetime" null="true" />
+
+		<index alias="group" name="group" primary="false" unique="false" type="BTREE" >
+			<column key="group" length="" collation="A" null="true" />
+		</index>
+		<index alias="subscriber" name="subscriber" primary="false" unique="false" type="BTREE" >
+			<column key="subscriber" length="" collation="A" null="true" />
+		</index>
+	</object>
+	<object class="EletterGroups" table="eletter_groups" extends="xPDOSimpleObject">
+        <composite alias="Subscribers" class="EletterGroupSubscribers" local="id" foreign="group"  cardinality="many" owner="local" />
+        <composite alias="Newsletters" class="EletterNewsletterGroups" local="id" foreign="group"  cardinality="many" owner="local" />
+		<field key="name" dbtype="varchar" precision="128" phptype="string" null="true" />
+		<field key="parent" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
+		<field key="group_type" dbtype="set" precision="'Campaign','MODX','Dynamic'" phptype="string" null="true" default="Campaign" />
+		<field key="member_group_id" dbtype="int" precision="11" phptype="integer" null="true" />
+		<field key="description" dbtype="text" phptype="string" null="true" />
+		<field key="department" dbtype="varchar" precision="64" phptype="string" null="true" />
+		<field key="allow_signup" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="N" />
+		<field key="date_created" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="active" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="Y" />
+		<field key="date_inactive" dbtype="datetime" phptype="datetime" null="true" />
+        <validation>
+             <rule field="name"
+                   name="preventBlank"
+                   type="xPDOValidationRule"
+                   rule="xPDOMinLengthValidationRule"
+                   value="1"
+                   message="Name is required."
+              />
+        </validation>
+	</object>
+	<object class="EletterLinks" table="eletter_links" extends="xPDOSimpleObject">
+        <composite alias="SubscriberHits" class="EletterSubscriberHits" local="id" foreign="link" cardinality="many" owner="local" />
+		<field key="newsletter" dbtype="int" precision="11" phptype="integer" null="true" />
+		<field key="url" dbtype="text" phptype="string" null="true" />
+		<field key="type" dbtype="set" precision="'click','image'" phptype="string" null="true" default="click" />
+	</object>
+	<object class="EletterLog" table="eletter_log" extends="xPDOSimpleObject">
+        <composite alias="Newsletter" class="EletterNewsletters" local="id" foreign="group"  cardinality="many" owner="local" />
+	    <field key="newsletter" dbtype="int" precision="11" phptype="integer" null="true" />
+		<field key="user_id" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="crm_id" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="verified" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="N" />
+        <field key="ecode" dbtype="varchar" precision="32" phptype="string" null="true" index="index" />
+		
+		<field key="from_address" dbtype="varchar" precision="255" phptype="string" null="true" index="index" />
+		<field key="from_name" dbtype="text" phptype="string" null="true" />
+		<field key="ishtml" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="N" />
+		<field key="to_address" dbtype="text" phptype="string" null="true" />
+		<field key="to_name" dbtype="text" phptype="string" null="true" />
+		<field key="cc_address" dbtype="text" phptype="string" null="true" />
+		<field key="cc_name" dbtype="text" phptype="string" null="true" />
+		<field key="bcc_address" dbtype="text" phptype="string" null="true" />
+		<field key="bcc_name" dbtype="text" phptype="string" null="true" />
+		<field key="reply_to_address" dbtype="text" phptype="string" null="true" />
+		<field key="reply_to_name" dbtype="text" phptype="string" null="true" />
+		<field key="subject" dbtype="varchar" precision="255" phptype="string" null="true" index="index" />
+		<field key="message" dbtype="text" phptype="string" null="true" />
+		<field key="text_message" dbtype="text" phptype="string" null="true" />
+        <field key="status" dbtype="set" precision="'Sending','Delivered','Resent','Failed'" phptype="string" null="true" default="Sending" />
+		<field key="spam" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="N" />
+		<field key="create_date" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="resend_count" dbtype="int" precision="5" phptype="integer" null="true" default="0" />
+		<field key="resend_info" dbtype="text" phptype="string" null="true" />
+		<field key="resend_date" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="sender_ip" dbtype="varchar" precision="60" phptype="string" null="true" />
+		<field key="sender_pc_name" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="category" dbtype="varchar" precision="60" phptype="string" null="true" />
+		<field key="form_url" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="referal_url" dbtype="text" phptype="string" null="true" />
+		
+        <index alias="Ecode" name="Ecode" primary="false" unique="true" type="BTREE" >
+            <column key="id" length="" collation="A" null="true" />
+            <column key="ecode" length="12" collation="A" null="true" />
+        </index>
+		<index alias="MODX" name="MODX" primary="false" unique="false" type="BTREE" >
+			<column key="user_id" length="" collation="A" null="true" />
+			<column key="verified" length="" collation="A" null="true" />
+		</index>
+		<index alias="CRM" name="CRM" primary="false" unique="false" type="BTREE" >
+			<column key="crm_id" length="" collation="A" null="true" />
+			<column key="verified" length="" collation="A" null="true" />
+		</index>
+		<index alias="From" name="From" primary="false" unique="false" type="BTREE" >
+			<column key="from_address" length="15" collation="A" null="true" />
+			<column key="from_name" length="10" collation="A" null="true" />
+		</index>
+		<index alias="Status" name="Status" primary="false" unique="false" type="BTREE" >
+			<column key="subject" length="25" collation="A" null="true" />
+			<column key="status" length="" collation="A" null="true" />
+			<column key="resend_count" length="" collation="A" null="true" />
+		</index>
+	</object>
+	<object class="EletterNewsletterGroups" table="eletter_newsletter_groups" extends="xPDOSimpleObject">
+        <aggregate alias="Newsletter" class="EletterNewsletters" local="newsletter" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Group" class="dnGroup" local="group" foreign="id" cardinality="one" owner="foreign" />
+		<field key="newsletter" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="group" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+
+		<index alias="newsletter" name="newsletter" primary="false" unique="false" type="BTREE" >
+			<column key="newsletter" length="" collation="A" null="true" />
+		</index>
+		<index alias="subscriber" name="subscriber" primary="false" unique="false" type="BTREE" >
+			<column key="group" length="" collation="A" null="true" />
+		</index>
+	</object>
+	<object class="EletterNewsletters" table="eletter_newsletters" extends="xPDOSimpleObject">
+        <composite alias="Groups" class="EletterNewsletterGroups" local="id" foreign="newsletter" cardinality="many" owner="local" />
+        <composite alias="Queue" class="EletterQueue" local="id" foreign="newsletter" cardinality="many" owner="local" />
+        <composite alias="Hits" class="EletterSubscriberHits" local="id" foreign="newsletter" cardinality="many" owner="local" />
+        <composite alias="Logs" class="EletterLog" local="id" foreign="newsletter" cardinality="many" owner="local" />
+		<field key="resource" dbtype="int" precision="11" phptype="integer" null="true" default="0" index="index" />
+		<field key="type" dbtype="set" precision="'Campaign','Response','Trigger'" phptype="string" null="true" default="Campaign" />  
+        <field key="access" dbtype="set" precision="'Public','Protected'" phptype="string" null="true" default="Public" />
+		<field key="title" dbtype="varchar" precision="128" phptype="string" null="true" />
+		<field key="message" dbtype="text" phptype="string" null="true" />
+		<field key="subject" dbtype="varchar" precision="128" phptype="string" null="true" />
+		<field key="from" dbtype="varchar" precision="128" phptype="string" null="true" />
+		<field key="from_name" dbtype="varchar" precision="128" phptype="string" null="true" />
+		<field key="reply_to" dbtype="varchar" precision="128" phptype="string" null="true" />
+		<field key="groups" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="status" dbtype="set" precision="'draft','submitted','approved','complete','sending','void'" phptype="string" null="true" default="draft" />
+		<field key="allow_comments" dbtype="set" precision="'Y','N'" phptype="string" null="true" default="N" />
+		<field key="user" dbtype="int" precision="11" phptype="integer" null="true" />
+		<field key="add_date" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="start_date" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="finish_date" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="sent" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
+		<field key="delivered" dbtype="int" precision="11" phptype="integer" null="true" default="0" />
+		<field key="bounced" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="true" default="0" />
+		<field key="attachments" dbtype="text" phptype="string" null="true" />
+		<field key="extended" dbtype="text" phptype="string" null="true" />
+
+		<index alias="resource" name="resource" primary="false" unique="false" type="BTREE" >
+			<column key="resource" length="" collation="A" null="true" />
+		</index>
+	</object>
+	<object class="EletterQueue" table="eletter_queue" extends="xPDOSimpleObject">
+        <aggregate alias="Newsletter" class="EletterNewsletters" local="newsletter" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Subscriber" class="EletterSubscribers" local="subscriber" foreign="id" cardinality="one" owner="foreign" />
+		<field key="newsletter" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+		<field key="subscriber" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
+		<field key="sent" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="0" />
+		<field key="sent_date" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="delivered" dbtype="tinyint" precision="1" phptype="integer" null="true" default="1" />
+		<field key="bounced" dbtype="tinyint" precision="1" phptype="integer" null="true" default="0" />
+		<field key="unsubscribed" dbtype="tinyint" precision="1" phptype="integer" null="true" default="0" />
+        <field key="opened" dbtype="tinyint" precision="1" phptype="integer" null="true" default="0" />
+		<field key="error" dbtype="text" phptype="string" null="true" />
+
+		<index alias="newsletter" name="newsletter" primary="false" unique="false" type="BTREE" >
+			<column key="newsletter" length="" collation="A" null="false" />
+		</index>
+		<index alias="subscriber" name="subscriber" primary="false" unique="false" type="BTREE" >
+			<column key="subscriber" length="" collation="A" null="false" />
+		</index>
+	</object>
+	<object class="EletterSubscriberHits" table="eletter_subscriber_hits" extends="xPDOSimpleObject">
+        <aggregate alias="Subscriber" class="EletterSubscribers" local="subscriber" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Newsletter" class="EletterNewsletters" local="newsletter" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="Link" class="EletterLinks" local="link" foreign="id" cardinality="one" owner="foreign" />
+		<field key="newsletter" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="subscriber" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="link" dbtype="int" precision="11" phptype="integer" null="true" />
+		<field key="hit_type" dbtype="varchar" precision="16" phptype="string" null="true" />
+		<field key="hit_date" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="view_total" dbtype="int" precision="11" phptype="integer" null="true" />
+
+		<index alias="newsletter" name="newsletter" primary="false" unique="false" type="BTREE" >
+			<column key="newsletter" length="" collation="A" null="true" />
+		</index>
+		<index alias="subscriber" name="subscriber" primary="false" unique="false" type="BTREE" >
+			<column key="subscriber" length="" collation="A" null="true" />
+		</index>
+	</object>
+	<object class="EletterSubscribers" table="eletter_subscribers" extends="xPDOSimpleObject">
+        <composite alias="Groups" class="EletterGroupSubscribers" local="id" foreign="subscriber" cardinality="many" owner="local" />
+        <composite alias="Queue" class="EletterQueue" local="id" foreign="subscriber" cardinality="many" owner="local" />
+        <composite alias="Hits" class="EletterSubscriberHits" local="id" foreign="subscriber" cardinality="many" owner="local" />
+		<field key="user_id" dbtype="int" precision="11" phptype="integer" null="true" index="index" />
+		<field key="sync_user" dbtype="tinyint" precision="1" phptype="integer" null="true" default="1" />
+		<field key="crm_id" dbtype="int" precision="11" phptype="integer" null="true" default="0" index="index" />
+		<field key="code" dbtype="varchar" precision="32" phptype="string" null="true" />
+		<field key="first_name" dbtype="varchar" precision="32" phptype="string" null="true" />
+		<field key="m_name" dbtype="varchar" precision="32" phptype="string" null="true" />
+		<field key="last_name" dbtype="varchar" precision="32" phptype="string" null="true" />
+		<field key="company" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="address" dbtype="varchar" precision="128" phptype="string" null="true" />
+		<field key="city" dbtype="varchar" precision="64" phptype="string" null="true" />
+		<field key="state" dbtype="varchar" precision="64" phptype="string" null="true" />
+		<field key="zip" dbtype="varchar" precision="16" phptype="string" null="true" />
+		<field key="country" dbtype="varchar" precision="64" phptype="string" null="true" />
+		<field key="email" dbtype="varchar" precision="128" phptype="string" null="true" index="index" />
+		<field key="phone" dbtype="varchar" precision="16" phptype="string" null="true" />
+		<field key="cell" dbtype="varchar" precision="16" phptype="string" null="true" />
+		<field key="date_created" dbtype="datetime" phptype="datetime" null="true" />
+		<field key="active" dbtype="int" precision="1" phptype="integer" null="false" default="0" />
+
+		<index alias="MODX" name="MODX" primary="false" unique="false" type="BTREE" >
+			<column key="user_id" length="" collation="A" null="true" />
+			<column key="sync_user" length="" collation="A" null="true" />
+		</index>
+		<index alias="CRM" name="CRM" primary="false" unique="false" type="BTREE" >
+			<column key="crm_id" length="" collation="A" null="true" />
+			<column key="email" length="20" collation="A" null="true" />
+		</index>
+		<index alias="Search" name="Search" primary="false" unique="false" type="BTREE" >
+			<column key="email" length="" collation="A" null="true" />
+			<column key="last_name" length="" collation="A" null="true" />
+			<column key="first_name" length="" collation="A" null="true" />
+		</index>
+		
+        <validation>
+              <rule
+                    field="email"
+                    name="validEmail"
+                    type="preg_match"
+                    rule="/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/i"
+                    message="Email address invalid"
+              />
+        </validation>
+	</object>
+</model>

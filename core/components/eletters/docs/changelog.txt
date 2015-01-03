@@ -1,0 +1,87 @@
+1.1 beta5
+    - ALTER TABLE `modx`.`modx_eletter_log` ADD COLUMN `newsletter` INT(11) NULL COMMENT 'Eletter_newsletter' AFTER `id`; 
+    - ALTER TABLE `modx`.`modx_eletter_log` ADD INDEX `Newsletters` (`newsletter`); 
+    REVIEW SCHEME!!!
+1.1 beta4
+    - ALTER TABLE `modx`.`modx_eletter_log` CHANGE `form_url` `form_url` MEDIUMTEXT NULL, CHANGE `referal_url` `referal_url` MEDIUMTEXT NULL; 
+    
+1.1 beta3
+- Include new TVs in install script
+
+1.1 beta2
+- Include EletterFormItEmail in install
+
+1.1 beta
+ - Updated default sorting order in the CMP
+ - Change name from GroupEletter to just Eletters
+ - sampleTriggerEletter
+ - New TVs
+    - eletterType - 'Campaign','Response','Trigger'  
+    - eletterAccess - 'Public','Protected
+    - set default values for:
+        eletterFromName: [[++eletters.fromName]], 
+        eletterFromEmail: [[++eletters.fromEmail]], 
+        eletterReplyEmail: [[++eletters.replyEmail]]
+ - New Setting: eletters.deniedPageID - this if you set the page to private and a user goes to the URL without unique code send them to this page.
+ - Fixed Subscriber search &  Setting a subscriber to inactive
+ - Tracking Plugin causes errors...Fixed
+ 
+  
+1.0 RC3
+  - Fixed #22, #23 Invalid object $this in plugin
+  - Fixed delivered to record actual instead of 1
+    
+1.0 RC2
+ - Removed some error logging and set them to respect the groupeletters.debug setting
+ - Improved how statistics are recorded
+ - #19 added cs localization - Czech language
+ - #18 added very basic mime with strip_tags
+ - #17 added in new system setting testPrefix to allow admin to prefix all test email subject lines
+ - #6 added a way to attach a single file attachment
+ - #14 improved the CSV import process
+
+1.0 RC1
+ - Fixed #13 properly set the batchsize for the queue
+ - Corrected a date query issue which effected when a queue would send out
+ - Added a debug setting that will log notes to the error log
+ - Added basic stats #12
+    - Numerous database changes
+    - new setting: trackingPageID, useUrlTracking
+    - [[+trackingImage]] - for Opened
+    
+ 
+1.0 beta4
+ - #11 Updated German Translation
+ - Added a snippet GroupElettersUpdateTables - only needed in you updated but it ran as install
+ 
+1.0 beta3
+ - Added #9 CSV Import feature
+ - Added tabs to Subsriber and added in all fields for the window 
+    New lexicons: groupeletters.subscribers.city, groupeletters.subscribers.m_name, 
+        groupeletters.subscribers.basic_info, groupeletters.subscribers.address_info and groupeletters.subscribers.groups_info 
+ - Fixed #10 Subscriber Add/Update Window issue
+ - Fixed #7 Added in city column/field to db table 
+ - Added #8 German Translation
+ 
+1.0 beta2
+ - Fixed #5 file path case wrong in plugin, could cause linux/unix not to work 
+ 
+1.0 beta1
+ - added 2 new lexicons
+ - #3 fixed Queue snippet message
+ - #4 Fixed spelling error
+ 
+1.0 alpha3
+-------------------
+- Removed my email address from the sender list!
+- Fix another spelling error and added more options in the GroupEletterSignup Chunk
+
+1.0 alpha2
+-------------------
+- Fix create group error that did not save all data
+- Fix spelling error for chunk name call
+- Fix subscribe to group on signup page
+
+1.0 alpha
+-------------------
+initial release

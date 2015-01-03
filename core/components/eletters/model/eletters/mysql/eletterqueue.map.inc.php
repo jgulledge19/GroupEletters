@@ -1,0 +1,149 @@
+<?php
+$xpdo_meta_map['EletterQueue']= array (
+  'package' => 'eletters',
+  'version' => '1.1',
+  'table' => 'eletter_queue',
+  'extends' => 'xPDOSimpleObject',
+  'fields' => 
+  array (
+    'newsletter' => 0,
+    'subscriber' => 0,
+    'sent' => 0,
+    'sent_date' => NULL,
+    'delivered' => 1,
+    'bounced' => 0,
+    'unsubscribed' => 0,
+    'opened' => 0,
+    'error' => NULL,
+  ),
+  'fieldMeta' => 
+  array (
+    'newsletter' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
+      'index' => 'index',
+    ),
+    'subscriber' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
+      'index' => 'index',
+    ),
+    'sent' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
+    ),
+    'sent_date' => 
+    array (
+      'dbtype' => 'datetime',
+      'phptype' => 'datetime',
+      'null' => true,
+    ),
+    'delivered' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'integer',
+      'null' => true,
+      'default' => 1,
+    ),
+    'bounced' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'integer',
+      'null' => true,
+      'default' => 0,
+    ),
+    'unsubscribed' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'integer',
+      'null' => true,
+      'default' => 0,
+    ),
+    'opened' => 
+    array (
+      'dbtype' => 'tinyint',
+      'precision' => '1',
+      'phptype' => 'integer',
+      'null' => true,
+      'default' => 0,
+    ),
+    'error' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => true,
+    ),
+  ),
+  'indexes' => 
+  array (
+    'newsletter' => 
+    array (
+      'alias' => 'newsletter',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'newsletter' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+    'subscriber' => 
+    array (
+      'alias' => 'subscriber',
+      'primary' => false,
+      'unique' => false,
+      'type' => 'BTREE',
+      'columns' => 
+      array (
+        'subscriber' => 
+        array (
+          'length' => '',
+          'collation' => 'A',
+          'null' => false,
+        ),
+      ),
+    ),
+  ),
+  'aggregates' => 
+  array (
+    'Newsletter' => 
+    array (
+      'class' => 'EletterNewsletters',
+      'local' => 'newsletter',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+    'Subscriber' => 
+    array (
+      'class' => 'EletterSubscribers',
+      'local' => 'subscriber',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+  ),
+);
