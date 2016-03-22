@@ -12,7 +12,6 @@ if($emailcount > 0) {
 
 $subscriber->fromArray($scriptProperties);
 
-
 if ($subscriber->save()) {
     //add new groups
     $groups = $modx->getCollection('EletterGroups');
@@ -26,14 +25,14 @@ if ($subscriber->save()) {
             if ( $myGroup ) {
                 // this already exists
                 $myGroup->get('id');
-                $modx->log(modX::LOG_LEVEL_ERROR,'[ELetters/Process/Update] Subscriber('.$subscriber->get('id') .') Exists for group: '.$id.' ID: '.$myGroup->get('id'));
+                //$modx->log(modX::LOG_LEVEL_ERROR,'[ELetters/Process/Update] Subscriber('.$subscriber->get('id') .') Exists for group: '.$id.' ID: '.$myGroup->get('id'));
                 if ( $myGroup->get('recieve_email') == 'N') {
                     $myGroup->set('recieve_email', 'Y');
                     $myGroup->set('date_updated', date('Y-m-d H:i:s'));
                     $myGroup->save();
                 }
             } else {
-                $modx->log(modX::LOG_LEVEL_ERROR,'[ELetters/Process/Update] ADD Subscriber('.$subscriber->get('id') .') to group: '.$id);
+                //$modx->log(modX::LOG_LEVEL_ERROR,'[ELetters/Process/Update] ADD Subscriber('.$subscriber->get('id') .') to group: '.$id);
                 // add subsciber to group
                 $GroupSubscribers = $modx->newObject('EletterGroupSubscribers');
                 $GroupSubscribers->set('group', $id);
@@ -50,13 +49,6 @@ if ($subscriber->save()) {
         unset($myGroup);
         // $this->modx->log(modX::LOG_LEVEL_ERROR,'[ELetters->signup()] GroupID: '.$groupID);
     }
-
-
-
-
-
-
-
 
 	return $modx->error->success('', $subscriber);
 } else {
