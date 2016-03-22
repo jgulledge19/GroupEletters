@@ -455,6 +455,13 @@ Eletters.window.ImportSubscribers = function(config) {
         ,fileUpload: true
         ,fields: [
             {
+                html: '<p><a href="' + Eletters.config.assetsUrl + 'example-import.csv">' 
+                    +  _('eletters.subscribers.importcsv.example') + '</a> | ' +
+                    '<a href="' + Eletters.config.assetsUrl + 'example-full-import.csv">'
+                    +  _('eletters.subscribers.importcsv.completeExample') + '</a></p>'
+                ,border: false
+                ,bodyStyle: 'padding-bottom: 10px'
+            },{
                 xtype: 'textfield',
                 inputType: 'file',
                 fieldLabel: _('eletters.subscribers.importcsv.file'),
