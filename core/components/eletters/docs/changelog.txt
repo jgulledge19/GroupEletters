@@ -1,9 +1,16 @@
+1.1 pl
+    - Fix #32 rename ELetterSignup Chunk properly
+    - Fix #21 add group by query to reduce multi sends
+    - Fix #29 remove Subscriber from group when unchecked on Update
+    - Fix #14 CSV import error messages and example CSV in GUI
+    - Fix #25 swap placeholders in signup Chunk to be correct
+
 1.1 beta5
     - ALTER TABLE `modx`.`modx_eletter_log` ADD COLUMN `newsletter` INT(11) NULL COMMENT 'Eletter_newsletter' AFTER `id`; 
     - ALTER TABLE `modx`.`modx_eletter_log` ADD INDEX `Newsletters` (`newsletter`); 
-    REVIEW SCHEME!!!
+
 1.1 beta4
-    - ALTER TABLE `modx`.`modx_eletter_log` CHANGE `form_url` `form_url` MEDIUMTEXT NULL, CHANGE `referal_url` `referal_url` MEDIUMTEXT NULL; 
+    - ALTER TABLE `modx`.`modx_eletter_log` CHANGE `form_url` `form_url` TEXT NULL, CHANGE `referal_url` `referal_url` TEXT NULL;
     
 1.1 beta3
 - Include new TVs in install script

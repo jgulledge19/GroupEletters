@@ -61,8 +61,7 @@ if ($object->xpdo) {
             $m->createObjectContainer('EletterLog');
             
             $modx->setLogLevel(modX::LOG_LEVEL_INFO);
-            
-            
+
             // $modx->getTableName('EletterSubscribers');
             $tableObjects = array(
                 'EletterGroupSubscribers',
@@ -92,13 +91,41 @@ if ($object->xpdo) {
                             $tables[$object][$column] = 1;
                         }
                     }
-                } 
+                }
+
+                // get the indexes:
+                $tables[$object]['indexes'] = array();
+                $sql = 'SHOW INDEX FROM ' . $table_name.' ';
+                $rs = $modx->query($sql);
+                if ( !$rs ) {
+                    // did not run/return results
+                } else {
+                    while ( $row = $rs->fetch(PDO::FETCH_ASSOC) ) {
+                        $tables[$object]['indexes'][$row['Key_name']] = 1;
+                    }
+                }
             }
-            /**
+
+        /**
              * $q = $dbh->query("DESCRIBE tablename"); 
              * $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
              */
-            
+
+            if ( !isset($tables['EletterLog']['newsletter']) ) {
+                $modx->exec("ALTER TABLE {$modx->getTableName('EletterLog')} 
+                        ADD COLUMN `newsletter` INT(11) NULL AFTER `id`
+                        ");
+
+                $modx->exec("ALTER TABLE {$modx->getTableName('EletterLog')}
+                    CHANGE `form_url` `form_url` TEXT NULL, 
+                    CHANGE `referal_url` `referal_url` TEXT NULL;
+                    ");
+            }
+            if ( !isset($tables['EletterLog']['indexes']['Newsletters']) ) {
+                $modx->exec("ALTER TABLE {$modx->getTableName('EletterLog')}
+                    ADD INDEX `Newsletters` (`newsletter`);
+                ");
+            }
             
             /* beta3 */
             if ( !isset($tables['EletterSubscribers']['city']) ) {
@@ -153,15 +180,21 @@ if ($object->xpdo) {
                     ");
             }
             // Add indexes:
-            $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')}
+            if ( !isset($tables['EletterSubscribers']['indexes']['MODX']) ) {
+                $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')}
                     ADD INDEX `MODX` (`user_id`, `sync_user`);
                 ");
-            $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')}
+            }
+            if ( !isset($tables['EletterSubscribers']['indexes']['CRM']) ) {
+                $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')}
                     ADD INDEX `CRM` (`crm_id`, `email`(20));
                 ");
-            $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')}
+            }
+            if ( !isset($tables['EletterSubscribers']['indexes']['Search']) ) {
+                $modx->exec("ALTER TABLE {$modx->getTableName('EletterSubscribers')}
                     ADD INDEX `Search` (`email`, `last_name`, `first_name`);
                 ");
+            }
             if ( !isset($tables['EletterGroups']['group_type']) ) {
                 $modx->exec("ALTER TABLE {$modx->getTableName('EletterGroups')}
                         ADD COLUMN `group_type` SET('Campaign','MODX','Dynamic') DEFAULT 'Campaign' NULL COMMENT 'If MODX then it will use member_group_id' AFTER `parent`;

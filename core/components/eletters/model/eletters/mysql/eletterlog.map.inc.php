@@ -234,10 +234,9 @@ $xpdo_meta_map['EletterLog']= array (
     ),
     'form_url' => 
     array (
-      'dbtype' => 'varchar',
-      'precision' => '255',
-      'phptype' => 'string',
-      'null' => true,
+        'dbtype' => 'text',
+        'phptype' => 'string',
+        'null' => true,
     ),
     'referal_url' => 
     array (
@@ -364,5 +363,21 @@ $xpdo_meta_map['EletterLog']= array (
         ),
       ),
     ),
+      'Newsletter' =>
+          array (
+              'alias' => 'Status',
+              'primary' => false,
+              'unique' => false,
+              'type' => 'BTREE',
+              'columns' =>
+                  array (
+                      'newsletter' =>
+                          array (
+                              'length' => '',
+                              'collation' => 'A',
+                              'null' => true,
+                          )
+                  ),
+          ),
   ),
 );

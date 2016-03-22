@@ -49,7 +49,7 @@
 define('PKG_NAME','Eletters');
 define('PKG_NAME_LOWER','eletters');
 define('PKG_VERSION','1.1.0');
-define('PKG_RELEASE','beta3');
+define('PKG_RELEASE','pl');
 define('PKG_CATEGORY','Eletters');
 
 /* Set package options - you can turn these on one-by-one

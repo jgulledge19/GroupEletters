@@ -77,7 +77,7 @@
 		<field key="sender_ip" dbtype="varchar" precision="60" phptype="string" null="true" />
 		<field key="sender_pc_name" dbtype="varchar" precision="255" phptype="string" null="true" />
 		<field key="category" dbtype="varchar" precision="60" phptype="string" null="true" />
-		<field key="form_url" dbtype="varchar" precision="255" phptype="string" null="true" />
+		<field key="form_url" dbtype="text" phptype="string" null="true" />
 		<field key="referal_url" dbtype="text" phptype="string" null="true" />
 		
         <index alias="Ecode" name="Ecode" primary="false" unique="true" type="BTREE" >
@@ -95,6 +95,9 @@
 		<index alias="From" name="From" primary="false" unique="false" type="BTREE" >
 			<column key="from_address" length="15" collation="A" null="true" />
 			<column key="from_name" length="10" collation="A" null="true" />
+		</index>
+		<index alias="Newsletter" name="Newsletter" primary="false" unique="false" type="BTREE" >
+			<column key="newsletter" length="" collation="A" null="true" />
 		</index>
 		<index alias="Status" name="Status" primary="false" unique="false" type="BTREE" >
 			<column key="subject" length="25" collation="A" null="true" />

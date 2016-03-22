@@ -1,9 +1,9 @@
 -------------------
 Component: Eletters
 -------------------
-Version: 1.1 beta3
-Date: April 12, 2013
-Author: Joshua Gulledge (jgulledge19@hotmail.com)
+Version: 1.1 pl
+Date: March 21, 2016
+Author: Joshua Gulledge (jgulledge19@outlook.com)
 License: GNU GPLv2 (or later at your option)
 
 Description:
@@ -11,7 +11,7 @@ Description:
 Eletters is a Addon for MODX Revolution that allows you to create & send beautiful 
 email campaigns within MODX!  You can now take advantage of MODX advanced templating 
 features to create custom eletter templates.  Easily manage lists & subscribers and 
-allow subscribers to manage their own preferances.  Personalize your emails with some 
+allow subscribers to manage their own preferences.  Personalize your emails with some
 default placeholders.
 
 Features
