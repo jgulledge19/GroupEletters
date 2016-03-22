@@ -32,7 +32,7 @@ $x= 0;
 $chunks[++$x]= $modx->newObject('modChunk');
 $chunks[$x]->fromArray(array(
     'id' => $x,
-    'name' => 'GroupELetterSignup',
+    'name' => 'ELetterSignup',
     'description' => 'Newsletter signup chunk',
     'snippet' => file_get_contents($sources['source_core'].'elements/chunks/elettersignup.chunk.tpl'),
     'properties' => '',
@@ -41,7 +41,7 @@ $chunks[$x]->fromArray(array(
 $chunks[++$x]= $modx->newObject('modChunk');
 $chunks[$x]->fromArray(array(
     'id' => $x,
-    'name' => 'GroupEletterSignupMail',
+    'name' => 'EletterSignupMail',
     'description' => 'Basic Signup form',
     'snippet' => file_get_contents($sources['source_core'].'elements/chunks/elettersignupmail.chunk.tpl'),
     'properties' => '',
@@ -50,7 +50,7 @@ $chunks[$x]->fromArray(array(
 $chunks[++$x]= $modx->newObject('modChunk');
 $chunks[$x]->fromArray(array(
     'id' => $x,
-    'name' => 'GroupEletterGroupCheckbox',
+    'name' => 'EletterGroupCheckbox',
     'description' => 'The checkboxes that are created for groups on the signup form.',
     'snippet' => file_get_contents($sources['source_core'].'elements/chunks/elettergroupcheckbox.chunk.tpl'),
     'properties' => '',
