@@ -134,6 +134,7 @@ class EletterNewsletters extends xPDOSimpleObject {
                 $c->andCondition(array('EletterSubscribers.id:NOT IN' => $sendList));
             }
             
+            $c->groupby('EletterSubscribers.email');
             $c->limit($limit, 0);
             $subscribers = $this->modx->getCollection('EletterSubscribers' , $c);
             if ( $this->debug ) {
