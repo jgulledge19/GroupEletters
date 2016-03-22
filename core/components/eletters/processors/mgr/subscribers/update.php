@@ -44,10 +44,7 @@ if ($subscriber->save()) {
         } else {
             // remove if exists:
             if ( is_object($myGroup) ) {
-                $myGroup->set('receive_email', 'N');
-                $myGroup->set('receive_sms', 'N');
-                $myGroup->set('date_updated', date('Y-m-d H:i:s'));
-                $myGroup->save();
+                $myGroup->remove();
             }
         }
         unset($myGroup);
