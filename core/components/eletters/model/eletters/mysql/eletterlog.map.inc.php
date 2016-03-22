@@ -365,7 +365,7 @@ $xpdo_meta_map['EletterLog']= array (
     ),
       'Newsletter' =>
           array (
-              'alias' => 'Status',
+              'alias' => 'Newsletter',
               'primary' => false,
               'unique' => false,
               'type' => 'BTREE',
