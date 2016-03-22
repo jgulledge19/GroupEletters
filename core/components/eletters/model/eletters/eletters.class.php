@@ -727,7 +727,7 @@ class Eletters {
         $this->newsletter = $this->modx->getObject('EletterNewsletters', $criteria);
         if ( !is_object($this->newsletter) ) {
             // Error!
-            $this->modx->log(modX::LOG_LEVEL_ERROR,'[Eletters->loadNewsletter] could not find newsletter for '.print_r($c,TRUE));
+            $this->modx->log(modX::LOG_LEVEL_ERROR,'[Eletters->loadNewsletter] could not find newsletter for '.print_r($criteria,TRUE));
             return false;
         }
         
@@ -777,7 +777,7 @@ class Eletters {
             $log->set('sender_ip', rtrim($_SERVER['REMOTE_ADDR']));
             $log->set('sender_pc_name', gethostbyaddr(rtrim($_SERVER['REMOTE_ADDR'])));
             if ( is_object($this->newsletter) ) {
-                $log->set('newsletter', $this->$newsletter->get('id'));
+                $log->set('newsletter', $this->newsletter->get('id'));
             }
             if ( isset($options['category']) ) {
                 $log->set('category', substr($options['category'], 0, 60) );
