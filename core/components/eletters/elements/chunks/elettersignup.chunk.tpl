@@ -14,8 +14,8 @@
   &confirmPage=`2071` 
   &emailSubject=`Newsletter confirmation`
   &emailReplyTo=`[[++eletters.replyEmail]]`
-  &emailFromName=`[[++eletters.fromName]]`
-  &emailFrom=`[[++eletters.fromEmail]]`
+  &emailFromName=`[[++eletters.fromEmail]]`
+  &emailFrom=`[[++eletters.fromName]]`
   &emailTpl=`EletterSignupMail`
 ]]
 <form action="[[~[[*id]]]]" method="post">
