@@ -188,7 +188,6 @@ class Eletters {
         $this->modx->mail->set(modMail::MAIL_BODY, $this->modx->getChunk($options['emailTpl'], $emailProperties ));
         $this->modx->mail->set(modMail::MAIL_FROM, $options['emailFrom'] );
         $this->modx->mail->set(modMail::MAIL_FROM_NAME, $options['emailFromName'] );
-        $this->modx->mail->set(modMail::MAIL_SENDER, $options['emailFromName'] );
         $this->modx->mail->set(modMail::MAIL_SUBJECT, $options['emailSubject']);
         $this->modx->mail->address('to', $subscriber->get('email') );
         $this->modx->mail->address('reply-to', $options['emailReplyTo'] );
