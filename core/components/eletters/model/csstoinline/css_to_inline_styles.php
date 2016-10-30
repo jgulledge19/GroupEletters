@@ -350,7 +350,7 @@ class CSSToInlineStyles
 			$query = $this->buildXPathQuery('*[@data-css-to-inline-styles-original-styles]');
 
 			// validate query
-			if($query === false) continue;
+			if($query === false) return;
 
 			// search elements
 			$elements = $xPath->query($query);
