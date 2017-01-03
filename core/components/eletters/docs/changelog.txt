@@ -1,3 +1,7 @@
+1.1.1pl
+    - Pull request #39 Remove explicit setting of modMail::MAIL_SENDER
+    - Fix #40, pull request #41 php7 compatibility update
+
 1.1 pl
     - Fix #32 rename ELetterSignup Chunk properly
     - Fix #21 add group by query to reduce multi sends

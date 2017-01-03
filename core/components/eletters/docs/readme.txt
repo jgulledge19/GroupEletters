@@ -1,7 +1,7 @@
 -------------------
 Component: Eletters
 -------------------
-Version: 1.1 pl
+Version: 1.1.1 pl
 Date: March 21, 2016
 Author: Joshua Gulledge (jgulledge19@outlook.com)
 License: GNU GPLv2 (or later at your option)
